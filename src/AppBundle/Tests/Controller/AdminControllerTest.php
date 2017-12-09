@@ -21,7 +21,7 @@ class AdminControllerTest extends WebTestCase
     /**
     * Access test not allowed (visitor user).
     */
-    public function testIndexNotPermission()
+    public function testIndexAdminNotPermission()
     {
 
         $client = static::createClient();

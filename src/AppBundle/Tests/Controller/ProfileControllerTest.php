@@ -21,7 +21,7 @@ class ProfileControllerTest extends WebTestCase
     /**
     * Access test not allowed (visitor user).
     */
-    public function testIndexNotPermission()
+    public function testIndexProfileNotPermission()
     {
         $client = static::createClient();
 
@@ -33,7 +33,7 @@ class ProfileControllerTest extends WebTestCase
     /**
     * Access test not allowed (visitor user).
     */
-    public function testEditNotPermission()
+    public function testEditProfileNotPermission()
     {
         $client = static::createClient();
 
@@ -45,7 +45,7 @@ class ProfileControllerTest extends WebTestCase
     /**
     * Access test  allowed (ROLE_USER).
     */
-    public function testIndexAccessUser()
+    public function testIndexProfileAccessUser()
     {
         $this->logIn('ROLE_USER');
         $crawler = $this->client->request('GET', '/profile/');
@@ -56,7 +56,7 @@ class ProfileControllerTest extends WebTestCase
     /**
     * Access test  allowed (ROLE_COLLABORATOR).
     */
-    public function testIndexAccessCollaborator()
+    public function testIndexProfileAccessCollaborator()
     {
         $this->logIn('ROLE_COLLABORATOR');
         $crawler = $this->client->request('GET', '/profile/');
@@ -67,7 +67,7 @@ class ProfileControllerTest extends WebTestCase
     /**
     * Access test  allowed (ROLE_COLLABORATOR).
     */
-    public function testIndexAccessManager()
+    public function testIndexProfileAccessManager()
     {
         $this->logIn('ROLE_MANAGER');
         $crawler = $this->client->request('GET', '/profile/');
