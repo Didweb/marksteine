@@ -54,6 +54,29 @@ class ProfileControllerTest extends WebTestCase
     }
 
     /**
+    * Access test  allowed (ROLE_COLLABORATOR).
+    */
+    public function testIndexAccessCollaborator()
+    {
+        $this->logIn('ROLE_COLLABORATOR');
+        $crawler = $this->client->request('GET', '/profile/');
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+    * Access test  allowed (ROLE_COLLABORATOR).
+    */
+    public function testIndexAccessManager()
+    {
+        $this->logIn('ROLE_MANAGER');
+        $crawler = $this->client->request('GET', '/profile/');
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+
+    /**
     * Access test  allowed (ROLE_ADMIN).
     */
     public function testIndexProfileAccessAdmin()

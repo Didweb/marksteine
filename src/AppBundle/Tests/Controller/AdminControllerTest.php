@@ -43,6 +43,30 @@ class AdminControllerTest extends WebTestCase
     }
 
     /**
+    * Access test  allowed (ROLE_COLLABORATOR).
+    */
+    public function testIndexAdminAccessCollaborator()
+    {
+        $this->logIn('ROLE_COLLABORATOR');
+        $crawler = $this->client->request('GET', '/admin/');
+
+        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+    * Access test  allowed (ROLE_MANAGER).
+    */
+    public function testIndexAdminAccessManager()
+    {
+        $this->logIn('ROLE_MANAGER');
+        $crawler = $this->client->request('GET', '/admin/');
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+
+
+    /**
     * Access test  allowed (ROLE_ADMIN).
     */
     public function testIndexAdminAccessAdmin()
