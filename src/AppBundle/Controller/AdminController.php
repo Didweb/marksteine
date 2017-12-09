@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class AdminController extends Controller
 {
    /**
-     * Index Aplication
+     * Index Admin_Aplication
      *
      * @Route("/", name="admin_index")
      * @Method({"GET", "POST"})
