@@ -1,5 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Profile</h1>
+<h1>Edit Profile</h1>
+{% form_theme edit_form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(edit_form) }}
+    {{ form_widget(edit_form | raw) }}
+    <div class="col-xs col-md text-center">
+      <input type="submit"  class="btn btn-success"  value="Edit" />
+    </div>
+{{ form_end(edit_form) }}
+
+
+
 {% endblock %}

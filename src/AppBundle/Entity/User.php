@@ -1,11 +1,17 @@
 <?php
-
+/**
+ * Class User | AppBundle/Entity/User.php
+ *
+ * @package     AppBundle
+ * @author      Eduard Pinuaga <info@did-web.com>
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\HttpFoundation\File\UploadedFile; 
 
 /**
  * User
@@ -67,6 +73,11 @@ class User extends BaseUser
     protected $country;
 
     /**
+      * @Assert\File(maxSize="6000000")
+      */
+     private $file;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
@@ -102,6 +113,28 @@ class User extends BaseUser
     {
         return $this->id;
     }
+
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
 
     /**
      * Set firstName

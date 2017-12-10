@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class MilestoneController | AppBundle/Controller/MilestoneController.php
+ *
+ * @package     AppBundle
+ * @author      Eduard Pinuaga <info@did-web.com>
+ */
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

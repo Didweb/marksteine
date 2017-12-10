@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class UserSubscriber | AppBundle/EventSubscriber/UserSubscriber.php
+ *
+ * @package     AppBundle
+ * @author      Eduard Pinuaga <info@did-web.com>
+ */
   namespace AppBundle\EventSubscriber;
 
   use AppBundle\Entity\Person;
