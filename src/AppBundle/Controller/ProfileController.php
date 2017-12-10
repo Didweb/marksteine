@@ -39,30 +39,26 @@ class ProfileController extends Controller
       */
     public function editProfileAction(Request $request)
     {
-      $user = $this->getUser();
-      $editForm = $this->createForm('AppBundle\Form\UserType', $user);
-      $editForm->handleRequest($request);
+        $user = $this->getUser();
+        $editForm = $this->createForm('AppBundle\Form\UserType', $user);
+        $editForm->handleRequest($request);
 
-      if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if ($user->getFile() !== null) {
+                  $file = $user->getFile();
+                  $ext  = $file->guessExtension();
+                  $file_name = time().".".$ext;
+                  $file->move("avatars", $file_name);
+                  $user->setAvatar($file_name);
+            }
 
+            $this->getDoctrine()->getManager()->flush();
 
+            return $this->redirectToRoute('profile_edit');
+        }
 
-          if ($user->getFile() !== null) {
-            $ext = $file->guessExtension();
-            $file_name = time().".".$ext;
-            $file->move("avatars", $file_name);
-            $user->setAvatar($file_name);
-          }
-
-
-          $this->getDoctrine()->getManager()->flush();
-
-          return $this->redirectToRoute('profile_edit');
-      }
-
-      return $this->render('profile/edit.html.twig', array(
-          'edit_form' => $editForm->createView()
-      ));
-
+        return $this->render('profile/edit.html.twig', array(
+                             'edit_form' => $editForm->createView()
+                           ));
     }
 }
