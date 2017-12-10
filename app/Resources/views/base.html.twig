@@ -1,20 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+          <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+          <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+        {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
         {% include '/base/header.html.twig' %}
     </head>
     <body>
-      {% include '/base/flashAlert.html.twig' %}
-      {% block top %}
-           {% include '/base/menu.html.twig' %}
-       {% endblock %}
+    <div class="container-fluid">
 
+         {% include '/base/flashAlert.html.twig' %}
+
+         {% block top %}
+             <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               {% include '/base/menu.html.twig' %}
+             </nav>
+          {% endblock %}
+
+      <div class="main-content">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+      </div>
+
+
+        {% block javascripts %}
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+
+
+    </div>
     </body>
 </html>

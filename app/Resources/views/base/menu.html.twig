@@ -1,3 +1,50 @@
 {% block top %}
-Menu
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <a class="navbar-brand" href="{{ path('app_index')}}" title="Home Marksteine">
+    <i class="material-icons  logomarksteine">bookmark</i> Marksteine
+  </a>
+
+
+<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+
+<ul class="nav  justify-content-end">
+  {% if is_granted('ROLE_USER') %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+      <li class="nav-item">
+        <a class="nav-link text-secondary" href="{{ path('admin_index')}}" title="Edit Marksteine">
+          <i class="material-icons md-18">mode_edit</i>
+        </a>
+      </li>
+    {% endif %}
+
+    <li class="nav-item">
+      <a class="nav-link text-secondary" href="{{ path('profile_index')}}" title="Profile">
+        <i class="material-icons md-18">person</i>
+      </a>
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link text-secondary" href="{{ path('fos_user_security_logout')}}" title="Profile">
+        <i class="material-icons md-18">launch</i>
+      </a>
+    </li>
+  {% else %}
+
+    <li class="nav-item">
+      <a class="nav-link " href="{{ path('fos_user_security_login')}}">Login</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link " href="{{ path('fos_user_registration_register')}}">Register</a>
+    </li>
+  {% endif %}
+
+</ul>
+</div>
 {% endblock %}

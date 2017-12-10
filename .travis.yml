@@ -1,0 +1,57 @@
+# Project language
+language: php
+
+# Allows use container-based infrastructure
+sudo: false
+
+# Start mysql service
+services:
+  - mysql
+
+# Cache composer packages so "composer install" is faster
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+# Matrix to test in every php version
+matrix:
+  # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
+  fast_finish: true
+  include:
+    - php: 7.0
+    - php: hhvm
+  allow_failures:
+    - php: hhvm
+
+# Define an environment variable
+env:
+  - SYMFONY_VERSION="3.4.*" DB=mysql
+
+# Update composer
+before-install:
+  - composer self-update
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+
+test:
+  adapter: mysql2
+  database: ms_test
+  username: root
+  encoding: utf8
+
+
+
+# Install composer dependencies,
+# Create database, schema and fixtures
+install:
+  - composer install
+  - cp app/config/parameters.yml.dist app/config/parameters.yml
+#  - php bin/console doctrine:database:create --env=test
+#  - php bin/console doctrine:schema:create --env=test
+
+# Run script
+script:
+  - phpunit
+
+# After a build, send email notification with the build results
+notifications:
+  email: info@did-web.com
