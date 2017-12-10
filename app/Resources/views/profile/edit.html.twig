@@ -10,7 +10,11 @@
       <input type="submit"  class="btn btn-success"  value="Edit" />
     </div>
 {{ form_end(edit_form) }}
-
+{% if app.user.getAvatar == null %}
+  <img src="{{ asset('images/defaultAvatar.png') }}" alt="Default Avatar" />
+{% else %}
+  <img src="{{ asset('avatars/') }}{{ app.user.getAvatar }}" alt="Avatar" />
+{% endif %}
 
 
 {% endblock %}

@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 
+
+
 /**
 * @Route("profile")
 */
@@ -44,13 +46,14 @@ class ProfileController extends Controller
       if ($editForm->isSubmitted() && $editForm->isValid()) {
 
 
-          $file= $user->getFile();
 
-          $ext=$file->guessExtension();
-          $file_name=time().".".$ext;
-          $file->move("avatars", $file_name);
+          if ($user->getFile() !== null) {
+            $ext = $file->guessExtension();
+            $file_name = time().".".$ext;
+            $file->move("avatars", $file_name);
+            $user->setAvatar($file_name);
+          }
 
-          $user->setAvatar($file_name);
 
           $this->getDoctrine()->getManager()->flush();
 

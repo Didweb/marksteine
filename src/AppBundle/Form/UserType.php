@@ -49,7 +49,7 @@ class UserType extends AbstractType
 
         $builder->add('country', CountryType::class, array(
                                             'label'    => 'Country'));
-        $builder ->add('file', FileType::class, array(
+        $builder ->add('file', FileType::class, array("required"=> false,
                                                     "label" => "Avatar",
                                                     "attr" =>array("class" => "form-control")
                                                 ));
