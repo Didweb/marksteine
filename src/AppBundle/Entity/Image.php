@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class Image | AppBundle/Entity/Image.php
+ *
+ * @package     AppBundle
+ * @author      Eduard Pinuaga <info@did-web.com>
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
