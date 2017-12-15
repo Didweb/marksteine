@@ -35,6 +35,11 @@ class UserType extends AbstractType
         $builder->add('lastName');
         $builder->add('gender', ChoiceType::class, array(
                                             'label'    => 'Gender',
+                                            'expanded' => true,
+                                            'choice_attr' => function($val, $key, $index) {
+        // adds a class like attending_yes, attending_no, etc
+        return ['class' => 'mento_'.$val];
+    },
                                             'choices'  => array(
                                                               'Male' => 'm',
                                                               'famele' => 'f',

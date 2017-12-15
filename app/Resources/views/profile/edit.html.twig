@@ -9,6 +9,7 @@
     <div class="col-xs col-md text-center">
       <input type="submit"  class="btn btn-success"  value="Edit" />
     </div>
+
 {{ form_end(edit_form) }}
 {% if app.user.getAvatar == null %}
   <img src="{{ asset('images/defaultAvatar.png') }}" alt="Default Avatar" />
@@ -17,5 +18,33 @@
 <button type="button" class="btn btn-danger">Delete Avatar</button>
 {% endif %}
 
+<script>
+ $(document).ready(function() {
+   var icons = ['fa-mars', 'fa-venus', 'fa-venus'] ;
+   $('label.form-check-label').each(function (val, input) {
 
+
+
+            setTimeout(function(){
+              var value =  $('#appbundle_user_gender_'+val).val();
+                var text =   $('label.form-check-label').html();
+                var res = text.replace("mento_"+value, ' <i class="fa '+icons[val]+'" aria-hidden="true"></i>');
+                                   var content = '<input type="radio" id="appbundle_user_gender_' + val + '" ' +
+                                                  'name ="appbundle_user[gender]" required="required" ' +
+                                                  ' class="form-check-input" value="' + value + '" >' +
+                                                  ' <i class="fa '+icons[val]+'" aria-hidden="true"></i>';
+              $(this).html(res);
+console.log("mento_"+value+ text);
+            }, 1000);
+
+
+
+                   });
+
+
+ }
+
+
+                );
+</script>
 {% endblock %}

@@ -44,6 +44,7 @@ class ProfileController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            // Set name Avatar and save image
             if ($user->getFile() !== null) {
                   $file = $user->getFile();
                   $ext  = $file->guessExtension();
