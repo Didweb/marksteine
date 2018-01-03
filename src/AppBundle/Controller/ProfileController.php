@@ -12,8 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 
-
-
 /**
 * @Route("profile")
 */
@@ -28,6 +26,27 @@ class ProfileController extends Controller
     public function indexAction()
     {
         return $this->render('profile/index.html.twig');
+    }
+
+    /**
+     * Remove avatar
+     * @Route("/remove-avatar/{idUser}", name="remove_avatar")
+     * @Method("GET")
+     */
+    public function removeAvatar(Request $request, $idUser)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:User');
+        $user = $repository->findOneById($idUser);
+
+        if ($user && $user->getAvatar() != null) {
+            unlink('avatars/'.$user->getAvatar());
+            $user->setAvatar(null);
+            $em->persist($user);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('profile_edit');
     }
 
 
@@ -59,7 +78,8 @@ class ProfileController extends Controller
         }
 
         return $this->render('profile/edit.html.twig', array(
-                             'edit_form' => $editForm->createView()
+                             'edit_form' => $editForm->createView(),
+                             'idUser' => $user->getId()
                            ));
     }
 }

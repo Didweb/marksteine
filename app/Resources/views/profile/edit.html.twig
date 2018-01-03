@@ -15,7 +15,7 @@
   <img src="{{ asset('images/defaultAvatar.png') }}" alt="Default Avatar" />
 {% else %}
   <img src="{{ asset('avatars/') }}{{ app.user.getAvatar }}" alt="Avatar" />
-<button type="button" class="btn btn-danger">Delete Avatar</button>
+<a href="{{ path('remove_avatar', {'idUser': idUser })}}" class="btn btn-danger">Delete Avatar</a>
 {% endif %}
 
 <script>
