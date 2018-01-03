@@ -1,0 +1,15 @@
+<ul class="nav">
+
+  {% if is_granted('ROLE_MANAGER') %}
+  <li class="nav-item">
+      <a class="nav-link active"
+                          href="{{ path('admin_index')}}">Home</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link "   
+                          href="{{ path('country_list')}}">Countrys</a>
+  </li>
+
+  {% endif %}
+
+</ul>
