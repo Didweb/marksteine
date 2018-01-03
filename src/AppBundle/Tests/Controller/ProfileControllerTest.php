@@ -108,19 +108,30 @@ class ProfileControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
+
+
+    public function testRemoveAvatar()
+    {
+        $user = $this->UserDummy();
+        $user->setAvatar('avatarDummy.jpeg');
+        copy('web/avatars/test.jpeg', 'web/avatars/avatarDummy.jpeg');
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('security.login.submit')->form();
+        $crawler = $this->client->submit($form, array('_username' => 'Dummy', '_password' => 'Dummy'));
+
+        $crawler = $this->client->request('GET', '/profile/remove-avatar/'.$user->getId());
+
+        $this->assertSame(302, $this->client->getResponse()->getStatusCode(), 'code: '.$this->client->getResponse()->getStatusCode());
+
+    }
+
+
     public function testEditProfile()
     {
-        $user = $this->em->getRepository('AppBundle:User')->findOneByUsername('Dummy');
-        if (!$user) {
-             $user = new User();
-             $user->setUsername('Dummy');
-             $user->setPlainPassword('Dummy');
-             $user->setEmail('Dummy@Dummy.com');
-             $user->setEnabled(true);
-             $user->setFirstName('Dummy');
-             $this->em->persist($user);
-             $this->em->flush();
-        }
+        $user = $this->UserDummy();
 
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('security.login.submit')->form();
@@ -132,21 +143,16 @@ class ProfileControllerTest extends WebTestCase
             'image/jpeg',
             123
         );
-
-        $crawler = $this->client->request(
-            'POST',
-            '/profile/edit',
-            array(),
-            array(),
-            array(),
-            json_encode(
-                array('appbundle_user[firstName]' => 'TestMe',
-                              'appbundle_user[file]' => $photo,
-                              'isValid' => true,
-                              'isSubmitted'=> true)
-            )
+        $crawler = $this->client->request('GET', '/profile/edit');
+        $form = $crawler->selectButton('Edit')->form();
+        $crawler = $this->client->submit(
+              $form,
+              array('appbundle_user[firstName]' => 'TestMe',
+                    'appbundle_user[file]' => $photo
+                      )
         );
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $this->assertSame(302, $this->client->getResponse()->getStatusCode());
     }
 
 
@@ -167,6 +173,25 @@ class ProfileControllerTest extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
+    /**
+     * Created User Dummy
+     */
+    private function UserDummy()
+    {
+      $user = $this->em->getRepository('AppBundle:User')->findOneByUsername('Dummy');
+      if (!$user) {
+           $user = new User();
+           $user->setUsername('Dummy');
+           $user->setPlainPassword('Dummy');
+           $user->setEmail('Dummy@Dummy.com');
+           $user->setEnabled(true);
+           $user->setFirstName('Dummy');
+           $this->em->persist($user);
+           $this->em->flush();
+      }
+
+      return $user;
+    }
 
     protected function tearDown()
     {
