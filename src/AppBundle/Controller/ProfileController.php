@@ -40,7 +40,11 @@ class ProfileController extends Controller
         $user = $repository->findOneById($idUser);
 
         if ($user && $user->getAvatar() != null) {
-            unlink('avatars/'.$user->getAvatar());
+            $path = realpath('../web/avatars/'.$user->getAvatar());
+            if ($path == '') {
+                $path = 'web/avatars/'.$user->getAvatar();
+            }
+            unlink($path);
             $user->setAvatar(null);
             $em->persist($user);
             $em->flush();
