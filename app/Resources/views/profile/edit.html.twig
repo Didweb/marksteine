@@ -1,5 +1,50 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Profile</h1>
+<h1>Edit Profile</h1>
+{% form_theme edit_form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(edit_form) }}
+    {{ form_widget(edit_form | raw) }}
+    <div class="col-xs col-md text-center">
+      <input type="submit"  class="btn btn-success"  value="Edit" />
+    </div>
+
+{{ form_end(edit_form) }}
+{% if app.user.getAvatar == null %}
+  <img src="{{ asset('images/defaultAvatar.png') }}" alt="Default Avatar" />
+{% else %}
+  <img src="{{ asset('avatars/') }}{{ app.user.getAvatar }}" alt="Avatar" />
+<a href="{{ path('remove_avatar', {'idUser': idUser })}}" class="btn btn-danger">Delete Avatar</a>
+{% endif %}
+
+<script>
+ $(document).ready(function() {
+   var icons = ['fa-mars', 'fa-venus', 'fa-venus'] ;
+   $('label.form-check-label').each(function (val, input) {
+
+
+
+            setTimeout(function(){
+              var value =  $('#appbundle_user_gender_'+val).val();
+                var text =   $('label.form-check-label').html();
+                var res = text.replace("mento_"+value, ' <i class="fa '+icons[val]+'" aria-hidden="true"></i>');
+                                   var content = '<input type="radio" id="appbundle_user_gender_' + val + '" ' +
+                                                  'name ="appbundle_user[gender]" required="required" ' +
+                                                  ' class="form-check-input" value="' + value + '" >' +
+                                                  ' <i class="fa '+icons[val]+'" aria-hidden="true"></i>';
+              $(this).html(res);
+console.log("mento_"+value+ text);
+            }, 1000);
+
+
+
+                   });
+
+
+ }
+
+
+                );
+</script>
 {% endblock %}
