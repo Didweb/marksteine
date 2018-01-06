@@ -1,0 +1,27 @@
+
+
+{% extends 'dialog.html.twig' %}
+{% block dialog_class %}
+addCountry
+{% endblock %}
+
+{% block dialog_title %}
+Add Country
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+
+    {{ form_start(form) }}
+       <div class="form-group">
+            {{ form_errors(form.name) }}
+            {{ form_widget(form.name) }}
+       </div>
+
+      <input type="submit" id="addNewCountry" data-href='{{ path('country_add') }}' class="btn btn-success mx-auto" value="Add" />
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+  </div>
+</div>
+{% endblock %}

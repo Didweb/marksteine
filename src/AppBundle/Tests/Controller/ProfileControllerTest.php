@@ -112,7 +112,7 @@ class ProfileControllerTest extends WebTestCase
 
     public function testRemoveAvatar()
     {
-        $user = $this->UserDummy();
+        $user = $this->userDummy();
         $user->setAvatar('avatarDummy.jpeg');
         copy('web/avatars/test.jpeg', 'web/avatars/avatarDummy.jpeg');
         $this->em->persist($user);
@@ -130,7 +130,7 @@ class ProfileControllerTest extends WebTestCase
 
     public function testEditProfile()
     {
-        $user = $this->UserDummy();
+        $user = $this->userDummy();
 
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('security.login.submit')->form();
@@ -174,22 +174,23 @@ class ProfileControllerTest extends WebTestCase
     /**
      * Created User Dummy
      */
-    private function UserDummy()
+    private function userDummy()
     {
-      $user = $this->em->getRepository('AppBundle:User')->findOneByUsername('Dummy');
-      if (!$user) {
-           $user = new User();
-           $user->setUsername('Dummy');
-           $user->setPlainPassword('Dummy');
-           $user->setEmail('Dummy@Dummy.com');
-           $user->setEnabled(true);
-           $user->setFirstName('Dummy');
-           $this->em->persist($user);
-           $this->em->flush();
-      }
+        $user = $this->em->getRepository('AppBundle:User')->findOneByUsername('Dummy');
+        if (!$user) {
+             $user = new User();
+             $user->setUsername('Dummy');
+             $user->setPlainPassword('Dummy');
+             $user->setEmail('Dummy@Dummy.com');
+             $user->setEnabled(true);
+             $user->setFirstName('Dummy');
+             $this->em->persist($user);
+             $this->em->flush();
+        }
 
-      return $user;
+        return $user;
     }
+
 
     protected function tearDown()
     {

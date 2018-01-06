@@ -1,0 +1,15 @@
+<div class="modal-dialog {% block dialog_class %}{% endblock %}">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h4 class="modal-title text-primary">{% block dialog_title %}{% endblock %}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+
+        {% block dialog_body %}{% endblock %}
+
+        {# no modal-footer nor modal-body because handling of forms would be way more complicated #}
+
+    </div>
+</div>

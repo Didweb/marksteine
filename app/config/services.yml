@@ -41,3 +41,8 @@ services:
         arguments: ["@service_container"]
         tags:
             - { name: kernel.event_subscriber, connection: default }
+
+    alaczi.twig.country_extension:
+        class: alaczi\Twig\Extension\CountryExtension
+        tags:
+            - { name: twig.extension }
