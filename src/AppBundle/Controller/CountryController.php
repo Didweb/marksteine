@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 */
 class CountryController extends Controller
 {
-
+    const LIMIT_PAGINATION = 10;
 
     /**
       * List Country
@@ -33,22 +33,20 @@ class CountryController extends Controller
     {
         $country = new Country();
         $em = $this->getDoctrine()->getManager();
-        //$countries = $em->getRepository('AppBundle:Country')->findBy(array(), array('name' => 'ASC'));
-        $countries = $em->getRepository('AppBundle:Country')->getAllCountries($page);
+        $countries = $em->getRepository('AppBundle:Country')->getAllCountries($page, self::LIMIT_PAGINATION);
 
         $totalCountries = $countries->count();
         $iterator = $countries->getIterator();
 
-        $limit = $countries->getIterator()->count();
-        $maxPages = ceil($totalCountries / $limit);
+        $maxPages = ceil($totalCountries / self::LIMIT_PAGINATION);
         $thisPage = $page;
 
         $form = $this->createForm(CountriesType::class, $country);
         return $this->render('admin/country/list.html.twig', array(
                                             'countries' => $iterator,
-                                            'maxPages' => $maxPages,
-                                            'thisPage' => $thisPage,
-                                            'form' => $form->createView()));
+                                            'maxPages'  => $maxPages,
+                                            'thisPage'  => $thisPage,
+                                            'form'      => $form->createView()));
     }
 
 

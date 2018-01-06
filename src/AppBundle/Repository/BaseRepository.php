@@ -13,7 +13,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class BaseRepository extends \Doctrine\ORM\EntityRepository
 {
 
-
     /**
      * Paginator Helper
      *
@@ -40,5 +39,10 @@ class BaseRepository extends \Doctrine\ORM\EntityRepository
             ->setMaxResults($limit); // Limit
 
         return $paginator;
+    }
+
+    public function getLimit()
+    {
+        return $this->limit;
     }
 }

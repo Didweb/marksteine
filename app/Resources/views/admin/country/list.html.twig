@@ -28,7 +28,7 @@ List Countries
   <tbody>
     {% for country in countries %}
      <tr>
-       <td>{{ country.name|country }}</td>
+       <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
      </tr>
     {% endfor %}
   </tbody>

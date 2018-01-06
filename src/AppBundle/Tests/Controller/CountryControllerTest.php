@@ -10,7 +10,7 @@ class CountryControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/country/list');
+        $crawler = $client->request('GET', '/country/list/1');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }

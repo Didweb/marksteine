@@ -15,7 +15,7 @@
 
     {# `»` arrow #}
     <li  class="page-item {{ thisPage == maxPages ? 'disabled' }} ">
-        <a href="{{ path(routeName, {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}" class="page-link">»</a>
+        <a href="{{ path(routeName, {page: maxPages }) }}" class="page-link">»</a>
     </li>
 </ul>
 {% endif %}

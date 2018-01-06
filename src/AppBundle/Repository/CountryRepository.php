@@ -18,13 +18,13 @@ class CountryRepository extends BaseRepository
     * @param integer $currentPage The current page (passed from controller)
     * @return \Doctrine\ORM\Tool\Pagination\Paginator
     */
-    public function getAllCountries($currentPage = 1)
+    public function getAllCountries($currentPage = 1, $limit = 5)
     {
         $query = $this->createQueryBuilder('c')
                 ->orderBy('c.name', 'ASC')
                 ->getQuery();
 
-        $paginator = $this->paginate($query, $currentPage, 10);
+        $paginator = $this->paginate($query, $currentPage, $limit);
 
         return $paginator;
     }
