@@ -26,7 +26,10 @@
         <testsuite name="Functional tests">
             <directory>src/AppBundle/Tests/Controller</directory>
         </testsuite>
-
+        
+                <testsuite name="Unitest tests">
+                    <directory>src/AppBundle/Tests/Unitest</directory>
+                </testsuite>
     </testsuites>
 
     <listeners>
