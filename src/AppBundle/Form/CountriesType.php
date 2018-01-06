@@ -50,5 +50,4 @@ class CountriesType extends AbstractType
     {
         return 'appbundle_country';
     }
-
 }
