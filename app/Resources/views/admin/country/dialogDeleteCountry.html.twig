@@ -1,0 +1,25 @@
+{% extends 'dialog.html.twig' %}
+{% block dialog_class %}
+deleteCountry
+{% endblock %}
+
+{% block dialog_title %}
+Delete <sapn id="valueDeleteCountryTitle"></span>
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+<p>
+  Do you really want to eliminate  <b id="valueDeleteCountry" class="text-danger"></b> ?
+</p>
+  </div>
+  <div class="row">
+<p class="h4 col-12 text-center">
+    <input type="submit" id="deleteAction" data-routeNameDelete="/country/delete-country" class="" value="Delete" />
+</p>
+
+
+  </div>
+</div>
+{% endblock %}

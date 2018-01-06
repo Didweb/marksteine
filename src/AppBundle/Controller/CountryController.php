@@ -51,6 +51,26 @@ class CountryController extends Controller
 
 
     /**
+     * Delete Country
+     * @Route("/delete-country", name="country_delete")
+     * @Method("GET")
+     */
+    public function deleteCountry(Request $request)
+    {
+        $em = $this->getDoctrine()->getmanager();
+        $country = $em->getRepository('AppBundle:Country')->findOneById($request->get('id'));
+        if (!$country) {
+            $result = '{"result":"error", "message": "This country is already added."}';
+        } else {
+            $em->remove($country);
+            $em->flush();
+            $result = '{"result":"ok"}';
+        }
+        return new JsonResponse($result);
+    }
+
+
+    /**
      * Add Country
      * @Route("/add-country", name="country_add")
      * @Method({"GET", "POST"})
