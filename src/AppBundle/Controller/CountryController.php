@@ -10,6 +10,10 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\CountriesType;
+use AppBundle\Entity\Country;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
 * @Route("country")
@@ -26,9 +30,38 @@ class CountryController extends Controller
       */
     public function listCountryAction()
     {
+        $country = new Country();
         $em = $this->getDoctrine()->getManager();
-        $countrys = $em->getRepository('AppBundle:Country')->findAll();
+        $countries = $em->getRepository('AppBundle:Country')->findBy(array(), array('name' => 'ASC'));
+        $form = $this->createForm(CountriesType::class, $country);
+        return $this->render('admin/country/list.html.twig', array(
+                                            'countries' => $countries,
+                                            'form' => $form->createView()));
+    }
 
-        return $this->render('admin/country/list.html.twig', array('countrys' => $countrys));
+
+    /**
+     * Add Country
+     * @Route("/add-country", name="country_add")
+     * @Method({"GET", "POST"})
+     */
+    public function addCountry(Request $request)
+    {
+        $country = new Country();
+        $country->setName($request->get('name'));
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($country);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+            $result = '{"result":"error", "message": "This country is already added."}';
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($country);
+            $em->flush();
+            $result = '{"result":"ok"}';
+        }
+        return new JsonResponse($result);
     }
 }

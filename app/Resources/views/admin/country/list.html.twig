@@ -1,6 +1,93 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+List Countries
+{% endblock %}
+
 {% block body %}
 {% include '/admin/menuAdmin.html.twig' %}
-<h1>List Country</h1>
+
+<div id="dialogAddCountry">
+{% include('/admin/country/dialogAddCountry.html.twig') %}
+</div>
+<div class="alert alert-danger" id="alertDialog" role="alert"></div>
+
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link text-primary" data-href='{{ path('country_add') }}' id="addCountry" title="Add Country"><i class="material-icons">add_circle</i></a>
+  </li>
+
+</ul>
+<h1>Countries</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for country in countries %}
+     <tr>
+       <td>{{ country.name|country }}</td>
+     </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+<script>
+$('#appbundle_country_name').focus(function () {
+  if($('#alertDialog').css('display') == 'block') {
+    $('#alertDialog').css({'display' : 'none'});
+  }
+});
+
+$("#addCountry").click(function (e) {
+   $("#dialogAddCountry").modal("show");
+   $('.loaderBody').fadeIn(0);
+   $('#editcontent').fadeOut(0);
+   var href = this.href;
+   e.preventDefault();
+   $.ajax({
+              type: "GET",
+              url: href,
+              dataType: 'html',
+              success: function (json) {
+                  $(".loaderBody").fadeOut("slow", function () {
+                      $('#editcontent').html(json);
+                      $('#editcontent').fadeIn("fast");
+                  });
+              }
+          });
+});
+
+  $("form[name='appbundle_country']").submit(function (e) {
+    var href = '{{ path('country_add')}}';
+    var formData = {
+            'name' : $('select[name="appbundle_country[name]"]').val()
+        };
+
+    e.preventDefault();
+    $.ajax({
+               type: "POST",
+               url: href,
+               dataType: 'json',
+               data: formData,
+               encode: true,
+               success: function (json) {
+                 var objResult = jQuery.parseJSON(json);
+                 if(objResult.result == 'error') {
+                   $('#alertDialog').css({'display' : 'block'});
+
+                   $('#alertDialog').html(objResult.message);
+                 } else {
+                    location.reload();
+                 }
+               }
+           })
+           e.preventDefault();
+  });
+</script>
+
 {% endblock %}

@@ -4,3 +4,44 @@
 .material-icons.md-48 { font-size: 48px; }
 
 .material-icons.logomarksteine { color:#EE764A;}
+
+#dialogAddCountry {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -30%);
+  -webkit-transform: translate(-50%, -30%);
+  z-index: 100;
+}
+
+#alertDialog {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  transform: translate(-50%, -15%);
+  -webkit-transform: translate(-50%, -15%);
+  z-index: 100;
+  width: 50%;
+  text-align: center;
+}
+.nav-link {
+  cursor: pointer;
+}
+
+
+.modal-backdrop.show {
+  z-index: 1;
+}
+
+
+.modal-dialog {
+  z-index: 100;
+}
+
+
+.modal-body {
+  margin: 15px;
+  text-align: center;
+}

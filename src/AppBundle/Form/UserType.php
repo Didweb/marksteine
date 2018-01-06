@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 /**
- * Formular for Team
+ * Formular for User
  */
 class UserType extends AbstractType
 {
