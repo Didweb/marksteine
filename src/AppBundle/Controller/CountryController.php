@@ -25,17 +25,29 @@ class CountryController extends Controller
     /**
       * List Country
       *
-      * @Route("/list", name="country_list")
+      * @Route("/list/{page}", name="country_list")
       * @Method({"GET", "POST"})
+      * @param integer $page The current page passed via URL
       */
-    public function listCountryAction()
+    public function listCountryAction($page = 1)
     {
         $country = new Country();
         $em = $this->getDoctrine()->getManager();
-        $countries = $em->getRepository('AppBundle:Country')->findBy(array(), array('name' => 'ASC'));
+        //$countries = $em->getRepository('AppBundle:Country')->findBy(array(), array('name' => 'ASC'));
+        $countries = $em->getRepository('AppBundle:Country')->getAllCountries($page);
+
+        $totalCountries = $countries->count();
+        $iterator = $countries->getIterator();
+
+        $limit = $countries->getIterator()->count();
+        $maxPages = ceil($totalCountries / $limit);
+        $thisPage = $page;
+
         $form = $this->createForm(CountriesType::class, $country);
         return $this->render('admin/country/list.html.twig', array(
-                                            'countries' => $countries,
+                                            'countries' => $iterator,
+                                            'maxPages' => $maxPages,
+                                            'thisPage' => $thisPage,
                                             'form' => $form->createView()));
     }
 
