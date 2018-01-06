@@ -5,6 +5,7 @@ List Countries
 {% endblock %}
 
 {% block body %}
+{% set tabActive = "countries" %}
 {% include '/admin/menuAdmin.html.twig' %}
 
 <div id="dialogAddCountry" class="dialog-base">
@@ -21,7 +22,6 @@ List Countries
   </li>
 
 </ul>
-<h1>Countries</h1>
 <table class="table listTable">
   <thead>
     <tr>

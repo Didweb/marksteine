@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 */
 class CountryController extends Controller
 {
-    const LIMIT_PAGINATION = 10;
+    const LIMIT_PAGINATION = 5;
 
     /**
       * List Country
