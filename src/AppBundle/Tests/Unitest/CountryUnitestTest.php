@@ -13,6 +13,7 @@ class CountryUnitTest extends WebTestCase
     private $dummyUser;
     private $em;
     private $container;
+    private $idCountry;
 
     public function setUp()
     {
@@ -59,6 +60,43 @@ class CountryUnitTest extends WebTestCase
         $this->assertEquals('ok', $objResult->result);
     }
 
+
+    public function testDeleteCountryOk()
+    {
+        $crawler = $this->client->request(
+            'GET',
+            '/country/delete-country',
+            array("id" => $this->idCountry),
+            array(),
+            array()
+        );
+
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
+
+        $objResult = json_decode($this->client->getResponse()->getContent());
+        $objResult = json_decode($objResult);
+        $this->assertEquals('ok', $objResult->result);
+    }
+
+
+    public function testDeleteCountryError()
+    {
+        $crawler = $this->client->request(
+            'GET',
+            '/country/delete-country',
+            array("id" => 99999),
+            array(),
+            array()
+        );
+
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
+
+        $objResult = json_decode($this->client->getResponse()->getContent());
+        $objResult = json_decode($objResult);
+        $this->assertEquals('error', $objResult->result);
+    }
+
+
     private function dummyData()
     {
         $country = $this->em->getRepository('AppBundle:Country')->findOneByName('AR');
@@ -73,6 +111,7 @@ class CountryUnitTest extends WebTestCase
             $this->em->remove($countryFail);
             $this->em->flush();
         }
+        $this->idCountry = $country->getId();
         return $country;
     }
 
