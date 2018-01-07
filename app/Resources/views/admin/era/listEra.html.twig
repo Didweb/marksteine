@@ -97,15 +97,7 @@ function editAction(id, path) {
              encode: true
            })
            .done(function(data) {
-             var objResult = jQuery.parseJSON(data);
-             if(objResult.result == 'error') {
-               $('#alertDialog').css({'display' : 'block'});
-               $('#alertDialog').html(objResult.message);
-
-             } else {
-                location.reload();
-             }
-
+             checkErrors(data);
            });
            event.preventDefault();
            });
@@ -136,24 +128,11 @@ $("#addDialogEra").click(function (e) {
            encode: true
          })
          .done(function(data) {
-           var objResult = jQuery.parseJSON(data);
-           if(objResult.result == 'error') {
-             $('#alertDialog').css({'display' : 'block'});
-             $('#alertDialog').html(objResult.message);
-
-           } else {
-              location.reload();
-           }
-
+           checkErrors(data);
          });
          event.preventDefault();
    });
-
-
-
-
 });
-
 
 </script>
 
