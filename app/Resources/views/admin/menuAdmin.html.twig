@@ -7,6 +7,9 @@
   <li class="nav-item">
       <a class="nav-link" id="countries" href="{{ path('country_list')}}">Countries {% if totalCountries is defined %}<b class="text-primary">{{ totalCountries}}{% endif %}</b></a>
   </li>
+  <li class="nav-item">
+      <a class="nav-link" id="eras" href="{{ path('era_list')}}">Eras {% if totalEras is defined %}<b class="text-primary">{{ totalEras}}{% endif %}</b></a>
+  </li>
   {% endif %}
 </ul>
 <script>

@@ -28,7 +28,7 @@ List Countries
      <tr>
        <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
        <td class="text-right">
-         <a class="nav-link text-danger" onclick='deleteCountryAction({{ country.id }}, "{{ country.name|country }}", "DeleteCountry" )' data-href='{{ path('country_add') }}' data-id="{{ country.id }}" data-country="{{ country.name|country }}" id="deleteCountry{{ country.id }}" title="Delete: {{ country.name|country }}"><i class="material-icons">delete_forever</i></a>
+         <a class="nav-link text-danger" onclick='deleteAction({{ country.id }}, "{{ country.name|country }}", "DeleteCountry" )' data-href='{{ path('country_add') }}' data-id="{{ country.id }}" data-country="{{ country.name|country }}" id="deleteCountry{{ country.id }}" title="Delete: {{ country.name|country }}"><i class="material-icons">delete_forever</i></a>
        </td>
      </tr>
     {% endfor %}

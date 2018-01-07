@@ -1,4 +1,4 @@
-function deleteCountryAction(id, name, domain) {
+function deleteAction(id, name, domain) {
 
       $("#dialog" + domain).modal("show");
       $("div.modal-header h4").attr('class', 'modal-title text-danger');

@@ -42,7 +42,7 @@ class Era
     /**
      * @var integer
      *
-     * @ORM\Column(name="name", type="integer", length=10, unique=false, nullable=false)
+     * @ORM\Column(name="end", type="integer", length=10, unique=false, nullable=false)
      */
     private $end;
 
@@ -121,7 +121,7 @@ class Era
      */
     public function getStart()
     {
-        return $this->strat;
+        return $this->start;
     }
 
     /**
