@@ -72,6 +72,53 @@ class EraController extends Controller
 
 
     /**
+     * Edit Era
+     * @Route("/edit-era", name="era_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editEra(Request $request)
+    {
+        $em   = $this->getDoctrine()->getManager();
+        $era = $em->getRepository('AppBundle:Era')->findOneById($request->get('id'));
+        $form = $this->createForm(EraType::class, $era);
+
+        return $this->render('admin/era/dialogEditEra.html.twig', array(
+                                            'form_edit'      => $form->createView()));
+    }
+
+
+    /**
+     * Edit Era
+     * @Route("/edit-era-action", name="era_edit_action")
+     * @Method({"GET", "POST"})
+     */
+    public function editActEra(Request $request)
+    {
+        $id   = $request->get('id');
+        $name   = $request->get('name');
+        $start  = $request->get('start');
+        $end    = $request->get('end');
+
+        $em   = $this->getDoctrine()->getManager();
+        $era = $em->getRepository('AppBundle:Era')->findOneById($id);
+        $era->setName($name);
+        $era->setStart($start);
+        $era->setEnd($end);
+
+
+        if ($end <= $start) {
+            $result = '{"result":"error", "message": "Start is greater than end or equal. It\'s not possible."}';
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($era);
+            $em->flush();
+            $result = '{"result":"ok"}';
+        }
+        return new JsonResponse($result);
+    }
+
+
+    /**
      * Add Era
      * @Route("/add-era", name="era_add")
      * @Method({"GET", "POST"})
@@ -79,16 +126,24 @@ class EraController extends Controller
     public function addEra(Request $request)
     {
         $era = new Era();
+        $start = $request->get('start');
+        $end = $request->get('end');
+
         $era->setName($request->get('name'));
-        $era->setStart($request->get('start'));
-        $era->setEnd($request->get('end'));
-        
+        $era->setStart($start);
+        $era->setEnd($end);
+
         $validator = $this->get('validator');
         $errors = $validator->validate($era);
 
         if (count($errors) > 0) {
-            $errorsString = (string) $errors;
-            $result = '{"result":"error", "message": "This era is already added."}';
+            $message = "";
+            foreach ($errors as $violation) {
+                  $message = $violation->getMessage();
+            }
+            $result = '{"result":"error", "message": "'.$message.'"}';
+        } elseif ($end <= $start) {
+            $result = '{"result":"error", "message": "Start is greater than end or equal. It\'s not possible."}';
         } else {
             $em = $this->getDoctrine()->getManager();
             $em->persist($era);

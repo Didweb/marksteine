@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Era
@@ -27,13 +28,12 @@ class Era
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=150, unique=true, nullable=false)
+     * @ORM\Column(name="name", type="string", length=150,  nullable=false)
      */
     private $name;
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="start", type="integer", length=10, unique=false, nullable=false)
      */
     private $start;

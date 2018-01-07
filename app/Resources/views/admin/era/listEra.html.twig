@@ -11,6 +11,9 @@ List Countries
 <div id="dialogAddEra" class="dialog-base">
 {% include('/admin/era/dialogAddEra.html.twig') %}
 </div>
+<div id="dialogEditEra" class="dialog-base">
+{% include('/admin/era/dialogEditEra.html.twig') %}
+</div>
 <div id="dialogDeleteEra" class="dialog-base">
 {% include('/admin/era/dialogDeleteEra.html.twig') %}
 </div>
@@ -26,15 +29,28 @@ List Countries
   <tbody>
     {% for era in eras %}
      <tr>
-       <td>{{ era.name }} </td>
-       <td>
+       <td class="col-2">{{ era.name }} </td>
+       <td class="text-left">
          <span class="text-secondary">{{ era.start }}</span>
        </td>
        <td>
          <span class="text-secondary">{{ era.end }}</span>
        </td>
-       <td class="text-right">
-         <a class="nav-link text-danger" onclick='deleteAction({{ era.id }}, "{{ era.name }}", "DeleteEra" )' data-href='{{ path('era_add') }}' data-id="{{ era.id }}" data-country="{{ era.name }}" id="deleteEra{{ era.id }}" title="Delete: {{ era.name }}"><i class="material-icons">delete_forever</i></a>
+       <td class="text-right col-2">
+         <a class="nav-link text-danger"
+            onclick='deleteAction({{ era.id }}, "{{ era.name }}", "DeleteEra" )'
+            data-href='{{ path('era_add') }}'
+            data-id="{{ era.id }}"
+            data-country="{{ era.name }}"
+            id="deleteEra{{ era.id }}" title="Delete: {{ era.name }}"><i class="material-icons">cancel</i></a>
+       </td>
+       <td class="text-right col-2">
+          <a data-href='{{ path('era_edit') }}'
+          onclick='editAction({{ era.id}}, "{{ era.name }}", "{{ path('era_edit') }}")'
+          data-id="{{ era.id }}"
+          class="nav-link text-success"
+          title="Edit {{ era.name }}"
+          id="editDialogEra"><i class="material-icons">mode_edit</i></a>
        </td>
      </tr>
     {% endfor %}
@@ -51,51 +67,35 @@ List Countries
 
 
 <script>
-$('#appbundle_era_name').focus(function () {
-  if($('#alertDialog').css('display') == 'block') {
-    $('#alertDialog').css({'display' : 'none'});
-  }
-});
 
-$('#deleteAction').click(function (e) {
+function editAction(id, name, path) {
 
-  var datas = {'id' : $('#deleteAction').data('id')};
-  var routenamedelete = $("#deleteAction").data("routenamedelete");
 
-  $.ajax({
-             type: "GET",
-             url: routenamedelete ,
-             dataType: 'json',
-             data: datas,
-             encode: true,
-             success: function (json) {
-               var objResult = jQuery.parseJSON(json);
-               if(objResult.result == 'error') {
-                 $('#alertDialog').css({'display' : 'block'});
-                 $('#alertDialog').html(objResult.message);
-               } else {
-                  location.reload();
-               }
-             }
-         })
 
-});
+$.ajax({
+  type: 'GET',
+  url: path,
+  data: {'id': id},
+  dataType: 'html'
+}).done(function(data) {
+  $('#dialogEditEra').html(data);
+  $("#dialogEditEra").modal("show");
+  $("div.modal-header h4").attr('class', 'modal-title text-success');
+  $('.loaderBody').fadeIn(0);
+  $('#editcontent').fadeOut(0);
 
-$("#addDialogEra").click(function (e) {
-   $("#dialogAddEra").modal("show");
-   $("div.modal-header h4").attr('class', 'modal-title text-primary');
-   $('.loaderBody').fadeIn(0);
-   $('#editcontent').fadeOut(0);
-   var href = $('#addDialogEra').data('href');
-   console.log("Nos vamos a..."+ href);
 
-   $('#addNewEra').click(function(event) {
+   var href = '{{ path('era_edit_action')}}';
+   var id = $('#editDialogEra').data('id')
+   $('#editEra').click(function(event) {
+
          var formData = {
-           'name' : $('input[name="appbundle_era[name]"]').val(),
-           'start' : $('input[name="appbundle_era[start]"]').val(),
-           'end' : $('input[name="appbundle_era[end]"]').val()
+           'id' : id,
+           'name' : $("#dialogEditEra input[name='appbundle_era[name]']").val(),
+           'start' : $('#dialogEditEra input[name="appbundle_era[start]"]').val(),
+           'end' : $('#dialogEditEra input[name="appbundle_era[end]"]').val()
          };
- console.log('Donne: '+formData.name);
+console.log('fromData: id: '+formData.id+' name: '+formData.name + ' Start:'+formData.start+ ' End:'+formData.end)
          $.ajax({
            type : 'POST',
            url : href,
@@ -107,8 +107,50 @@ $("#addDialogEra").click(function (e) {
            var objResult = jQuery.parseJSON(data);
            if(objResult.result == 'error') {
              $('#alertDialog').css({'display' : 'block'});
-
              $('#alertDialog').html(objResult.message);
+
+           } else {
+              location.reload();
+           }
+
+         });
+         event.preventDefault();
+         });
+   });
+
+
+};
+
+
+
+$("#addDialogEra").click(function (e) {
+   $("#dialogAddEra").modal("show");
+   $("div.modal-header h4").attr('class', 'modal-title text-primary');
+   $('.loaderBody').fadeIn(0);
+   $('#editcontent').fadeOut(0);
+
+   var href = $('#addDialogEra').data('href');
+
+   $('#addNewEra').click(function(event) {
+         var formData = {
+           'name' : $('input[name="appbundle_era[name]"]').val(),
+           'start' : $('input[name="appbundle_era[start]"]').val(),
+           'end' : $('input[name="appbundle_era[end]"]').val()
+         };
+
+         $.ajax({
+           type : 'POST',
+           url : href,
+           data: formData,
+           dataType: 'json',
+           encode: true
+         })
+         .done(function(data) {
+           var objResult = jQuery.parseJSON(data);
+           if(objResult.result == 'error') {
+             $('#alertDialog').css({'display' : 'block'});
+             $('#alertDialog').html(objResult.message);
+
            } else {
               location.reload();
            }
