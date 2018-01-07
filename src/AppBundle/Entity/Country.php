@@ -27,9 +27,16 @@ class Country
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=2, unique=true)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="continent", type="string", length=100, unique=false)
+     */
+    private $continent;
 
 
     /**
@@ -84,5 +91,29 @@ class Country
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set continent
+     *
+     * @param string $continent
+     *
+     * @return Country
+     */
+    public function setContinent($continent)
+    {
+        $this->continent = $continent;
+
+        return $this;
+    }
+
+    /**
+     * Get contienent
+     *
+     * @return string
+     */
+    public function getContienent()
+    {
+        return $this->continent;
     }
 }

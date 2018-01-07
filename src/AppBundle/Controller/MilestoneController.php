@@ -24,7 +24,10 @@ class MilestoneController extends Controller
      */
     public function indexAction()
     {
+        $country = "xx";
+        $serviceCC = $this->get('app.countries_continents');
+        $continent =  $serviceCC->getContinent($country);
 
-        return $this->render('milestone/index.html.twig');
+        return $this->render('milestone/index.html.twig', array('country'=>$country, 'continent'=>$continent));
     }
 }

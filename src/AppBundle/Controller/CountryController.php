@@ -60,7 +60,7 @@ class CountryController extends Controller
         $em = $this->getDoctrine()->getmanager();
         $country = $em->getRepository('AppBundle:Country')->findOneById($request->get('id'));
         if (!$country) {
-            $result = '{"result":"error", "message": "This country is already added."}';
+            $result = '{"result":"error", "message": "This country does not exist."}';
         } else {
             $em->remove($country);
             $em->flush();
@@ -87,10 +87,19 @@ class CountryController extends Controller
             $errorsString = (string) $errors;
             $result = '{"result":"error", "message": "This country is already added."}';
         } else {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($country);
-            $em->flush();
-            $result = '{"result":"ok"}';
+            $serviceContinent = $this->get('app.countries_continents');
+            $nameContinent = $serviceContinent->getContinent($country->getName());
+
+            if ($nameContinent != null) {
+                $country->setContinent($nameContinent);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($country);
+                $em->flush();
+                $result = '{"result":"ok"}';
+            } else {
+                $result = '{"result":"error", "message": "Could not assign a continenete to this country."}';
+            }
         }
         return new JsonResponse($result);
     }

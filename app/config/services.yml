@@ -46,3 +46,7 @@ services:
         class: alaczi\Twig\Extension\CountryExtension
         tags:
             - { name: twig.extension }
+
+    app.countries_continents:
+        class: AppBundle\Services\CountriesContinents
+        arguments: ["null"]

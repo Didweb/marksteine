@@ -31,7 +31,7 @@ class CountryUnitTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             '/country/add-country',
-            array("name"        => 'AR'),
+            array("name" => 'AR', "continent" => 'Nort America and Central America'),
             array(),
             array()
         );
@@ -48,7 +48,7 @@ class CountryUnitTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             '/country/add-country',
-            array("name" => "XX"),
+            array("name" => "DE", "continent" => 'Europe'),
             array(),
             array()
         );
@@ -60,6 +60,22 @@ class CountryUnitTest extends WebTestCase
         $this->assertEquals('ok', $objResult->result);
     }
 
+    public function testaddCountryNotInList()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            '/country/add-country',
+            array("name" => "XX", "continent" => 'XXXX'),
+            array(),
+            array()
+        );
+
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
+
+        $objResult = json_decode($this->client->getResponse()->getContent());
+        $objResult = json_decode($objResult);
+        $this->assertEquals('error', $objResult->result);
+    }
 
     public function testDeleteCountryOk()
     {
@@ -103,10 +119,11 @@ class CountryUnitTest extends WebTestCase
         if (!$country) {
              $country = new Country();
              $country->setName('AR');
+             $country->setContinent('Nort America and Central America');
              $this->em->persist($country);
              $this->em->flush();
         }
-        $countryFail = $this->em->getRepository('AppBundle:Country')->findOneByName('XX');
+        $countryFail = $this->em->getRepository('AppBundle:Country')->findOneByName('DE');
         if ($countryFail) {
             $this->em->remove($countryFail);
             $this->em->flush();
