@@ -7,15 +7,16 @@ function deleteAction(id, name, domain) {
       $("#deleteAction").attr('data-id', id);
 }
 
+
 // Dialogue Prepartion
 function dialogPreparation(dailogType, colorStyle, data){
-
   $('#' + dailogType).html(data);
   $("#" + dailogType).modal("show");
   $("div.modal-header h4").attr('class', 'modal-title text-' + colorStyle);
   $('.loaderBody').fadeIn(0);
   $('#editcontent').fadeOut(0);
 };
+
 
 // Hidden Dialog Alert
 $('input').focus(function () {
@@ -24,12 +25,27 @@ $('input').focus(function () {
   }
 });
 
+
 // Hidden Dialog Alert
 $('select').focus(function () {
   if($('#alertDialog').css('display') == 'block') {
     $('#alertDialog').css({'display' : 'none'});
   }
 });
+
+
+// checkErrors
+function checkErrors(data) {
+  var objResult = jQuery.parseJSON(data);
+  if(objResult.result == 'error') {
+    $('#alertDialog').css({'display' : 'block'});
+    $('#alertDialog').html(objResult.message);
+
+  } else {
+     location.reload();
+  };
+
+};
 
 
 // Delete Entity
