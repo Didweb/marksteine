@@ -23,17 +23,12 @@ List Countries
 
 </ul>
 <table class="table listTable">
-  <thead>
-    <tr>
-      <th scope="col" colspan="2">name</th>
-    </tr>
-  </thead>
   <tbody>
     {% for country in countries %}
      <tr>
        <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
        <td class="text-right">
-         <a class="nav-link text-danger" onclick='deleteCountryAction({{ country.id }}, "{{ country.name|country }}", "DeleteCountry" )' data-href='{{ path('country_add') }}' data-id="{{ country.id }}" data-country="{{ country.name|country }}" id="deleteCountry{{ country.id }}" title="Delete: {{ country.name|country }}"><i class="material-icons">delete_forever</i></a>
+         <a class="nav-link text-danger" onclick='deleteAction({{ country.id }}, "{{ country.name|country }}", "DeleteCountry" )' data-href='{{ path('country_add') }}' data-id="{{ country.id }}" data-country="{{ country.name|country }}" id="deleteCountry{{ country.id }}" title="Delete: {{ country.name|country }}"><i class="material-icons">cancel</i></a>
        </td>
      </tr>
     {% endfor %}
@@ -50,35 +45,8 @@ List Countries
 
 
 <script>
-$('#appbundle_country_name').focus(function () {
-  if($('#alertDialog').css('display') == 'block') {
-    $('#alertDialog').css({'display' : 'none'});
-  }
-});
 
-$('#deleteAction').click(function (e) {
 
-  var datas = {'id' : $('#deleteAction').data('id')};
-  var routenamedelete = $("#deleteAction").data("routenamedelete");
-
-  $.ajax({
-             type: "GET",
-             url: routenamedelete ,
-             dataType: 'json',
-             data: datas,
-             encode: true,
-             success: function (json) {
-               var objResult = jQuery.parseJSON(json);
-               if(objResult.result == 'error') {
-                 $('#alertDialog').css({'display' : 'block'});
-                 $('#alertDialog').html(objResult.message);
-               } else {
-                  location.reload();
-               }
-             }
-         })
-
-});
 
 $("#addCountry").click(function (e) {
    $("#dialogAddCountry").modal("show");

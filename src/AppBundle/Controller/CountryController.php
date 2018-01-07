@@ -46,6 +46,7 @@ class CountryController extends Controller
                                             'countries' => $iterator,
                                             'maxPages'  => $maxPages,
                                             'thisPage'  => $thisPage,
+                                            'totalCountries' => $totalCountries,
                                             'form'      => $form->createView()));
     }
 
