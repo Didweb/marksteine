@@ -1,15 +1,14 @@
-<ul class="nav">
+<ul class="nav nav-tabs" role="tablist">
 
   {% if is_granted('ROLE_MANAGER') %}
   <li class="nav-item">
-      <a class="nav-link active"
-                          href="{{ path('admin_index')}}">Home</a>
+      <a class="nav-link" id="home" href="{{ path('admin_index')}}">Home</a>
   </li>
   <li class="nav-item">
-      <a class="nav-link "   
-                          href="{{ path('country_list')}}">Countrys</a>
+      <a class="nav-link" id="countries" href="{{ path('country_list')}}">Countries</a>
   </li>
-
   {% endif %}
-
 </ul>
+<script>
+  $('#{{ tabActive }}').attr('class', 'nav-link active');
+</script>

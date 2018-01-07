@@ -5,10 +5,14 @@ List Countries
 {% endblock %}
 
 {% block body %}
+{% set tabActive = "countries" %}
 {% include '/admin/menuAdmin.html.twig' %}
 
-<div id="dialogAddCountry">
+<div id="dialogAddCountry" class="dialog-base">
 {% include('/admin/country/dialogAddCountry.html.twig') %}
+</div>
+<div id="dialogDeleteCountry" class="dialog-base">
+{% include('/admin/country/dialogDeleteCountry.html.twig') %}
 </div>
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
 
@@ -18,21 +22,28 @@ List Countries
   </li>
 
 </ul>
-<h1>Countries</h1>
-<table class="table">
+<table class="table listTable">
   <thead>
     <tr>
-      <th scope="col">name</th>
+      <th scope="col" colspan="2">name</th>
     </tr>
   </thead>
   <tbody>
     {% for country in countries %}
      <tr>
        <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
+       <td class="text-right">
+         <a class="nav-link text-danger" onclick='deleteCountryAction({{ country.id }}, "{{ country.name|country }}", "DeleteCountry" )' data-href='{{ path('country_add') }}' data-id="{{ country.id }}" data-country="{{ country.name|country }}" id="deleteCountry{{ country.id }}" title="Delete: {{ country.name|country }}"><i class="material-icons">delete_forever</i></a>
+       </td>
      </tr>
     {% endfor %}
   </tbody>
 </table>
+
+{% block javascripts %}
+<script src="{{ asset('js/app/dialogs.js') }}"></script>
+{{ parent() }}
+{% endblock %}
 
 {% set routeName = 'country_list' %}
 {% include 'pagination.html.twig' %}
@@ -45,8 +56,33 @@ $('#appbundle_country_name').focus(function () {
   }
 });
 
+$('#deleteAction').click(function (e) {
+
+  var datas = {'id' : $('#deleteAction').data('id')};
+  var routenamedelete = $("#deleteAction").data("routenamedelete");
+
+  $.ajax({
+             type: "GET",
+             url: routenamedelete ,
+             dataType: 'json',
+             data: datas,
+             encode: true,
+             success: function (json) {
+               var objResult = jQuery.parseJSON(json);
+               if(objResult.result == 'error') {
+                 $('#alertDialog').css({'display' : 'block'});
+                 $('#alertDialog').html(objResult.message);
+               } else {
+                  location.reload();
+               }
+             }
+         })
+
+});
+
 $("#addCountry").click(function (e) {
    $("#dialogAddCountry").modal("show");
+   $("div.modal-header h4").attr('class', 'modal-title text-primary');
    $('.loaderBody').fadeIn(0);
    $('#editcontent').fadeOut(0);
    var href = this.href;

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 */
 class CountryController extends Controller
 {
-    const LIMIT_PAGINATION = 10;
+    const LIMIT_PAGINATION = 5;
 
     /**
       * List Country
@@ -51,6 +51,26 @@ class CountryController extends Controller
 
 
     /**
+     * Delete Country
+     * @Route("/delete-country", name="country_delete")
+     * @Method("GET")
+     */
+    public function deleteCountry(Request $request)
+    {
+        $em = $this->getDoctrine()->getmanager();
+        $country = $em->getRepository('AppBundle:Country')->findOneById($request->get('id'));
+        if (!$country) {
+            $result = '{"result":"error", "message": "This country does not exist."}';
+        } else {
+            $em->remove($country);
+            $em->flush();
+            $result = '{"result":"ok"}';
+        }
+        return new JsonResponse($result);
+    }
+
+
+    /**
      * Add Country
      * @Route("/add-country", name="country_add")
      * @Method({"GET", "POST"})
@@ -67,10 +87,19 @@ class CountryController extends Controller
             $errorsString = (string) $errors;
             $result = '{"result":"error", "message": "This country is already added."}';
         } else {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($country);
-            $em->flush();
-            $result = '{"result":"ok"}';
+            $serviceContinent = $this->get('app.countries_continents');
+            $nameContinent = $serviceContinent->getContinent($country->getName());
+
+            if ($nameContinent != null) {
+                $country->setContinent($nameContinent);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($country);
+                $em->flush();
+                $result = '{"result":"ok"}';
+            } else {
+                $result = '{"result":"error", "message": "Could not assign a continenete to this country."}';
+            }
         }
         return new JsonResponse($result);
     }
