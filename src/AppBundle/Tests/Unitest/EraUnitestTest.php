@@ -105,6 +105,24 @@ class EraUnitTest extends WebTestCase
     }
 
 
+    public function testRemoveEraError()
+    {
+        $crawler = $this->client->request(
+            'GET',
+            '/era/delete-era',
+            array("id" => 99999),
+            array(),
+            array()
+        );
+
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
+
+        $objResult = json_decode($this->client->getResponse()->getContent());
+        $objResult = json_decode($objResult);
+        $this->assertEquals('error', $objResult->result);
+    }
+
+
     public function testEditEra()
     {
 
@@ -119,7 +137,6 @@ class EraUnitTest extends WebTestCase
         $this->cleanDummy('Second_Eraxx');
 
         $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
-
     }
 
 

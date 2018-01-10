@@ -30,13 +30,11 @@ class CountriesContinents
      */
     public function getContinent($codeCountry)
     {
-        $result = "";
         foreach ($this->listCountries as $nameContinent => $listCountry) {
             if (in_array($codeCountry, $listCountry)) {
                 return $nameContinent;
             }
         }
-
         return null;
     }
 
