@@ -1,0 +1,24 @@
+{% extends 'dialog.html.twig' %}
+{% block dialog_class %}
+addPolity
+{% endblock %}
+
+{% block dialog_title %}
+Add Polity
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+
+    {{ form_start(form) }}
+       <div class="form-group">
+            {{ form_widget(form) }}
+       </div>
+
+      <input type="submit" id="addNewPolity" data-href='{{ path('polity_add') }}' class="btn btn-success mx-auto" value="Add" />
+
+    {{ form_end(form) }}
+  </div>
+</div>
+{% endblock %}

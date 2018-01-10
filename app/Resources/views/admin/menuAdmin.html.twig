@@ -10,6 +10,9 @@
   <li class="nav-item">
       <a class="nav-link" id="eras" href="{{ path('era_list')}}">Eras {% if totalEras is defined %}<b class="text-primary">{{ totalEras}}{% endif %}</b></a>
   </li>
+  <li class="nav-item">
+      <a class="nav-link" id="polities" href="{{ path('polity_list')}}">Polities {% if totalPolity is defined %}<b class="text-primary">{{ totalPolity }}{% endif %}</b></a>
+  </li>
   {% endif %}
 </ul>
 <script>

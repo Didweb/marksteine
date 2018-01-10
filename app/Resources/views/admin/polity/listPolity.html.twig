@@ -1,34 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-List Countries
+List Polities
 {% endblock %}
 
 {% block body %}
-{% set tabActive = "countries" %}
+{% set tabActive = "polities" %}
 {% include '/admin/menuAdmin.html.twig' %}
 
 <div id="dialogAdd" class="dialog-base">
-{% include('/admin/country/dialogAddCountry.html.twig') %}
+{% include('/admin/polity/dialogAddPolity.html.twig') %}
 </div>
-<div id="dialogDeleteCountry" class="dialog-base">
-{% include('/admin/country/dialogDeleteCountry.html.twig') %}
+<div id="dialogDelete" class="dialog-base">
+{% include('/admin/polity/dialogDeletePolity.html.twig') %}
 </div>
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
 
 <ul class="nav justify-content-end">
   <li class="nav-item">
-    <a class="nav-link text-primary" data-href='{{ path('country_add') }}' id="addCountry" title="Add Country"><i class="material-icons">add_circle</i></a>
+    <a class="nav-link text-primary" data-href='{{ path('polity_add') }}' id="addPolity" title="Add Polity"><i class="material-icons">add_circle</i></a>
   </li>
 
 </ul>
 <table class="table listTable">
   <tbody>
-    {% for country in countries %}
+    {% for polity in polities %}
      <tr>
-       <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
+       <td><span class="text-secondary">{{ polity.name }}</span> </b></td>
        <td class="text-right">
-         <a class="nav-link text-danger" onclick='deleteAction({{ country.id }}, "{{ country.name|country }}", "DeleteCountry" )' data-href='{{ path('country_add') }}' data-id="{{ country.id }}" data-country="{{ country.name|country }}" id="deleteCountry{{ country.id }}" title="Delete: {{ country.name|country }}"><i class="material-icons">cancel</i></a>
+         <a class="nav-link text-danger" onclick='deleteAction({{ polity.id }}, "{{ polity.name }}", "DeletePolity" )' data-href='{{ path('polity_add') }}' data-id="{{ polity.id }}" data-polity="{{ polity.name }}" id="deleteCountry{{ polity.id }}" title="Delete: {{ polity.name }}"><i class="material-icons">cancel</i></a>
        </td>
      </tr>
     {% endfor %}
@@ -46,11 +46,12 @@ List Countries
 
 <script>
 
-$("#addCountry").click(function (e) {
 
+
+$("#addPolity").click(function (e) {
    addActionShow();
-   
-   var href = this.href;
+   //var href = this.href;
+   var href = $('#addDialog').data('href');
    e.preventDefault();
    $.ajax({
               type: "GET",
@@ -65,10 +66,10 @@ $("#addCountry").click(function (e) {
           });
 });
 
-  $("form[name='appbundle_country']").submit(function (e) {
-    var href = '{{ path('country_add')}}';
+  $("form[name='appbundle_polity']").submit(function (e) {
+    var href = '{{ path('polity_add')}}';
     var formData = {
-            'name' : $('select[name="appbundle_country[name]"]').val()
+            'name' : $('select[name="appbundle_polity[name]"]').val()
         };
 
     e.preventDefault();

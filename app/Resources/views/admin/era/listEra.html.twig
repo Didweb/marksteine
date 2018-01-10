@@ -8,7 +8,7 @@ List Countries
 {% set tabActive = "eras" %}
 {% include '/admin/menuAdmin.html.twig' %}
 
-<div id="dialogAddEra" class="dialog-base">
+<div id="dialogAdd" class="dialog-base">
 {% include('/admin/era/dialogAddEra.html.twig') %}
 </div>
 
@@ -24,7 +24,7 @@ List Countries
 
 <ul class="nav justify-content-end">
   <li class="nav-item">
-    <a class="nav-link text-primary" data-href='{{ path('era_add') }}' id="addDialogEra" title="Add Era"><i class="material-icons">add_circle</i></a>
+    <a class="nav-link text-primary" data-href='{{ path('era_add') }}' id="addEra" title="Add Era"><i class="material-icons">add_circle</i></a>
   </li>
 
 </ul>
@@ -105,13 +105,11 @@ function editAction(id, path) {
 };
 
 
-$("#addDialogEra").click(function (e) {
-   $("#dialogAddEra").modal("show");
-   $("div.modal-header h4").attr('class', 'modal-title text-primary');
-   $('.loaderBody').fadeIn(0);
-   $('#editcontent').fadeOut(0);
+$("#addEra").click(function (e) {
 
-   var href = $('#addDialogEra').data('href');
+   addActionShow();
+
+   var href = $('#addEra').data('href');
 
    $('#addNewEra').click(function(event) {
          var formData = {

@@ -7,6 +7,13 @@ function deleteAction(id, name, domain) {
       $("#deleteAction").attr('data-id', id);
 }
 
+function addActionShow() {
+  $("#dialogAdd").modal("show");
+  $("div.modal-header h4").attr('class', 'modal-title text-primary');
+  $('.loaderBody').fadeIn(0);
+  $('#editcontent').fadeOut(0);
+
+}
 
 // Dialogue Prepartion
 function dialogPreparation(dailogType, colorStyle, data){
@@ -40,7 +47,7 @@ function checkErrors(data) {
   if(objResult.result == 'error') {
     $('#alertDialog').css({'display' : 'block'});
     $('#alertDialog').html(objResult.message);
-
+console.log("Tap");
   } else {
      location.reload();
   };
