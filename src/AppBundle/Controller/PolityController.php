@@ -78,8 +78,17 @@ class PolityController extends Controller
      */
     public function addPolity(Request $request)
     {
+        $name         = $request->get('name');
+        $description  = $request->get('description');
+        $dayStart     = $request->get('dayStart');
+        $monthStart   = $request->get('monthStart');
+        $yearStart    = $request->get('yearStart');
+        $dayEnd       = $request->get('dayEnd');
+        $monthEnd     = $request->get('monthEnd');
+        $yearEnd      = $request->get('yearEnd');
+
         $polity = new Polity();
-        $polity->setName($request->get('name'));
+
 
         $validator = $this->get('validator');
         $errors = $validator->validate($polity);
@@ -88,19 +97,20 @@ class PolityController extends Controller
             $errorsString = (string) $errors;
             $result = '{"result":"error", "message": "This Polity is already added."}';
         } else {
-            $serviceContinent = $this->get('app.countries_continents');
-            $nameContinent = $serviceContinent->getContinent($polity->getName());
-
-            if ($nameContinent != null) {
-                $polity->setContinent($nameContinent);
+                $polity->setName($name);
+                $polity->setDescription($description);
+                $polity->setDayStart($dayStart);
+                $polity->setMonthStart($monthStart);
+                $polity->setYearStart($yearStart);
+                $polity->setDayEnd($dayEnd);
+                $polity->setMonthEnd($monthEnd);
+                $polity->setYearEnd($yearEnd);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($polity);
                 $em->flush();
                 $result = '{"result":"ok"}';
-            } else {
-                $result = '{"result":"error", "message": "Could not assign a continenete to this Polity."}';
-            }
+
         }
         return new JsonResponse($result);
     }

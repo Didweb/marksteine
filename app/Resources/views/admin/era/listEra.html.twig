@@ -16,8 +16,8 @@ List Countries
   {% include('dialogEmpty.html.twig') %}
 </div>
 
-<div id="dialogDeleteEra" class="dialog-base">
-{% include('/admin/era/dialogDeleteEra.html.twig') %}
+<div id="dialogDelete" class="dialog-base">
+{% include('dialogDelete.html.twig') %}
 </div>
 
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
@@ -41,10 +41,7 @@ List Countries
        </td>
        <td class="text-right col-2">
          <a class="nav-link text-danger"
-            onclick='deleteAction({{ era.id }}, "{{ era.name }}", "DeleteEra" )'
-            data-href='{{ path('era_add') }}'
-            data-id="{{ era.id }}"
-            data-country="{{ era.name }}"
+            onclick='deleteAction({{ era.id }}, "{{ era.name }}", "{{ path('era_delete')}}"  )'
             id="deleteEra{{ era.id }}" title="Delete: {{ era.name }}"><i class="material-icons">cancel</i></a>
        </td>
        <td class="text-right col-2">

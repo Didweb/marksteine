@@ -1,9 +1,10 @@
-function deleteAction(id, name, domain) {
+function deleteAction(id, name, pathDelete) {
 
-      $("#dialog" + domain).modal("show");
+      $("#dialogDelete").modal("show");
       $("div.modal-header h4").attr('class', 'modal-title text-danger');
-      $("#value" + domain).html(name);
-      $("#value" + domain + "Title").html(name);
+      $("#valueInfo").html(name);
+      $("#valueTitle").html(name);
+      $("#deleteAction").attr('data-pathdelete', pathDelete);
       $("#deleteAction").attr('data-id', id);
 }
 
@@ -59,11 +60,11 @@ console.log("Tap");
 $('#deleteAction').click(function (e) {
 
   var datas = {'id' : $('#deleteAction').data('id')};
-  var routenamedelete = $("#deleteAction").data("routenamedelete");
+  var pathdelete = $("#deleteAction").data("pathdelete");
 
   $.ajax({
              type: "GET",
-             url: routenamedelete ,
+             url: pathdelete ,
              dataType: 'json',
              data: datas,
              encode: true,

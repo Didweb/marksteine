@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\Polity;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Formular for Polity
@@ -26,14 +27,29 @@ class PolityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder->add('name');
         $builder->add('description');
+
+        $builder->add('dayStart', ChoiceType::class, array(
+                      'choices' => range(0, 31),
+                      'placeholder' => 'Day'
+        ));
+        $builder->add('monthStart', ChoiceType::class, array(
+                      'choices' => range(0, 12),
+                      'placeholder' => 'Month',
+        ));
         $builder->add('yearStart');
-        $builder->add('monthStart');
-        $builder->add('dayStart');
+
+        $builder->add('dayEnd', ChoiceType::class, array(
+                      'choices' => range(0, 31),
+                      'placeholder' => 'Day'
+        ));
+        $builder->add('monthEnd', ChoiceType::class, array(
+                      'choices' => range(0, 12),
+                      'placeholder' => 'Month',
+        ));
         $builder->add('yearEnd');
-        $builder->add('monthEnd');
-        $builder->add('dayEnd');
     }
 
     /**
@@ -54,6 +70,6 @@ class PolityType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_country';
+        return 'appbundle_polity';
     }
 }

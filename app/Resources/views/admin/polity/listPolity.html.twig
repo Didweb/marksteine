@@ -12,13 +12,13 @@ List Polities
 {% include('/admin/polity/dialogAddPolity.html.twig') %}
 </div>
 <div id="dialogDelete" class="dialog-base">
-{% include('/admin/polity/dialogDeletePolity.html.twig') %}
+{% include('dialogDelete.html.twig') %}
 </div>
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
 
 <ul class="nav justify-content-end">
   <li class="nav-item">
-    <a class="nav-link text-primary" data-href='{{ path('polity_add') }}' id="addPolity" title="Add Polity"><i class="material-icons">add_circle</i></a>
+    <a class="nav-link text-primary" data-href='{{ path('polity_add') }}' id="addDialog" title="Add Polity"><i class="material-icons">add_circle</i></a>
   </li>
 
 </ul>
@@ -28,7 +28,9 @@ List Polities
      <tr>
        <td><span class="text-secondary">{{ polity.name }}</span> </b></td>
        <td class="text-right">
-         <a class="nav-link text-danger" onclick='deleteAction({{ polity.id }}, "{{ polity.name }}", "DeletePolity" )' data-href='{{ path('polity_add') }}' data-id="{{ polity.id }}" data-polity="{{ polity.name }}" id="deleteCountry{{ polity.id }}" title="Delete: {{ polity.name }}"><i class="material-icons">cancel</i></a>
+         <a class="nav-link text-danger"
+         onclick='deleteAction({{ polity.id }}, "{{ polity.name }}", "{{ path('polity_delete')}}"  )'
+        id="deletePolity{{ polity.id }}" title="Delete: {{ polity.name }}"><i class="material-icons">cancel</i></a>
        </td>
      </tr>
     {% endfor %}
@@ -48,7 +50,7 @@ List Polities
 
 
 
-$("#addPolity").click(function (e) {
+$("#addDialog").click(function (e) {
    addActionShow();
    //var href = this.href;
    var href = $('#addDialog').data('href');
@@ -69,9 +71,16 @@ $("#addPolity").click(function (e) {
   $("form[name='appbundle_polity']").submit(function (e) {
     var href = '{{ path('polity_add')}}';
     var formData = {
-            'name' : $('select[name="appbundle_polity[name]"]').val()
+            'name' : $('input[name="appbundle_polity[name]"]').val(),
+            'description' : $('textarea[name="appbundle_polity[description]"]').val(),
+            'dayStart' : $('select[name="appbundle_polity[dayStart]"]').val(),
+            'monthStart' : $('select[name="appbundle_polity[monthStart]"]').val(),
+            'yearStart' : $('input[name="appbundle_polity[yearStart]"]').val(),
+            'dayEnd' : $('select[name="appbundle_polity[dayEnd]"]').val(),
+            'monthEnd' : $('select[name="appbundle_polity[monthEnd]"]').val(),
+            'yearEnd' : $('input[name="appbundle_polity[yearEnd]"]').val()
         };
-
+console.log(formData);
     e.preventDefault();
     $.ajax({
                type: "POST",
