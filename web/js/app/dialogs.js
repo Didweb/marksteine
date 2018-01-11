@@ -1,11 +1,10 @@
 function deleteAction(id, name, pathDelete) {
-
-      $("#dialogDelete").modal("show");
-      $("div.modal-header h4").attr('class', 'modal-title text-danger');
-      $("#valueInfo").html(name);
-      $("#valueTitle").html(name);
-      $("#deleteAction").attr('data-pathdelete', pathDelete);
-      $("#deleteAction").attr('data-id', id);
+  $("#dialogDelete").modal("show");
+  $("div.modal-header h4").attr('class', 'modal-title text-danger');
+  $("#valueInfo").html(name);
+  $("#valueTitle").html(name);
+  $("#deleteAction").attr('data-pathdelete', pathDelete);
+  $("#deleteAction").attr('data-id', id);
 }
 
 function addActionShow() {

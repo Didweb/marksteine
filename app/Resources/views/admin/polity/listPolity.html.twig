@@ -11,9 +11,15 @@ List Polities
 <div id="dialogAdd" class="dialog-base">
 {% include('/admin/polity/dialogAddPolity.html.twig') %}
 </div>
+
+<div id="dialogEdit" class="dialog-base">
+  {% include('dialogEmpty.html.twig') %}
+</div>
+
 <div id="dialogDelete" class="dialog-base">
 {% include('dialogDelete.html.twig') %}
 </div>
+
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
 
 <ul class="nav justify-content-end">
@@ -27,10 +33,18 @@ List Polities
     {% for polity in polities %}
      <tr>
        <td><span class="text-secondary">{{ polity.name }}</span> </b></td>
-       <td class="text-right">
+       <td class="text-right col-2">
          <a class="nav-link text-danger"
          onclick='deleteAction({{ polity.id }}, "{{ polity.name }}", "{{ path('polity_delete')}}"  )'
         id="deletePolity{{ polity.id }}" title="Delete: {{ polity.name }}"><i class="material-icons">cancel</i></a>
+       </td>
+
+       <td class="text-right col-2">
+          <a data-href='{{ path('polity_edit') }}'
+          onclick='editAction({{ polity.id}}, "{{ path('polity_edit') }}")'
+          class="nav-link text-success"
+          title="Edit {{ polity.name }}"
+          id="editDialogEra"><i class="material-icons">mode_edit</i></a>
        </td>
      </tr>
     {% endfor %}
@@ -48,6 +62,45 @@ List Polities
 
 <script>
 
+function editAction(id, path) {
+  $.ajax({
+    type: 'GET',
+    url: path,
+    data: {'id': id},
+    dataType: 'html'
+  }).done(function(data) {
+
+     dialogPreparation('dialogEdit', 'success', data);
+
+     var href = '{{ path('polity_edit_action')}}';
+     $('#editPolity').click(function(event) {
+
+           var formData = {
+             'id' : id,
+             'name' : $('#dialogEdit input[name="appbundle_polity[name]"]').val(),
+             'description' : $('#dialogEdit textarea[name="appbundle_polity[description]"]').val(),
+             'dayStart' : $('#dialogEdit select[name="appbundle_polity[dayStart]"]').val(),
+             'monthStart' : $('#dialogEdit select[name="appbundle_polity[monthStart]"]').val(),
+             'yearStart' : $('#dialogEdit input[name="appbundle_polity[yearStart]"]').val(),
+             'dayEnd' : $('#dialogEdit select[name="appbundle_polity[dayEnd]"]').val(),
+             'monthEnd' : $('#dialogEditselect[name="appbundle_polity[monthEnd]"]').val(),
+             'yearEnd' : $('#dialogEdit input[name="appbundle_polity[yearEnd]"]').val()
+           };
+
+           $.ajax({
+             type : 'POST',
+             url : href,
+             data: formData,
+             dataType: 'json',
+             encode: true
+           })
+           .done(function(data) {
+             checkErrors(data);
+           });
+           event.preventDefault();
+           });
+     });
+};
 
 
 $("#addDialog").click(function (e) {

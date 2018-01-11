@@ -50,6 +50,63 @@ class PolityController extends Controller
                                             'form'      => $form->createView()));
     }
 
+    /**
+     * Edit Polity
+     * @Route("/edit-polity", name="polity_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editPolity(Request $request)
+    {
+        $em   = $this->getDoctrine()->getManager();
+        $polity = $em->getRepository('AppBundle:Polity')->findOneById($request->get('id'));
+        $form = $this->createForm(PolityType::class, $polity);
+
+        return $this->render('admin/polity/dialogEditPolity.html.twig', array(
+                                            'form_edit'      => $form->createView()));
+    }
+
+
+
+    /**
+     * Edit Polity
+     * @Route("/edit-polity-action", name="polity_edit_action")
+     * @Method({"GET", "POST"})
+     */
+    public function editActPolity(Request $request)
+    {
+        $id         = $request->get('id');
+        $name       = $request->get('name');
+        $description = $request->get('description');
+        $dayStart  = $request->get('dayStart');
+        $dayEnd    = $request->get('dayEnd');
+        $monthStart = $request->get('monthStart');
+        $monthEnd   = $request->get('monthEnd');
+        $yearStart  = $request->get('yearStart');
+        $yearEnd    = $request->get('yearEnd');
+
+            $em   = $this->getDoctrine()->getManager();
+            $polity = $em->getRepository('AppBundle:Polity')->findOneById($id);
+            $polity->setName($name);
+            $polity->setDescription($description);
+            $polity->setDayStart($dayStart);
+            $polity->setDayEnd($dayEnd);
+            $polity->setMonthStart($monthStart);
+            $polity->setMonthEnd($monthEnd);
+            $polity->setYearStart($yearStart);
+            $polity->setYearEnd($yearEnd);
+
+            try {
+              $em->persist($polity);
+              $em->flush();
+              $result = '{"result":"ok"}';
+            } catch(Exception $e) {
+                $result = '{"result":"error", "message": '.$e->getMessage().'}';
+            }
+
+
+        return new JsonResponse($result);
+    }
+
 
     /**
      * Delete Polity
