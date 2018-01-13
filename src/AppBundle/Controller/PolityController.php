@@ -74,35 +74,42 @@ class PolityController extends Controller
      */
     public function editActPolity(Request $request)
     {
-        $id         = $request->get('id');
-        $name       = $request->get('name');
+        $id          = $request->get('id');
+        $name        = $request->get('name');
         $description = $request->get('description');
-        $dayStart  = $request->get('dayStart');
-        $dayEnd    = $request->get('dayEnd');
-        $monthStart = $request->get('monthStart');
-        $monthEnd   = $request->get('monthEnd');
-        $yearStart  = $request->get('yearStart');
-        $yearEnd    = $request->get('yearEnd');
+        $dayStart    = $request->get('dayStart');
+        $dayEnd      = $request->get('dayEnd');
+        $monthStart  = $request->get('monthStart');
+        $monthEnd    = $request->get('monthEnd');
+        $yearStart   = $request->get('yearStart');
+        $yearEnd     = $request->get('yearEnd');
 
-            $em   = $this->getDoctrine()->getManager();
-            $polity = $em->getRepository('AppBundle:Polity')->findOneById($id);
-            $polity->setName($name);
-            $polity->setDescription($description);
-            $polity->setDayStart($dayStart);
-            $polity->setDayEnd($dayEnd);
-            $polity->setMonthStart($monthStart);
-            $polity->setMonthEnd($monthEnd);
-            $polity->setYearStart($yearStart);
-            $polity->setYearEnd($yearEnd);
+        $em   = $this->getDoctrine()->getManager();
+        $polity = $em->getRepository('AppBundle:Polity')->findOneById($id);
 
-            try {
-              $em->persist($polity);
-              $em->flush();
-              $result = '{"result":"ok"}';
-            } catch(Exception $e) {
-                $result = '{"result":"error", "message": '.$e->getMessage().'}';
+        if ($polity) {
+              $polity->setName($name);
+              $polity->setDescription($description);
+              $polity->setDayStart($dayStart);
+              $polity->setDayEnd($dayEnd);
+              $polity->setMonthStart($monthStart);
+              $polity->setMonthEnd($monthEnd);
+              $polity->setYearStart($yearStart);
+              $polity->setYearEnd($yearEnd);
+
+              $checkDate = $this->get('app.check_date');
+              $checkDate->init($dayStart.'-'.$monthStart.'-'.$yearStart, $dayEnd.'-'.$monthEnd.'-'.$yearEnd);
+
+            if ($checkDate->correctInterval() == false) {
+                        $result = '{"result":"error", "message": "Is the date range correct? No"}';
+            } else {
+                      $em->persist($polity);
+                      $em->flush();
+                      $result = '{"result":"ok"}';
             }
-
+        } else {
+            $result = '{"result":"error", "message": "It is not an instance. [Polity]" }';
+        }
 
         return new JsonResponse($result);
     }
@@ -144,30 +151,36 @@ class PolityController extends Controller
         $monthEnd     = $request->get('monthEnd');
         $yearEnd      = $request->get('yearEnd');
 
-        $polity = new Polity();
+        $checkDate = $this->get('app.check_date');
+        $checkDate->init($dayStart.'-'.$monthStart.'-'.$yearStart, $dayEnd.'-'.$monthEnd.'-'.$yearEnd);
 
+
+        $polity = new Polity();
+        $polity->setName($name);
+        $polity->setDescription($description);
+        $polity->setDayStart($dayStart);
+        $polity->setMonthStart($monthStart);
+        $polity->setYearStart($yearStart);
+        $polity->setDayEnd($dayEnd);
+        $polity->setMonthEnd($monthEnd);
+        $polity->setYearEnd($yearEnd);
 
         $validator = $this->get('validator');
         $errors = $validator->validate($polity);
 
         if (count($errors) > 0) {
-            $errorsString = (string) $errors;
-            $result = '{"result":"error", "message": "This Polity is already added."}';
+            $message = "";
+            foreach ($errors as $violation) {
+                  $message = $violation->getMessage();
+            }
+            $result = '{"result":"error", "message": "'.$message.'"}';
+        } elseif ($checkDate->correctInterval() == false) {
+            $result = '{"result":"error", "message": "Is the date range correct? No"}';
         } else {
-                $polity->setName($name);
-                $polity->setDescription($description);
-                $polity->setDayStart($dayStart);
-                $polity->setMonthStart($monthStart);
-                $polity->setYearStart($yearStart);
-                $polity->setDayEnd($dayEnd);
-                $polity->setMonthEnd($monthEnd);
-                $polity->setYearEnd($yearEnd);
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($polity);
-                $em->flush();
-                $result = '{"result":"ok"}';
-
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($polity);
+            $em->flush();
+            $result = '{"result":"ok"}';
         }
         return new JsonResponse($result);
     }

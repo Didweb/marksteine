@@ -24,7 +24,9 @@ List Polities
 
 <ul class="nav justify-content-end">
   <li class="nav-item">
-    <a class="nav-link text-primary" data-href='{{ path('polity_add') }}' id="addDialog" title="Add Polity"><i class="material-icons">add_circle</i></a>
+    <a class="nav-link text-primary"
+        data-href='{{ path('polity_add') }}'
+        id="addPolity" title="Add Polity"><i class="material-icons">add_circle</i></a>
   </li>
 
 </ul>
@@ -56,7 +58,7 @@ List Polities
 {{ parent() }}
 {% endblock %}
 
-{% set routeName = 'country_list' %}
+{% set routeName = 'polity_list' %}
 {% include 'pagination.html.twig' %}
 
 
@@ -103,50 +105,36 @@ function editAction(id, path) {
 };
 
 
-$("#addDialog").click(function (e) {
+$("#addPolity").click(function (e) {
    addActionShow();
-   //var href = this.href;
-   var href = $('#addDialog').data('href');
-   e.preventDefault();
-   $.ajax({
-              type: "GET",
-              url: href,
-              dataType: 'html',
-              success: function (json) {
-                  $(".loaderBody").fadeOut("slow", function () {
-                      $('#editcontent').html(json);
-                      $('#editcontent').fadeIn("fast");
-                  });
-              }
-          });
+   var href = $('#addPolity').data('href');
+
+   $('#addNewPolity').click(function(event) {
+         var formData = {
+                 'name' : $('input[name="appbundle_polity[name]"]').val(),
+                 'description' : $('textarea[name="appbundle_polity[description]"]').val(),
+                 'dayStart' : $('select[name="appbundle_polity[dayStart]"]').val(),
+                 'monthStart' : $('select[name="appbundle_polity[monthStart]"]').val(),
+                 'yearStart' : $('input[name="appbundle_polity[yearStart]"]').val(),
+                 'dayEnd' : $('select[name="appbundle_polity[dayEnd]"]').val(),
+                 'monthEnd' : $('select[name="appbundle_polity[monthEnd]"]').val(),
+                 'yearEnd' : $('input[name="appbundle_polity[yearEnd]"]').val()
+         };
+
+         $.ajax({
+           type : 'POST',
+           url : href,
+           data: formData,
+           dataType: 'json',
+           encode: true
+         })
+         .done(function(data) {
+           checkErrors(data);
+         });
+         event.preventDefault();
+   });
 });
 
-  $("form[name='appbundle_polity']").submit(function (e) {
-    var href = '{{ path('polity_add')}}';
-    var formData = {
-            'name' : $('input[name="appbundle_polity[name]"]').val(),
-            'description' : $('textarea[name="appbundle_polity[description]"]').val(),
-            'dayStart' : $('select[name="appbundle_polity[dayStart]"]').val(),
-            'monthStart' : $('select[name="appbundle_polity[monthStart]"]').val(),
-            'yearStart' : $('input[name="appbundle_polity[yearStart]"]').val(),
-            'dayEnd' : $('select[name="appbundle_polity[dayEnd]"]').val(),
-            'monthEnd' : $('select[name="appbundle_polity[monthEnd]"]').val(),
-            'yearEnd' : $('input[name="appbundle_polity[yearEnd]"]').val()
-        };
-console.log(formData);
-    e.preventDefault();
-    $.ajax({
-               type: "POST",
-               url: href,
-               dataType: 'json',
-               data: formData,
-               encode: true,
-               success: function (json) {
-                 checkErrors(json);
-               }
-           })
-           e.preventDefault();
-  });
 </script>
 
 {% endblock %}

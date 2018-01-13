@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="polity")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PolityRepository")
+ * @UniqueEntity( fields={"name"}, errorPath="polity", message="This era is already added.")
  */
 class Polity
 {
@@ -26,7 +28,7 @@ class Polity
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true, unique=true)
+     * @ORM\Column(name="name", type="string", length=150,  nullable=false)
      */
     private $name;
 
@@ -55,7 +57,7 @@ class Polity
      * @var int
      *
      * @Assert\LessThanOrEqual(31)
-     * @Assert\GreaterThan(1)
+     * @Assert\GreaterThan(0)
      * @ORM\Column(name="dayStart", type="integer")
      */
     private $dayStart;
@@ -64,7 +66,7 @@ class Polity
      * @var int
      *
      * @Assert\LessThanOrEqual(31)
-     * @Assert\GreaterThan(1)
+     * @Assert\GreaterThan(0)
      * @ORM\Column(name="dayEnd", type="integer")
      */
     private $dayEnd;
@@ -73,7 +75,7 @@ class Polity
      * @var int
      *
      * @Assert\LessThanOrEqual(12)
-     * @Assert\GreaterThan(1)
+     * @Assert\GreaterThan(0)
      * @ORM\Column(name="monthStart", type="integer")
      */
     private $monthStart;
@@ -82,7 +84,7 @@ class Polity
      * @var int
      *
      * @Assert\LessThanOrEqual(12)
-     * @Assert\GreaterThan(1)
+     * @Assert\GreaterThan(0)
      * @ORM\Column(name="monthEnd", type="integer")
      */
     private $monthEnd;
