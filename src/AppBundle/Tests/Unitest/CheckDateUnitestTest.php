@@ -42,8 +42,8 @@ class CheckDateUnitTest extends WebTestCase
         $this->serviceCheckDate->init($dateStart, $dateEnd);
         $result =  $this->serviceCheckDate->correctInterval();
         $this->assertTrue($result);
-        $this->assertEquals('2015', $this->serviceCheckDate->getYearStart());
-        $this->assertEquals('2016', $this->serviceCheckDate->getYearEnd());
+        $this->assertEquals('-1970', $this->serviceCheckDate->getYearStart());
+        $this->assertEquals('-1975', $this->serviceCheckDate->getYearEnd());
     }
 
     public function testCorrectIntervalFalseDay()

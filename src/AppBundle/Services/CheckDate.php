@@ -24,13 +24,30 @@ class CheckDate
         $explodeDateStart = explode('-', $dateStart);
         $explodeDateEnd   = explode('-', $dateEnd);
 
-        $this->dateStart = new \DateTime($explodeDateStart[0].'-'.$explodeDateStart[1].'-1970');
-        $this->dateEnd   = new \DateTime($explodeDateEnd[0].'-'.$explodeDateEnd[1].'-1970');
-
         $this->yearStart = $explodeDateStart[2];
         $this->yearEnd   = $explodeDateEnd[2];
+
+        $this->controlYear();
+
+        $this->dateStart = new \DateTime($explodeDateStart[0].'-'.$explodeDateStart[1].$this->yearStart);
+        $this->dateEnd   = new \DateTime($explodeDateEnd[0].'-'.$explodeDateEnd[1].$this->yearEnd);
     }
 
+
+    public function controlYear()
+    {
+
+        if ($this->yearStart < $this->yearEnd) {
+            $this->yearStart = '-1970';
+            $this->yearEnd   = '-1975';
+        } elseif ($this->yearStart > $this->yearEnd) {
+            $this->yearStart = '-1975';
+            $this->yearEnd   = '-1970';
+        } else {
+            $this->yearStart = '-1970';
+            $this->yearEnd   = '-1970';
+        }
+    }
     /**
      * Check if the date range is correct.
      * The start date (Start) must be less than the final date (End).
@@ -38,8 +55,7 @@ class CheckDate
      */
     public function correctInterval()
     {
-        if ($this->dateStart > $this->dateEnd
-            || $this->yearStart > $this->yearEnd ) {
+        if ($this->dateStart > $this->dateEnd) {
             return false;
         }
         return true;

@@ -74,7 +74,7 @@ class PolityUnitTest extends WebTestCase
                   "dayEnd"      => 2,
                   "monthStart"  => 5,
                   "monthEnd"    => 2,
-                  "yearStart"   => 1,
+                  "yearStart"   => 2,
                   "yearEnd"     => 2,
                   "countries" => array($this->countryDummy->getID())),
             array(),
@@ -248,7 +248,7 @@ class PolityUnitTest extends WebTestCase
                   "dayEnd"      => 2,
                   "monthStart"  => 5,
                   "monthEnd"    => 2,
-                  "yearStart"   => 1,
+                  "yearStart"   => 2,
                   "yearEnd"     => 2,
                   "countries" => array($this->countryDummy->getID())),
             array(),
@@ -307,8 +307,6 @@ class PolityUnitTest extends WebTestCase
     {
         $country = $this->em->getRepository('AppBundle:Country')->findOneByName('DE');
         if (!$country) {
-
-
             $country = new Country();
             $country->setName('DE');
 
