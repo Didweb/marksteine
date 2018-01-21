@@ -63,7 +63,14 @@ List Polities
 
 
 <script>
-
+$("#editPolity input[name='appbundle_polity[countrys][]']").change(function() {
+  console.log('toma');
+    if ($(this).is(':checked')) {
+        $(this).prop('checked', false);
+    } else {
+        $(this).prop('checked', true);
+    }
+});
 function editAction(id, path) {
   $.ajax({
     type: 'GET',
@@ -77,16 +84,24 @@ function editAction(id, path) {
      var href = '{{ path('polity_edit_action')}}';
      $('#editPolity').click(function(event) {
 
+       var selected = new Array();
+           $("input[name='appbundle_polity[countrys][]']:checked").each(function(){
+               if (this.checked) {
+                   selected.push($(this).val());
+               }
+           });
+
            var formData = {
              'id' : id,
              'name' : $('#dialogEdit input[name="appbundle_polity[name]"]').val(),
              'description' : $('#dialogEdit textarea[name="appbundle_polity[description]"]').val(),
              'dayStart' : $('#dialogEdit select[name="appbundle_polity[dayStart]"]').val(),
-             'monthStart' : $('#dialogEdit select[name="appbundle_polity[monthStart]"]').val(),
-             'yearStart' : $('#dialogEdit input[name="appbundle_polity[yearStart]"]').val(),
              'dayEnd' : $('#dialogEdit select[name="appbundle_polity[dayEnd]"]').val(),
-             'monthEnd' : $('#dialogEditselect[name="appbundle_polity[monthEnd]"]').val(),
-             'yearEnd' : $('#dialogEdit input[name="appbundle_polity[yearEnd]"]').val()
+             'monthStart' : $('#dialogEdit select[name="appbundle_polity[monthStart]"]').val(),
+             'monthEnd' : $('#dialogEdit select[name="appbundle_polity[monthEnd]"]').val(),
+             'yearStart' : $('#dialogEdit input[name="appbundle_polity[yearStart]"]').val(),
+             'yearEnd' : $('#dialogEdit input[name="appbundle_polity[yearEnd]"]').val(),
+             'countries': selected
            };
 
            $.ajax({
@@ -98,6 +113,7 @@ function editAction(id, path) {
            })
            .done(function(data) {
              checkErrors(data);
+
            });
            event.preventDefault();
            });
@@ -110,6 +126,13 @@ $("#addPolity").click(function (e) {
    var href = $('#addPolity').data('href');
 
    $('#addNewPolity').click(function(event) {
+
+        var selected = new Array();
+            $("input[name='appbundle_polity[countrys][]']:checked").each(function(){
+                if (this.checked) {
+                    selected.push($(this).val());
+                }
+            });
          var formData = {
                  'name' : $('input[name="appbundle_polity[name]"]').val(),
                  'description' : $('textarea[name="appbundle_polity[description]"]').val(),
@@ -118,7 +141,8 @@ $("#addPolity").click(function (e) {
                  'yearStart' : $('input[name="appbundle_polity[yearStart]"]').val(),
                  'dayEnd' : $('select[name="appbundle_polity[dayEnd]"]').val(),
                  'monthEnd' : $('select[name="appbundle_polity[monthEnd]"]').val(),
-                 'yearEnd' : $('input[name="appbundle_polity[yearEnd]"]').val()
+                 'yearEnd' : $('input[name="appbundle_polity[yearEnd]"]').val(),
+                 'countries': selected
          };
 
          $.ajax({

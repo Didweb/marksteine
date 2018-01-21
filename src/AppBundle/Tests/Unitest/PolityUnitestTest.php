@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use AppBundle\Entity\Polity;
+use AppBundle\Entity\Country;
 use AppBundle\Controller\PolityController;
 
 class PolityUnitTest extends WebTestCase
@@ -13,6 +14,7 @@ class PolityUnitTest extends WebTestCase
     private $em;
     private $container;
     private $idPolity;
+    private $countryDummy;
 
     public function setUp()
     {
@@ -40,7 +42,8 @@ class PolityUnitTest extends WebTestCase
                   "monthStart"  => 1,
                   "monthEnd"    => 2,
                   "yearStart"   => 1,
-                  "yearEnd"     => 2),
+                  "yearEnd"     => 2,
+                  "countries" => array($this->countryDummy->getID())),
             array(),
             array()
         );
@@ -72,7 +75,8 @@ class PolityUnitTest extends WebTestCase
                   "monthStart"  => 5,
                   "monthEnd"    => 2,
                   "yearStart"   => 1,
-                  "yearEnd"     => 2),
+                  "yearEnd"     => 2,
+                  "countries" => array($this->countryDummy->getID())),
             array(),
             array()
         );
@@ -102,7 +106,8 @@ class PolityUnitTest extends WebTestCase
                   "monthStart"  => 1,
                   "monthEnd"    => 2,
                   "yearStart"   => 1,
-                  "yearEnd"     => 2),
+                  "yearEnd"     => 2,
+                  "countries" => array($this->countryDummy->getID())),
             array(),
             array()
         );
@@ -178,7 +183,8 @@ class PolityUnitTest extends WebTestCase
                   "monthStart"  => 1,
                   "monthEnd"    => 2,
                   "yearStart"   => 1,
-                  "yearEnd"     => 2),
+                  "yearEnd"     => 2,
+                  "countries" => array($this->countryDummy->getID())),
             array(),
             array()
         );
@@ -208,7 +214,8 @@ class PolityUnitTest extends WebTestCase
                   "monthStart"  => 1,
                   "monthEnd"    => 2,
                   "yearStart"   => 1,
-                  "yearEnd"     => 2),
+                  "yearEnd"     => 2,
+                  "countries" => array($this->countryDummy->getID())),
             array(),
             array()
         );
@@ -242,7 +249,8 @@ class PolityUnitTest extends WebTestCase
                   "monthStart"  => 5,
                   "monthEnd"    => 2,
                   "yearStart"   => 1,
-                  "yearEnd"     => 2),
+                  "yearEnd"     => 2,
+                  "countries" => array($this->countryDummy->getID())),
             array(),
             array()
         );
@@ -260,7 +268,7 @@ class PolityUnitTest extends WebTestCase
         $this->assertEquals('error', $objResult->result);
     }
 
-    
+
     public function testEditActPolityErrorIdIncorrect()
     {
         $this->dummyData();
@@ -276,7 +284,8 @@ class PolityUnitTest extends WebTestCase
                   "monthStart"  => 1,
                   "monthEnd"    => 2,
                   "yearStart"   => 1,
-                  "yearEnd"     => 2),
+                  "yearEnd"     => 2,
+                  "countries" => array($this->countryDummy->getID())),
             array(),
             array()
         );
@@ -296,6 +305,22 @@ class PolityUnitTest extends WebTestCase
 
     private function dummyData()
     {
+        $country = $this->em->getRepository('AppBundle:Country')->findOneByName('DE');
+        if (!$country) {
+
+
+            $country = new Country();
+            $country->setName('DE');
+
+            $serviceContinent = $this->container->get('app.countries_continents');
+            $nameContinent = $serviceContinent->getContinent($country->getName());
+            $country->setContinent($nameContinent);
+
+            $this->em->persist($country);
+            $this->em->flush();
+        }
+        $this->countryDummy = $country;
+
         $polity = $this->em->getRepository('AppBundle:Polity')->findOneByName('First_Polity');
         if (!$polity) {
              $polity = new Polity();
@@ -307,11 +332,14 @@ class PolityUnitTest extends WebTestCase
              $polity->setMonthEnd(2);
              $polity->setYearStart(1);
              $polity->setYearEnd(2);
+             $polity->addCountry($country);
              $this->em->persist($polity);
              $this->em->flush();
         }
 
+
         $this->idPolity = $polity->getId();
+
         return $polity;
     }
 

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Polity
@@ -42,50 +43,56 @@ class Polity
     /**
      * @var int
      *
-     * @ORM\Column(name="yearstart", type="integer")
+     * @Assert\NotNull()
+     * @ORM\Column(name="yearstart", type="integer",  nullable=false)
      */
     private $yearStart;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="yearend", type="integer")
+     * @Assert\NotNull()
+     * @ORM\Column(name="yearend", type="integer",  nullable=false)
      */
     private $yearEnd;
 
     /**
      * @var int
      *
+     * @Assert\NotNull()
      * @Assert\LessThanOrEqual(31)
-     * @Assert\GreaterThan(0)
-     * @ORM\Column(name="dayStart", type="integer")
+     * @Assert\GreaterThan(-1)
+     * @ORM\Column(name="dayStart", type="integer",  nullable=false)
      */
     private $dayStart;
 
     /**
      * @var int
      *
+     * @Assert\NotNull()
      * @Assert\LessThanOrEqual(31)
-     * @Assert\GreaterThan(0)
-     * @ORM\Column(name="dayEnd", type="integer")
+     * @Assert\GreaterThan(-1)
+     * @ORM\Column(name="dayEnd", type="integer",  nullable=false)
      */
     private $dayEnd;
 
     /**
      * @var int
      *
+     * @Assert\NotNull()
      * @Assert\LessThanOrEqual(12)
-     * @Assert\GreaterThan(0)
-     * @ORM\Column(name="monthStart", type="integer")
+     * @Assert\GreaterThan(-1)
+     * @ORM\Column(name="monthStart", type="integer",  nullable=false)
      */
     private $monthStart;
 
     /**
      * @var int
      *
+     * @Assert\NotNull()
      * @Assert\LessThanOrEqual(12)
-     * @Assert\GreaterThan(0)
-     * @ORM\Column(name="monthEnd", type="integer")
+     * @Assert\GreaterThan(-1)
+     * @ORM\Column(name="monthEnd", type="integer",  nullable=false)
      */
     private $monthEnd;
 
@@ -108,6 +115,15 @@ class Polity
      */
     private $updateAt;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Country", mappedBy="politices", cascade={"persist"})
+     **/
+    private $countries;
+
+    public function __construct()
+    {
+        $this->countries = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -310,4 +326,44 @@ class Polity
     {
         return $this->monthEnd;
     }
+
+    /**
+     * @param Country|null $country
+     */
+    public function addCountry(Country $country = null)
+    {
+        if (!$this->countries->contains($country)) {
+            $this->countries->add($country);
+            $country->addPolity($this);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getCountrys()
+    {
+        return $this->countries->toArray();
+    }
+
+    /**
+     * @param Country $country
+     */
+    public function removeCountry(Country $country)
+    {
+        if (!$this->countries->contains($country)) {
+            return;
+        }
+        $this->countries->removeElement($country);
+        $country->removePolity($this);
+    }
+
+    /**
+     * Remove all countries for this Polity
+     */
+    public function removeAllCountrys()
+    {
+        $this->countries->clear();
+    }
+
 }

@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\PolityType;
 use AppBundle\Entity\Polity;
+use AppBundle\Entity\Country;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -103,9 +104,26 @@ class PolityController extends Controller
             if ($checkDate->correctInterval() == false) {
                         $result = '{"result":"error", "message": "Is the date range correct? No"}';
             } else {
-                      $em->persist($polity);
-                      $em->flush();
-                      $result = '{"result":"ok"}';
+                $countries = $request->get('countries');
+
+                $polityCountries =  $polity->getCountrys();
+
+                foreach ($polityCountries as $polityCountry) {
+                    $countryChecked = $em->getRepository('AppBundle:Country')->findOneById($polityCountry);
+
+                    $polity->removeCountry($countryChecked);
+                }
+
+                foreach ($countries as $country) {
+                        $countryChecked = $em->getRepository('AppBundle:Country')->findOneById($country);
+                        $polity->addCountry($countryChecked);
+                }
+
+
+
+                $em->persist($polity);
+                $em->flush();
+                $result = '{"result":"ok"}';
             }
         } else {
             $result = '{"result":"error", "message": "It is not an instance. [Polity]" }';
@@ -151,6 +169,8 @@ class PolityController extends Controller
         $monthEnd     = $request->get('monthEnd');
         $yearEnd      = $request->get('yearEnd');
 
+
+
         $checkDate = $this->get('app.check_date');
         $checkDate->init($dayStart.'-'.$monthStart.'-'.$yearStart, $dayEnd.'-'.$monthEnd.'-'.$yearEnd);
 
@@ -178,6 +198,14 @@ class PolityController extends Controller
             $result = '{"result":"error", "message": "Is the date range correct? No"}';
         } else {
             $em = $this->getDoctrine()->getManager();
+
+            $countries = $request->get('countries');
+            foreach ($countries as $country) {
+                $countryChecked = $em->getRepository('AppBundle:Country')->findOneById($country);
+                $polity->addCountry($countryChecked);
+            }
+
+
             $em->persist($polity);
             $em->flush();
             $result = '{"result":"ok"}';

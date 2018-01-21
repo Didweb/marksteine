@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Country
@@ -57,6 +58,18 @@ class Country
      * @ORM\Column(type="datetime")
      */
     private $updateAt;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Polity", inversedBy="countries", cascade={"persist"})
+     * @ORM\JoinTable(name="countries_politices")
+     **/
+    private $politices;
+
+
+    public function __construct()
+    {
+          $this->politices = new ArrayCollection();
+    }
 
 
     /**
@@ -115,5 +128,45 @@ class Country
     public function getContienent()
     {
         return $this->continent;
+    }
+
+
+    /**
+     * @param Polity $polity
+     */
+    public function addPolity(Polity $polity)
+    {
+        if (!$this->politices->contains($polity)) {
+            $this->politices->add($polity);
+            $polity->addCountry($this);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getPolitys()
+    {
+        return $this->politices->toArray();
+    }
+
+    /**
+     * @param Polity $polity
+     */
+    public function removePolity(Polity $polity)
+    {
+        if (!$this->politices->contains($polity)) {
+            return;
+        }
+        $this->politices->removeElement($polity);
+        $polity->removeCountry($this);
+    }
+
+    /**
+     * Remove all articles for this tag
+     */
+    public function removeAllPolitys()
+    {
+        $this->politices->clear();
     }
 }
