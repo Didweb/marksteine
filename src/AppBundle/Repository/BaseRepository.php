@@ -45,4 +45,20 @@ class BaseRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->limit;
     }
+
+    /**
+    * Search for an entity by its ID and return an error
+    * in case the entity is not enclosed.
+    *
+    * @param  int $id ID Entity
+    * @return Entity  Entity
+    */
+    public function findByIdOrFail($id)
+    {
+        $entity = $this->findById($id);
+        if (null === $entity) {
+             
+        }
+        return $entity;
+    }
 }

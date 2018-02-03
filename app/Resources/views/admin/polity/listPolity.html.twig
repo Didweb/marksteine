@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+List Polities
+{% endblock %}
+
+{% block body %}
+{% set tabActive = "polities" %}
+{% include '/admin/menuAdmin.html.twig' %}
+
+<div id="dialogAdd" class="dialog-base">
+{% include('/admin/polity/dialogAddPolity.html.twig') %}
+</div>
+
+<div id="dialogEdit" class="dialog-base">
+  {% include('dialogEmpty.html.twig') %}
+</div>
+
+<div id="dialogDelete" class="dialog-base">
+{% include('dialogDelete.html.twig') %}
+</div>
+
+<div class="alert alert-danger" id="alertDialog" role="alert"></div>
+
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link text-primary"
+        data-href='{{ path('polity_add') }}'
+        id="addPolity" title="Add Polity"><i class="material-icons">add_circle</i></a>
+  </li>
+
+</ul>
+<table class="table listTable">
+  <tbody>
+    {% for polity in polities %}
+     <tr>
+       <td><span class="text-secondary">{{ polity.name }}</span> </b></td>
+       <td class="text-right col-2">
+         <a class="nav-link text-danger"
+         onclick='deleteAction({{ polity.id }}, "{{ polity.name }}", "{{ path('polity_delete')}}"  )'
+        id="deletePolity{{ polity.id }}" title="Delete: {{ polity.name }}"><i class="material-icons">cancel</i></a>
+       </td>
+
+       <td class="text-right col-2">
+          <a data-href='{{ path('polity_edit') }}'
+          onclick='editAction({{ polity.id}}, "{{ path('polity_edit') }}")'
+          class="nav-link text-success"
+          title="Edit {{ polity.name }}"
+          id="editDialogEra"><i class="material-icons">mode_edit</i></a>
+       </td>
+     </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% block javascripts %}
+<script src="{{ asset('js/app/dialogs.js') }}"></script>
+{{ parent() }}
+{% endblock %}
+
+{% set routeName = 'polity_list' %}
+{% include 'pagination.html.twig' %}
+
+
+<script>
+$("#editPolity input[name='appbundle_polity[countrys][]']").change(function() {
+  console.log('toma');
+    if ($(this).is(':checked')) {
+        $(this).prop('checked', false);
+    } else {
+        $(this).prop('checked', true);
+    }
+});
+function editAction(id, path) {
+  $.ajax({
+    type: 'GET',
+    url: path,
+    data: {'id': id},
+    dataType: 'html'
+  }).done(function(data) {
+
+     dialogPreparation('dialogEdit', 'success', data);
+
+     var href = '{{ path('polity_edit_action')}}';
+     $('#editPolity').click(function(event) {
+
+       var selected = new Array();
+           $("input[name='appbundle_polity[countrys][]']:checked").each(function(){
+               if (this.checked) {
+                   selected.push($(this).val());
+               }
+           });
+
+           var formData = {
+             'id' : id,
+             'name' : $('#dialogEdit input[name="appbundle_polity[name]"]').val(),
+             'description' : $('#dialogEdit textarea[name="appbundle_polity[description]"]').val(),
+             'dayStart' : $('#dialogEdit select[name="appbundle_polity[dayStart]"]').val(),
+             'dayEnd' : $('#dialogEdit select[name="appbundle_polity[dayEnd]"]').val(),
+             'monthStart' : $('#dialogEdit select[name="appbundle_polity[monthStart]"]').val(),
+             'monthEnd' : $('#dialogEdit select[name="appbundle_polity[monthEnd]"]').val(),
+             'yearStart' : $('#dialogEdit input[name="appbundle_polity[yearStart]"]').val(),
+             'yearEnd' : $('#dialogEdit input[name="appbundle_polity[yearEnd]"]').val(),
+             'countries': selected
+           };
+
+           $.ajax({
+             type : 'POST',
+             url : href,
+             data: formData,
+             dataType: 'json',
+             encode: true
+           })
+           .done(function(data) {
+             checkErrors(data);
+
+           });
+           event.preventDefault();
+           });
+     });
+};
+
+
+$("#addPolity").click(function (e) {
+   addActionShow();
+   var href = $('#addPolity').data('href');
+
+   $('#addNewPolity').click(function(event) {
+
+        var selected = new Array();
+            $("input[name='appbundle_polity[countrys][]']:checked").each(function(){
+                if (this.checked) {
+                    selected.push($(this).val());
+                }
+            });
+         var formData = {
+                 'name' : $('input[name="appbundle_polity[name]"]').val(),
+                 'description' : $('textarea[name="appbundle_polity[description]"]').val(),
+                 'dayStart' : $('select[name="appbundle_polity[dayStart]"]').val(),
+                 'monthStart' : $('select[name="appbundle_polity[monthStart]"]').val(),
+                 'yearStart' : $('input[name="appbundle_polity[yearStart]"]').val(),
+                 'dayEnd' : $('select[name="appbundle_polity[dayEnd]"]').val(),
+                 'monthEnd' : $('select[name="appbundle_polity[monthEnd]"]').val(),
+                 'yearEnd' : $('input[name="appbundle_polity[yearEnd]"]').val(),
+                 'countries': selected
+         };
+
+         $.ajax({
+           type : 'POST',
+           url : href,
+           data: formData,
+           dataType: 'json',
+           encode: true
+         })
+         .done(function(data) {
+           checkErrors(data);
+         });
+         event.preventDefault();
+   });
+});
+
+</script>
+
+{% endblock %}

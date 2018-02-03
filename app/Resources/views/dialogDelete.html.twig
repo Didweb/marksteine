@@ -1,0 +1,21 @@
+{% extends 'dialog.html.twig' %}
+
+{% block dialog_title %}
+Delete <sapn id="valueTitle"></span>
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+    <p>
+      Do you really want to eliminate  <b id="valueInfo" class="text-danger"></b> ?
+    </p>
+  </div>
+
+  <div class="row">
+    <p class="h4 col-12 text-center">
+        <input type="submit" id="deleteAction"  class="btn btn-danger" value="Delete" />
+    </p>
+  </div>
+</div>
+{% endblock %}

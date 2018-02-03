@@ -1,12 +1,19 @@
-function deleteAction(id, name, domain) {
-
-      $("#dialog" + domain).modal("show");
-      $("div.modal-header h4").attr('class', 'modal-title text-danger');
-      $("#value" + domain).html(name);
-      $("#value" + domain + "Title").html(name);
-      $("#deleteAction").attr('data-id', id);
+function deleteAction(id, name, pathDelete) {
+  $("#dialogDelete").modal("show");
+  $("div.modal-header h4").attr('class', 'modal-title text-danger');
+  $("#valueInfo").html(name);
+  $("#valueTitle").html(name);
+  $("#deleteAction").attr('data-pathdelete', pathDelete);
+  $("#deleteAction").attr('data-id', id);
 }
 
+function addActionShow() {
+  $("#dialogAdd").modal("show");
+  $("div.modal-header h4").attr('class', 'modal-title text-primary');
+  $('.loaderBody').fadeIn(0);
+  $('#editcontent').fadeOut(0);
+
+}
 
 // Dialogue Prepartion
 function dialogPreparation(dailogType, colorStyle, data){
@@ -40,7 +47,7 @@ function checkErrors(data) {
   if(objResult.result == 'error') {
     $('#alertDialog').css({'display' : 'block'});
     $('#alertDialog').html(objResult.message);
-
+console.log("Tap");
   } else {
      location.reload();
   };
@@ -52,11 +59,11 @@ function checkErrors(data) {
 $('#deleteAction').click(function (e) {
 
   var datas = {'id' : $('#deleteAction').data('id')};
-  var routenamedelete = $("#deleteAction").data("routenamedelete");
+  var pathdelete = $("#deleteAction").data("pathdelete");
 
   $.ajax({
              type: "GET",
-             url: routenamedelete ,
+             url: pathdelete ,
              dataType: 'json',
              data: datas,
              encode: true,

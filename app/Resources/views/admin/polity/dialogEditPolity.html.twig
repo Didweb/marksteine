@@ -1,0 +1,69 @@
+{% extends 'dialog.html.twig' %}
+{% block dialog_class %}
+addCountry
+{% endblock %}
+
+{% block dialog_title %}
+Edit Polity
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+
+    {{ form_start(form_edit) }}<div class="form-group">
+         {{ form_label(form_edit.name) }}
+         {{ form_errors(form_edit.name) }}
+         {{ form_widget(form_edit.name) }}
+    </div>
+    <div class="form-group">
+         {{ form_label(form_edit.description) }}
+         {{ form_errors(form_edit.description) }}
+         {{ form_widget(form_edit.description) }}
+    </div>
+    <div class="form-group row">
+         <label class="col-sm-12">Date Start d-m-Y</label>
+         {{ form_errors(form_edit.dayStart) }}
+         {{ form_widget(form_edit.dayStart, { 'attr': {'class': 'col-sm-3'} }) }}
+
+         {{ form_errors(form_edit.monthStart) }}
+         {{ form_widget(form_edit.monthStart, { 'attr': {'class': 'col-sm-3'} }) }}
+
+         {{ form_errors(form_edit.yearStart) }}
+         {{ form_widget(form_edit.yearStart, { 'attr': {'class': 'col-sm-3'} }) }}
+
+
+    </div>
+    <div class="form-group row">
+         <label class="col-sm-12">Date End  d-m-Y</label>
+        {{ form_errors(form_edit.dayEnd) }}
+        {{ form_widget(form_edit.dayEnd, { 'attr': {'class': 'col-sm-3'} }) }}
+
+
+        {{ form_errors(form_edit.monthEnd) }}
+        {{ form_widget(form_edit.monthEnd, { 'attr': {'class': 'col-sm-3'} }) }}
+
+
+        {{ form_errors(form_edit.yearEnd) }}
+        {{ form_widget(form_edit.yearEnd, { 'attr': {'class': 'col-sm-3'} }) }}
+    </div>
+    <div class="form-group row">
+         <label class="col-sm-12">Countrys</label>
+        {{ form_errors(form_edit.countrys) }}
+        {{ form_widget(form_edit.countrys, { 'attr': {'class': 'col-sm-3'} }) }}
+
+    </div>
+
+
+      <input type="submit" id="editPolity"  class="btn btn-success mx-auto" value="Add" />
+        {{ form_widget(form_edit) }}
+    {{ form_end(form_edit) }}
+  </div>
+</div>
+
+<script>
+  $('#appbundle_polity_countrys div')
+
+</script>
+
+{% endblock %}

@@ -50,3 +50,7 @@ services:
     app.countries_continents:
         class: AppBundle\Services\CountriesContinents
         arguments: ["null"]
+
+    app.check_date:
+        class: AppBundle\Services\CheckDate
+        arguments: ["null"]

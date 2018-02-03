@@ -1,0 +1,63 @@
+{% extends 'dialog.html.twig' %}
+{% block dialog_class %}
+addPolity
+{% endblock %}
+
+{% block dialog_title %}
+Add Polity
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+
+    {{ form_start(form) }}
+       <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_errors(form.name) }}
+            {{ form_widget(form.name) }}
+       </div>
+       <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_errors(form.description) }}
+            {{ form_widget(form.description) }}
+       </div>
+       <div class="form-group row">
+            <label class="col-sm-12">Date Start d-m-Y</label>
+            {{ form_errors(form.dayStart) }}
+            {{ form_widget(form.dayStart, { 'attr': {'class': 'col-sm-3'} }) }}
+
+            {{ form_errors(form.monthStart) }}
+            {{ form_widget(form.monthStart, { 'attr': {'class': 'col-sm-3'} }) }}
+
+            {{ form_errors(form.yearStart) }}
+            {{ form_widget(form.yearStart, { 'attr': {'class': 'col-sm-3'} }) }}
+
+
+       </div>
+       <div class="form-group row">
+            <label class="col-sm-12">Date End  d-m-Y</label>
+           {{ form_errors(form.dayEnd) }}
+           {{ form_widget(form.dayEnd, { 'attr': {'class': 'col-sm-3'} }) }}
+
+
+           {{ form_errors(form.monthEnd) }}
+           {{ form_widget(form.monthEnd, { 'attr': {'class': 'col-sm-3'} }) }}
+
+
+           {{ form_errors(form.yearEnd) }}
+           {{ form_widget(form.yearEnd, { 'attr': {'class': 'col-sm-3'} }) }}
+       </div>
+       <div class="form-group row">
+            <label class="col-sm-12">Country</label>
+           {{ form_errors(form.countrys ) }}
+           {{ form_widget(form.countrys, { 'attr': {'class': 'col-sm-6'} }) }}
+       </div>
+      <input type="submit" id="addNewPolity" data-href='{{ path('polity_add') }}' class="btn btn-success mx-auto" value="Add" />
+
+
+
+    {{ form_end(form) }}
+  </div>
+</div>
+{% endblock %}

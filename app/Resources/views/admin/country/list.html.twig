@@ -8,11 +8,11 @@ List Countries
 {% set tabActive = "countries" %}
 {% include '/admin/menuAdmin.html.twig' %}
 
-<div id="dialogAddCountry" class="dialog-base">
+<div id="dialogAdd" class="dialog-base">
 {% include('/admin/country/dialogAddCountry.html.twig') %}
 </div>
-<div id="dialogDeleteCountry" class="dialog-base">
-{% include('/admin/country/dialogDeleteCountry.html.twig') %}
+<div id="dialogDelete" class="dialog-base">
+{% include('dialogDelete.html.twig') %}
 </div>
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
 
@@ -28,7 +28,12 @@ List Countries
      <tr>
        <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
        <td class="text-right">
-         <a class="nav-link text-danger" onclick='deleteAction({{ country.id }}, "{{ country.name|country }}", "DeleteCountry" )' data-href='{{ path('country_add') }}' data-id="{{ country.id }}" data-country="{{ country.name|country }}" id="deleteCountry{{ country.id }}" title="Delete: {{ country.name|country }}"><i class="material-icons">cancel</i></a>
+         <a class="nav-link text-danger"
+         onclick='deleteAction({{ country.id }},
+         "{{ country.name|country }}",
+         "{{ path('country_delete')}}" )'
+          id="deleteCountry{{ country.id }}"
+          title="Delete: {{ country.name|country }}"><i class="material-icons">cancel</i></a>
        </td>
      </tr>
     {% endfor %}
@@ -46,13 +51,10 @@ List Countries
 
 <script>
 
-
-
 $("#addCountry").click(function (e) {
-   $("#dialogAddCountry").modal("show");
-   $("div.modal-header h4").attr('class', 'modal-title text-primary');
-   $('.loaderBody').fadeIn(0);
-   $('#editcontent').fadeOut(0);
+
+   addActionShow();
+
    var href = this.href;
    e.preventDefault();
    $.ajax({
