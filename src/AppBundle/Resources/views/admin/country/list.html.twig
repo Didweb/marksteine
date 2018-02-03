@@ -26,8 +26,8 @@ List Countries
   <tbody>
     {% for country in countries %}
      <tr>
-       <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
-       <td class="text-right">
+       <td class="col-10"><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
+       <td class="col-2 text-right">
          <a class="nav-link text-danger"
          onclick='deleteAction({{ country.id }},
          "{{ country.name|country }}",
