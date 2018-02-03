@@ -25,7 +25,7 @@ class ProfileController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('profile/index.html.twig');
+        return $this->render('AppBundle::profile/index.html.twig');
     }
 
     /**
@@ -85,7 +85,7 @@ class ProfileController extends Controller
             return $this->redirectToRoute('profile_edit');
         }
 
-        return $this->render('profile/edit.html.twig', array(
+        return $this->render('AppBundle::profile/edit.html.twig', array(
                              'edit_form' => $editForm->createView(),
                              'idUser' => $user->getId()
                            ));

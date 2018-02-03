@@ -43,7 +43,7 @@ class PolityController extends Controller
         $thisPage = $page;
 
         $form = $this->createForm(PolityType::class, $polity);
-        return $this->render('admin/polity/listPolity.html.twig', array(
+        return $this->render('AppBundle::admin/polity/listPolity.html.twig', array(
                                             'polities' => $iterator,
                                             'maxPages'  => $maxPages,
                                             'thisPage'  => $thisPage,
@@ -62,7 +62,7 @@ class PolityController extends Controller
         $polity = $em->getRepository('AppBundle:Polity')->findOneById($request->get('id'));
         $form = $this->createForm(PolityType::class, $polity);
 
-        return $this->render('admin/polity/dialogEditPolity.html.twig', array(
+        return $this->render('AppBundle::admin/polity/dialogEditPolity.html.twig', array(
                                             'form_edit'      => $form->createView()));
     }
 

@@ -12,16 +12,16 @@
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
-        {% include '/base/header.html.twig' %}
+        {% include '@App/base/header.html.twig' %}
     </head>
     <body>
     <div class="container-fluid">
 
-         {% include '/base/flashAlert.html.twig' %}
+         {% include '@App/base/flashAlert.html.twig' %}
 
          {% block top %}
              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-               {% include '/base/menu.html.twig' %}
+               {% include '@App/base/menu.html.twig' %}
              </nav>
           {% endblock %}
 

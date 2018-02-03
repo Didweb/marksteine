@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '@App/base.html.twig' %}
 
 {% block body %}
 <h1>Edit Profile</h1>
@@ -36,15 +36,8 @@
               $(this).html(res);
 console.log("mento_"+value+ text);
             }, 1000);
-
-
-
                    });
-
-
  }
-
-
                 );
 </script>
 {% endblock %}
