@@ -4,7 +4,7 @@ addCountry
 {% endblock %}
 
 {% block dialog_title %}
-Edit Polity 
+Edit Polity
 {% endblock %}
 
 {% block dialog_body %}
@@ -53,9 +53,17 @@ Edit Polity
         {{ form_widget(form_edit.countrys, { 'attr': {'class': 'col-sm-3'} }) }}
 
     </div>
+
+
       <input type="submit" id="editPolity"  class="btn btn-success mx-auto" value="Add" />
         {{ form_widget(form_edit) }}
     {{ form_end(form_edit) }}
   </div>
 </div>
+
+<script>
+  $('#appbundle_polity_countrys div')
+
+</script>
+
 {% endblock %}
