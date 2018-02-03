@@ -21,7 +21,7 @@
 }
 
 .addPolity {
-  width: 600px;  
+  width: 600px;
 }
 
 
@@ -38,8 +38,12 @@
 }
 .nav-link {
   cursor: pointer;
+  font-size: 1.5em;
 }
 
+.table td {
+  font-size: 1.2em;
+}
 
 .modal-backdrop.show {
   z-index: 1;
@@ -54,4 +58,10 @@
 .modal-body {
   margin: 15px;
   text-align: center;
+}
+
+@media only screen and (max-width: 500px) {
+  .table td {
+    font-size: 1.7em;
+  }
 }
