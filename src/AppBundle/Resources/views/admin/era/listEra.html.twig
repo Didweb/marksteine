@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '@App/base.html.twig' %}
 
 {% block title %}
 List Countries
@@ -6,18 +6,18 @@ List Countries
 
 {% block body %}
 {% set tabActive = "eras" %}
-{% include '/admin/menuAdmin.html.twig' %}
+{% include '@App/admin/menuAdmin.html.twig' %}
 
 <div id="dialogAdd" class="dialog-base">
-{% include('/admin/era/dialogAddEra.html.twig') %}
+{% include('@App/admin/era/dialogAddEra.html.twig') %}
 </div>
 
 <div id="dialogEdit" class="dialog-base">
-  {% include('dialogEmpty.html.twig') %}
+  {% include('@App/dialogEmpty.html.twig') %}
 </div>
 
 <div id="dialogDelete" class="dialog-base">
-{% include('dialogDelete.html.twig') %}
+{% include('@App/dialogDelete.html.twig') %}
 </div>
 
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
@@ -64,7 +64,7 @@ List Countries
 {% endblock %}
 
 {% set routeName = 'era_list' %}
-{% include 'pagination.html.twig' %}
+{% include '@App/pagination.html.twig' %}
 
 
 <script>

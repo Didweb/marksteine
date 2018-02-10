@@ -28,6 +28,6 @@ class MilestoneController extends Controller
         $serviceCC = $this->get('app.countries_continents');
         $continent =  $serviceCC->getContinent($country);
 
-        return $this->render('milestone/index.html.twig', array('country'=>$country, 'continent'=>$continent));
+        return $this->render('AppBundle::milestone/index.html.twig', array('country'=>$country, 'continent'=>$continent));
     }
 }

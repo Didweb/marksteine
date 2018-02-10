@@ -42,7 +42,7 @@ class CountryController extends Controller
         $thisPage = $page;
 
         $form = $this->createForm(CountriesType::class, $country);
-        return $this->render('admin/country/list.html.twig', array(
+        return $this->render('AppBundle::admin/country/list.html.twig', array(
                                             'countries' => $iterator,
                                             'maxPages'  => $maxPages,
                                             'thisPage'  => $thisPage,

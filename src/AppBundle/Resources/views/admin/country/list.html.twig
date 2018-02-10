@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '@App/base.html.twig' %}
 
 {% block title %}
 List Countries
@@ -6,13 +6,13 @@ List Countries
 
 {% block body %}
 {% set tabActive = "countries" %}
-{% include '/admin/menuAdmin.html.twig' %}
+{% include '@App/admin/menuAdmin.html.twig' %}
 
 <div id="dialogAdd" class="dialog-base">
-{% include('/admin/country/dialogAddCountry.html.twig') %}
+{% include('@App/admin/country/dialogAddCountry.html.twig') %}
 </div>
 <div id="dialogDelete" class="dialog-base">
-{% include('dialogDelete.html.twig') %}
+{% include('@App/dialogDelete.html.twig') %}
 </div>
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
 
@@ -26,8 +26,8 @@ List Countries
   <tbody>
     {% for country in countries %}
      <tr>
-       <td><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
-       <td class="text-right">
+       <td class="col-10"><span class="text-secondary">{{ country.name }}</span> - <b>{{ country.name|country }}</b></td>
+       <td class="col-2 text-right">
          <a class="nav-link text-danger"
          onclick='deleteAction({{ country.id }},
          "{{ country.name|country }}",
@@ -46,7 +46,7 @@ List Countries
 {% endblock %}
 
 {% set routeName = 'country_list' %}
-{% include 'pagination.html.twig' %}
+{% include '@App/pagination.html.twig' %}
 
 
 <script>
