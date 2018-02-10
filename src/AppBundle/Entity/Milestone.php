@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use AppBundle\Entity\Type;
 
 /**
  * Milestone
@@ -84,6 +85,26 @@ class Milestone
      * @ORM\Column(type="datetime")
      */
     private $updateAt;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Type", inversedBy="milestones")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     */
+    private $type;
+
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+
+    public function setType(Type $type)
+    {
+        $this->type = $type;
+    }
+
 
     /**
      * Get id

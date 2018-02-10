@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use AppBundle\Entity\Type;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Formular for Era
@@ -31,6 +34,16 @@ class MilestoneType extends AbstractType
     {
         $builder->add('title', TextType::class, array('required'=> true));
         $builder->add('description', TextareaType::class, array('required'=> true));
+        $builder->add('type', EntityType::class, array(
+                                      // looks for choices from this entity
+                                      'class' => Type::class,
+                                      'query_builder' => function (EntityRepository $er) {
+                                              return $er->createQueryBuilder('t')
+                                                  ->orderBy('t.name', 'ASC');
+                                      },
+                                      'choice_label' => 'name',
+                                      'required'=> true
+                                  ));
         $builder->add('day', ChoiceType::class, array(
                       'choices' => range(0, 31),
                       'placeholder' => 'Day',

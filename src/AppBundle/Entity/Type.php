@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Type
@@ -40,6 +42,25 @@ class Type
      * @ORM\Column(name="color", type="string", length=15,  nullable=false)
      */
     private $color;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Milestone", mappedBy="type")
+     */
+    private $milestones;
+
+    public function __construct()
+    {
+        $this->milestones = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Milestone[]
+     */
+    public function getMilestones()
+    {
+         return $this->milestones;
+    }
+
 
 
     /**
