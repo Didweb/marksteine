@@ -27,4 +27,17 @@ class PolityRepository extends BaseRepository
 
         return $paginator;
     }
+
+    /**
+    * Get n polity.
+    *
+    * @return n Polities
+    */
+    public function getCountPolities()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('count(p.id)');
+        $count = $qb->getQuery()->getSingleScalarResult();
+        return $count;
+    }
 }

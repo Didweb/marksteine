@@ -28,4 +28,17 @@ class CountryRepository extends BaseRepository
 
         return $paginator;
     }
+
+    /**
+    * Get n Countries.
+    *
+    * @return n countries
+    */
+    public function getCountCountries()
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->select('count(c.id)');
+        $count = $qb->getQuery()->getSingleScalarResult();
+        return $count;
+    }
 }

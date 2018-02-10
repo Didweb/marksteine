@@ -28,4 +28,17 @@ class EraRepository extends BaseRepository
 
         return $paginator;
     }
+
+    /**
+    * Get n era.
+    *
+    * @return n eras
+    */
+    public function getCountEras()
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->select('count(e.id)');
+        $count = $qb->getQuery()->getSingleScalarResult();
+        return $count;
+    }
 }

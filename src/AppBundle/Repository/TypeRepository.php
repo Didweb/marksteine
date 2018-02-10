@@ -26,4 +26,17 @@ class TypeRepository extends BaseRepository
 
         return $paginator;
     }
+
+    /**
+    * Get n Type.
+    *
+    * @return n Type milestones
+    */
+    public function getCountTypeMilestones()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('count(t.id)');
+        $count = $qb->getQuery()->getSingleScalarResult();
+        return $count;
+    }
 }

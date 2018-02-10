@@ -24,7 +24,19 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
+        $em = $this->getDoctrine()->getManager();
 
-        return $this->render('AppBundle::admin/index.html.twig');
+        $countries = $em->getRepository('AppBundle:Country')->getCountCountries();
+
+        $eras = $em->getRepository('AppBundle:Era')->getCountEras();
+        $polities = $em->getRepository('AppBundle:Polity')->getCountPolities();
+        $types = $em->getRepository('AppBundle:Type')->getCountTypeMilestones();
+
+        return $this->render('AppBundle::admin/index.html.twig', array(
+                                            'countries' => $countries,
+                                            'eras'      => $eras,
+                                            'polities'  => $polities,
+                                            'types'     => $types,
+                                              ));
     }
 }
