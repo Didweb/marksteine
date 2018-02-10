@@ -16,6 +16,9 @@
   <li class="nav-item">
       <a class="nav-link" id="types" href="{{ path('type_list')}}">Type Milestone {% if totalTypes is defined %}<b class="text-primary">{{ totalTypes }}{% endif %}</b></a>
   </li>
+  <li class="nav-item">
+      <a class="nav-link" id="milestones" href="{{ path('milestone_list')}}">Milestones {% if totalMilestones is defined %}<b class="text-primary">{{ totalMilestones }}{% endif %}</b></a>
+  </li>
   {% endif %}
 </ul>
 <script>

@@ -27,7 +27,7 @@ class TyMilestoneType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name');
+        $builder->add('name', TextType::class, array('required'=> true));
         $builder->add('color', TextType::class, array('required'=> true));
     }
 

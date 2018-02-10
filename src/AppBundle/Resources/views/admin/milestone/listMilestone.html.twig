@@ -1,0 +1,140 @@
+{% extends '@App/base.html.twig' %}
+
+{% block title %}
+List Milestone
+{% endblock %}
+
+{% block body %}
+{% set tabActive = "milestones" %}
+{% include '@App/admin/menuAdmin.html.twig' %}
+
+<div id="dialogAdd" class="dialog-base">
+{% include('@App/admin/milestone/dialogAddMilestone.html.twig') %}
+</div>
+
+<div id="dialogEdit" class="dialog-base">
+  {% include('@App/dialogEmpty.html.twig') %}
+</div>
+
+<div id="dialogDelete" class="dialog-base">
+{% include('@App/dialogDelete.html.twig') %}
+</div>
+
+<div class="alert alert-danger" id="alertDialog" role="alert"></div>
+
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link text-primary"
+        data-href='{{ path('milestone_add') }}'
+        id="addMilestone" title="Add Type"><i class="material-icons">add_circle</i></a>
+  </li>
+
+</ul>
+<table class="table listTable">
+  <tbody>
+    {% for milestone in milestones %}
+     <tr>
+       <td>
+         {{ milestone.day }}.{{ milestone.month }}.{{ milestone.year }}
+       </td>
+        <td class="col-2" >
+            {{ milestone.title }}
+        </td>
+
+       <td class="text-right col-2">
+         <a class="nav-link text-danger"
+            onclick='deleteAction({{ milestone.id }}, "{{ milestone.title }}", "{{ path('milestone_delete')}}"  )'
+            id="deleteMilestone{{ milestone.id }}" title="Delete: {{ milestone.title }}"><i class="material-icons">cancel</i></a>
+       </td>
+       <td class="text-right col-2">
+          <a data-href='{{ path('milestone_edit') }}'
+          onclick='editAction({{ milestone.id}}, "{{ path('milestone_edit') }}")'
+          class="nav-link text-success"
+          title="Edit {{ milestone.title }}"
+          id="editDialogMilestone"><i class="material-icons">mode_edit</i></a>
+       </td>
+     </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% block javascripts %}
+<script src="{{ asset('js/app/dialogs.js') }}"></script>
+{{ parent() }}
+{% endblock %}
+
+{% set routeName = 'milestone_list' %}
+{% include '@App/pagination.html.twig' %}
+
+
+<script>
+function editAction(id, path) {
+  $.ajax({
+    type: 'GET',
+    url: path,
+    data: {'id': id},
+    dataType: 'html'
+  }).done(function(data) {
+
+     dialogPreparation('dialogEdit', 'success', data);
+
+     var href = '{{ path('milestone_edit_action')}}';
+     $('#editMilestone').click(function(event) {
+
+           var formData = {
+             'id' : id,
+             'title'        : $('#dialogEdit input[name="appbundle_milestone[title]"]').val(),
+             'description'  : $('#dialogEdit textarea[name="appbundle_milestone[description]"]').val(),
+             'day'          : $('#dialogEdit select[name="appbundle_milestone[day]"]').val(),
+             'month'        : $('#dialogEdit select[name="appbundle_milestone[month]"]').val(),
+             'year'         : $('#dialogEdit input[name="appbundle_milestone[year]"]').val()
+           };
+
+           $.ajax({
+             type : 'POST',
+             url : href,
+             data: formData,
+             dataType: 'json',
+             encode: true
+           })
+           .done(function(data) {
+             checkErrors(data);
+           });
+           event.preventDefault();
+           });
+     });
+};
+
+
+$("#addMilestone").click(function (e) {
+
+   addActionShow();
+
+   var href = $('#addMilestone').data('href');
+
+   $('#addNewMilestone').click(function(event) {
+         var formData = {
+           'title'        : $('input[name="appbundle_milestone[title]"]').val(),
+           'description'  : $('textarea[name="appbundle_milestone[description]"]').val(),
+           'day'          : $('select[name="appbundle_milestone[day]"]').val(),
+           'month'        : $('select[name="appbundle_milestone[month]"]').val(),
+           'year'         : $('input[name="appbundle_milestone[year]"]').val()
+         };
+
+         $.ajax({
+           type : 'POST',
+           url : href,
+           data: formData,
+           dataType: 'json',
+           encode: true
+         })
+         .done(function(data) {
+           checkErrors(data);
+         });
+         event.preventDefault();
+   });
+});
+
+</script>
+
+{% endblock %}

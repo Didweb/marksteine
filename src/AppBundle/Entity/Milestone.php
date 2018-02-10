@@ -4,12 +4,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Milestone
  *
  * @ORM\Table(name="milestone")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MilestoneRepository")
+ * @UniqueEntity("title")
  */
 class Milestone
 {
@@ -26,6 +29,7 @@ class Milestone
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, unique=true)
+     * @Assert\NotNull()
      */
     private $title;
 
@@ -33,6 +37,7 @@ class Milestone
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotNull()
      */
     private $description;
 
@@ -40,6 +45,7 @@ class Milestone
      * @var int
      *
      * @ORM\Column(name="day", type="integer")
+     * @Assert\NotNull()
      */
     private $day;
 
@@ -47,6 +53,7 @@ class Milestone
      * @var int
      *
      * @ORM\Column(name="month", type="integer")
+     * @Assert\NotNull()
      */
     private $month;
 
@@ -54,6 +61,7 @@ class Milestone
      * @var int
      *
      * @ORM\Column(name="year", type="integer")
+     * @Assert\NotNull()
      */
     private $year;
 
