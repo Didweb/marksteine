@@ -2,35 +2,21 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use AppBundle\Entity\Country;
 use AppBundle\Controller\CountryController;
+use AppBundle\Tests\BaseTesting;
 
-class CountryUnitTest extends WebTestCase
+class CountryUnitTest extends Basetesting
 {
-
-    private $client = null;
     private $dummyUser;
-    private $em;
-    private $container;
     private $idCountry;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $this->container = static::$kernel->getContainer();
-        $this->em = static::$kernel->getContainer()
-                              ->get('doctrine')
-                              ->getManager();
-        $this->dummyData();
-    }
-
 
     public function testaddCountryError()
     {
+        $this->logIn('ROLE_ADMIN');
         $crawler = $this->client->request(
             'POST',
-            '/country/add-country',
+            '/admin/country/add-country',
             array("name" => 'AR', "continent" => 'Nort America and Central America'),
             array(),
             array()
@@ -45,9 +31,10 @@ class CountryUnitTest extends WebTestCase
 
     public function testaddCountryOk()
     {
+        $this->logIn('ROLE_ADMIN');
         $crawler = $this->client->request(
             'POST',
-            '/country/add-country',
+            '/admin/country/add-country',
             array("name" => "DE", "continent" => 'Europe'),
             array(),
             array()
@@ -62,9 +49,10 @@ class CountryUnitTest extends WebTestCase
 
     public function testaddCountryNotInList()
     {
+        $this->logIn('ROLE_ADMIN');
         $crawler = $this->client->request(
             'POST',
-            '/country/add-country',
+            '/admin/country/add-country',
             array("name" => "XX", "continent" => 'XXXX'),
             array(),
             array()
@@ -79,9 +67,10 @@ class CountryUnitTest extends WebTestCase
 
     public function testDeleteCountryOk()
     {
+        $this->logIn('ROLE_ADMIN');
         $crawler = $this->client->request(
             'GET',
-            '/country/delete-country',
+            '/admin/country/delete-country',
             array("id" => $this->idCountry),
             array(),
             array()
@@ -97,9 +86,10 @@ class CountryUnitTest extends WebTestCase
 
     public function testDeleteCountryError()
     {
+        $this->logIn('ROLE_ADMIN');
         $crawler = $this->client->request(
             'GET',
-            '/country/delete-country',
+            '/admin/country/delete-country',
             array("id" => 99999),
             array(),
             array()
@@ -113,7 +103,7 @@ class CountryUnitTest extends WebTestCase
     }
 
 
-    private function dummyData()
+    protected function dummyData()
     {
         $country = $this->em->getRepository('AppBundle:Country')->findOneByName('AR');
         if (!$country) {
@@ -133,9 +123,4 @@ class CountryUnitTest extends WebTestCase
     }
 
 
-    protected function tearDown()
-    {
-        $this->em->close();
-        unset($this->client);
-    }
 }

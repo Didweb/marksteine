@@ -2,37 +2,23 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use AppBundle\Entity\Type;
 use AppBundle\Controller\CountryController;
+use AppBundle\Tests\BaseTesting;
 
-class TypeUnitTest extends WebTestCase
+class TypeUnitTest extends BaseTesting
 {
-
-    private $client = null;
-    private $em;
-    private $container;
     private $idType;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $this->container = static::$kernel->getContainer();
-        $this->em = static::$kernel->getContainer()
-                              ->get('doctrine')
-                              ->getManager();
-        $this->dummyData();
-    }
-
 
 
     public function testaddTypeOk()
     {
         $this->cleanDummy('Second_Type');
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/type/add-type',
+            '/admin/type/add-type',
             array("name" => "Second_Type", "color" => "#000000"),
             array(),
             array()
@@ -50,10 +36,11 @@ class TypeUnitTest extends WebTestCase
     public function testaddTypeErrorColor()
     {
         $this->cleanDummy('Second_Type');
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/type/add-type',
+            '/admin/type/add-type',
             array("name" => "Second_Type"),
             array(),
             array()
@@ -69,10 +56,11 @@ class TypeUnitTest extends WebTestCase
 
     public function testaddTypeErrorRepeat()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/type/add-type',
+            '/admin/type/add-type',
             array("name" => "First_Type", "color" => "#ffffff"),
             array(),
             array()
@@ -88,10 +76,11 @@ class TypeUnitTest extends WebTestCase
 
     public function testRemoveType()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/type/delete-type',
+            '/admin/type/delete-type',
             array("id" => $this->idType),
             array(),
             array()
@@ -107,9 +96,11 @@ class TypeUnitTest extends WebTestCase
 
     public function testRemoveTypeError()
     {
+        $this->logIn('ROLE_ADMIN');
+
         $crawler = $this->client->request(
             'GET',
-            '/type/delete-type',
+            '/admin/type/delete-type',
             array("id" => 99999),
             array(),
             array()
@@ -125,10 +116,11 @@ class TypeUnitTest extends WebTestCase
 
     public function testEditType()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/type/edit-type',
+            '/admin/type/edit-type',
             array("id" => $this->idType, "name" => "Second_Typexxx", "color" => "#ffffff"),
             array(),
             array()
@@ -143,10 +135,11 @@ class TypeUnitTest extends WebTestCase
     public function testEditActType()
     {
         $this->dummyData();
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/type/edit-type-action',
+            '/admin/type/edit-type-action',
             array("id" => $this->idType, "name" => "Second_Typexxx", "color" => "#ffffff"),
             array(),
             array()
@@ -165,10 +158,11 @@ class TypeUnitTest extends WebTestCase
     public function testEditActTypeError()
     {
         $this->dummyData();
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/type/edit-type-action',
+            '/admin/type/edit-type-action',
             array("id" => $this->idType, "name" => "Second_Typexxx"),
             array(),
             array()
@@ -184,7 +178,7 @@ class TypeUnitTest extends WebTestCase
     }
 
 
-    private function dummyData()
+    protected function dummyData()
     {
         $type = $this->em->getRepository('AppBundle:Type')->findOneByName('First_Type');
         if (!$type) {
@@ -208,12 +202,5 @@ class TypeUnitTest extends WebTestCase
             $this->em->remove($cleanType);
             $this->em->flush();
         }
-    }
-
-
-    protected function tearDown()
-    {
-        $this->em->close();
-        unset($this->client);
     }
 }

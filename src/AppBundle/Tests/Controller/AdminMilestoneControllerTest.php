@@ -2,20 +2,12 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
+use AppBundle\Tests\BaseTesting;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class AdminMilestoneControllerTest extends WebTestCase
+class AdminMilestoneControllerTest extends BaseTesting
 {
 
-    private $client = null;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
 
     public function testIndex()
     {
@@ -80,20 +72,5 @@ class AdminMilestoneControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/admin/milestone/list/1');
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
-    private function logIn($role)
-    {
-        $session = $this->client->getContainer()->get('session');
-
-        // the firewall context defaults to the firewall name
-        $firewallContext = 'main';
-
-        $token = new UsernamePasswordToken('admin', null, $firewallContext, array($role));
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
     }
 }

@@ -2,30 +2,13 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use AppBundle\Tests\BaseTesting;
 use AppBundle\Entity\Milestone;
 
-class MilestoneUnitTest extends WebTestCase
+class MilestoneUnitTest extends BaseTesting
 {
 
-    private $client = null;
-    private $em;
-    private $container;
     private $idMilestone;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $this->container = static::$kernel->getContainer();
-        $this->em = static::$kernel->getContainer()
-                              ->get('doctrine')
-                              ->getManager();
-        $this->dummyData();
-    }
-
 
 
     public function testaddMilestoneOk()
@@ -173,10 +156,7 @@ class MilestoneUnitTest extends WebTestCase
     }
 
 
-
-
-
-    private function dummyData()
+    protected function dummyData()
     {
         $milestone = $this->em->getRepository('AppBundle:Milestone')->findOneByTitle('First_Milestone');
         if (!$milestone) {
@@ -205,24 +185,4 @@ class MilestoneUnitTest extends WebTestCase
         }
     }
 
-    private function logIn($role)
-    {
-        $session = $this->client->getContainer()->get('session');
-
-        // the firewall context defaults to the firewall name
-        $firewallContext = 'main';
-
-        $token = new UsernamePasswordToken('admin', null, $firewallContext, array($role));
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-    }
-
-    protected function tearDown()
-    {
-        $this->em->close();
-        unset($this->client);
-    }
 }

@@ -2,31 +2,15 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use AppBundle\Tests\BaseTesting;
 use AppBundle\Entity\Profile;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Response;
 
-class ProfileControllerTest extends WebTestCase
+class ProfileControllerTest extends BaseTesting
 {
-
-
-    private $client = null;
     private $dummyUser;
-    private $em;
-    private $container;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $this->container = static::$kernel->getContainer();
-        $this->em = static::$kernel->getContainer()
-                              ->get('doctrine')
-                              ->getManager();
-    }
 
     /**
     * Access test not allowed (visitor user).
@@ -155,23 +139,6 @@ class ProfileControllerTest extends WebTestCase
 
 
     /**
-    * Login
-    */
-    private function logIn($role, $user = 'admin')
-    {
-        $session = $this->client->getContainer()->get('session');
-        $firewallContext = 'main';
-
-        $token = new UsernamePasswordToken($user, null, $firewallContext, array($role));
-
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-    }
-
-    /**
      * Created User Dummy
      */
     private function userDummy()
@@ -189,12 +156,5 @@ class ProfileControllerTest extends WebTestCase
         }
 
         return $user;
-    }
-
-
-    protected function tearDown()
-    {
-        $this->em->close();
-        unset($this->client);
     }
 }

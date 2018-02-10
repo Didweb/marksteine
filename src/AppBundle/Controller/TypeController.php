@@ -16,7 +16,7 @@ use AppBundle\Entity\Type;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
-* @Route("type")
+* @Route("admin/type")
 */
 class TypeController extends Controller
 {

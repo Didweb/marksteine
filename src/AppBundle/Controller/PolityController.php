@@ -17,7 +17,7 @@ use AppBundle\Entity\Country;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
-* @Route("polity")
+* @Route("admin/polity")
 */
 class PolityController extends Controller
 {
