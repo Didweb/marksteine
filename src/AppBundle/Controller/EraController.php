@@ -42,7 +42,7 @@ class EraController extends Controller
         $thisPage = $page;
 
         $form = $this->createForm(EraType::class, $era);
-        return $this->render('admin/era/listEra.html.twig', array(
+        return $this->render('AppBundle::admin/era/listEra.html.twig', array(
                                             'eras'      => $iterator,
                                             'maxPages'  => $maxPages,
                                             'thisPage'  => $thisPage,
@@ -82,7 +82,7 @@ class EraController extends Controller
         $era = $em->getRepository('AppBundle:Era')->findOneById($request->get('id'));
         $form = $this->createForm(EraType::class, $era);
 
-        return $this->render('admin/era/dialogEditEra.html.twig', array(
+        return $this->render('AppBundle::admin/era/dialogEditEra.html.twig', array(
                                             'form_edit'      => $form->createView()));
     }
 
