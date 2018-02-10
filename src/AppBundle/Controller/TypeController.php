@@ -102,12 +102,14 @@ class TypeController extends Controller
         $type = $em->getRepository('AppBundle:Type')->findOneById($id);
         $type->setName($name);
         $type->setColor($color);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($type);
-        $em->flush();
-        $result = '{"result":"ok"}';
-
+        if ($request->get('color')=="") {
+            $result = '{"result":"error", "message": "The color field is required."}';
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($type);
+            $em->flush();
+            $result = '{"result":"ok"}';
+        }
         return new JsonResponse($result);
     }
 
@@ -117,7 +119,7 @@ class TypeController extends Controller
      * @Route("/add-type", name="type_add")
      * @Method({"GET", "POST"})
      */
-    public function addCountry(Request $request)
+    public function addType(Request $request)
     {
         $type = new Type();
         $type->setName($request->get('name'));
@@ -128,14 +130,16 @@ class TypeController extends Controller
 
         if (count($errors) > 0) {
             $errorsString = (string) $errors;
-            $result = '{"result":"error", "message": "This type is already added."}';
+            if ($request->get('color')=="") {
+                $result = '{"result":"error", "message": "The color field is required."}';
+            } else {
+                $result = '{"result":"error", "message": "This type is already added."}';
+            }
         } else {
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($type);
             $em->flush();
             $result = '{"result":"ok"}';
-
         }
         return new JsonResponse($result);
     }

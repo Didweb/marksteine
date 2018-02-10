@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Type
  *
  * @ORM\Table(name="type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TypeRepository")
+ * @UniqueEntity("name")
  */
 class Type
 {
@@ -24,14 +27,17 @@ class Type
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Assert\NotNull()
+     * @ORM\Column(name="name", type="string", length=255, unique=true,  nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="color", type="string", length=15)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @ORM\Column(name="color", type="string", length=15,  nullable=false)
      */
     private $color;
 
@@ -94,4 +100,3 @@ class Type
         return $this->color;
     }
 }
-

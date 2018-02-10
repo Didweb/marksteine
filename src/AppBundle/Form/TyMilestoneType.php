@@ -10,7 +10,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use AppBundle\Entity\Type;
 
 /**
@@ -28,7 +28,7 @@ class TyMilestoneType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name');
-        $builder->add('color');
+        $builder->add('color', TextType::class, array('required'=> true));
     }
 
     /**
