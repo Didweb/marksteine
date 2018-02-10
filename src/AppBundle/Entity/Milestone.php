@@ -90,8 +90,28 @@ class Milestone
     /**
      * @ORM\ManyToOne(targetEntity="Type", inversedBy="milestones")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * @Assert\NotNull()
      */
     private $type;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="milestones")
+     * @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+     * @Assert\NotNull()
+     */
+    private $country;
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+
+    public function setCountry(Country $country)
+    {
+        $this->country = $country;
+    }
 
 
     public function getType()

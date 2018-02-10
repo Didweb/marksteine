@@ -4,11 +4,15 @@ namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\BaseTesting;
 use AppBundle\Entity\Milestone;
+use AppBundle\Entity\Type;
+use AppBundle\Entity\Country;
 
 class MilestoneUnitTest extends BaseTesting
 {
 
     private $idMilestone;
+    private $idType;
+    private $idCountry;
 
 
     public function testaddMilestoneOk()
@@ -19,7 +23,13 @@ class MilestoneUnitTest extends BaseTesting
         $crawler = $this->client->request(
             'GET',
             '/admin/milestone/add-milestone',
-            array("title" => "Second_Milestone", "description" => "a", "day" => 2, "month" => 3, "year" => 4),
+            array("title" => "Second_Milestone",
+                  "description" => "a",
+                  "type" => $this->idType,
+                  "country" => $this->idCountry,
+                  "day" => 2,
+                  "month" => 3,
+                  "year" => 4),
             array(),
             array()
         );
@@ -29,6 +39,8 @@ class MilestoneUnitTest extends BaseTesting
         $objResult = json_decode($this->client->getResponse()->getContent());
         $objResult = json_decode($objResult);
         $this->assertEquals('ok', $objResult->result);
+
+
     }
 
 
@@ -41,7 +53,14 @@ class MilestoneUnitTest extends BaseTesting
         $crawler = $this->client->request(
             'GET',
             '/admin/milestone/add-milestone',
-            array("title" => null, "description" => "a", "day" => 2, "month" => 3, "year" => 4),
+            array(
+                  "title"       => null,
+                  "description" => "a",
+                  "type"        => $this->idType,
+                  "country"     => $this->idCountry,
+                  "day"         => 2,
+                  "month"       => 3,
+                  "year"        => 4),
             array(),
             array()
         );
@@ -61,7 +80,13 @@ class MilestoneUnitTest extends BaseTesting
         $crawler = $this->client->request(
             'GET',
             '/admin/milestone/add-milestone',
-            array("title" => "First_Milestone", "description" => "a", "day" => 2, "month" => 3, "year" => 4),
+            array("title" => "First_Milestone",
+            "description" => "a",
+            "type" => $this->idType,
+            "country" => $this->idCountry,
+            "day" => 2,
+            "month" => 3,
+            "year" => 4),
             array(),
             array()
         );
@@ -141,7 +166,15 @@ class MilestoneUnitTest extends BaseTesting
         $crawler = $this->client->request(
             'POST',
             '/admin/milestone/edit-milestone-action',
-            array("id" => $this->idMilestone, "title" => "Second_Milestonexx", "description" => "description", "day" => 1, "month" => 2, "year" => 3),
+            array(
+                  "id" => $this->idMilestone,
+                  "title" => "Second_Milestonexx",
+                  "description" => "description",
+                  "type" => $this->idType,
+                  "country" => $this->idCountry,
+                  "day" => 1,
+                  "month" => 2,
+                  "year" => 3),
             array(),
             array()
         );
@@ -170,8 +203,27 @@ class MilestoneUnitTest extends BaseTesting
              $this->em->flush();
         }
 
+        $type = $this->em->getRepository('AppBundle:Type')->findOneByName('Test_type');
+        if (!$type) {
+            $type = new Type();
+            $type->setName('Test_type');
+            $type->setColor('#000000');
+            $this->em->persist($type);
+            $this->em->flush();
+        }
 
-        $this->idMilestone = $milestone->getId();
+        $country = $this->em->getRepository('AppBundle:Country')->findOneByname('TT');
+        if (!$country) {
+            $country = new Country();
+            $country->setName('TT');
+            $country->setContinent('continent test');
+            $this->em->persist($country);
+            $this->em->flush();
+        }
+
+        $this->idType       = $type->getId();
+        $this->idCountry    = $country->getId();
+        $this->idMilestone  = $milestone->getId();
         return $milestone;
     }
 

@@ -119,12 +119,16 @@ class AdminController extends Controller
      */
     public function editActMilestone(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $id           = $request->get('id');
         $title        = $request->get('title');
         $description  = $request->get('description');
         $day          = $request->get('day');
         $month        = $request->get('month');
         $year         = $request->get('year');
+
+        $country = $em->getRepository('AppBundle:Country')->findOneById($request->get('country'));
+        $type    = $em->getRepository('AppBundle:Type')->findOneById($request->get('type'));
 
         $em = $this->getDoctrine()->getManager();
         $milestone = $em->getRepository('AppBundle:Milestone')->findOneById($id);
@@ -133,6 +137,8 @@ class AdminController extends Controller
         $milestone->setDay($day);
         $milestone->setMonth($month);
         $milestone->setYear($year);
+        $milestone->setType($type);
+        $milestone->setCountry($country);
 
         $em->persist($milestone);
         $em->flush();
@@ -149,12 +155,15 @@ class AdminController extends Controller
      */
     public function addMilestone(Request $request)
     {
-
+        $em = $this->getDoctrine()->getManager();
         $title        = $request->get('title');
         $description  = $request->get('description');
         $day          = $request->get('day');
         $month        = $request->get('month');
         $year         = $request->get('year');
+
+        $country = $em->getRepository('AppBundle:Country')->findOneById($request->get('country'));
+        $type    = $em->getRepository('AppBundle:Type')->findOneById($request->get('type'));
 
         $milestone = new Milestone();
         $milestone->setTitle($title);
@@ -162,15 +171,16 @@ class AdminController extends Controller
         $milestone->setDay($day);
         $milestone->setMonth($month);
         $milestone->setYear($year);
+        $milestone->setType($type);
+        $milestone->setCountry($country);
 
         $validator = $this->get('validator');
         $errors = $validator->validate($milestone);
 
         if (count($errors) > 0) {
             $errorsString = (string) $errors;
-            $result = '{"result":"error", "message": "This Milestone is already added."}';
+            $result = '{"result":"error", "message": "Error"}';
         } else {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($milestone);
             $em->flush();
             $result = '{"result":"ok"}';

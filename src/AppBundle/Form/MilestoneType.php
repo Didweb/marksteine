@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use AppBundle\Entity\Type;
+use AppBundle\Entity\Country;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 
@@ -37,10 +38,20 @@ class MilestoneType extends AbstractType
         $builder->add('type', EntityType::class, array(
                                       // looks for choices from this entity
                                       'class' => Type::class,
-                                      'query_builder' => function (EntityRepository $er) {
-                                              return $er->createQueryBuilder('t')
-                                                  ->orderBy('t.name', 'ASC');
-                                      },
+                                      // 'query_builder' => function (EntityRepository $er) {
+                                      //         return $er->createQueryBuilder('t')
+                                      //             ->orderBy('t.name', 'ASC');
+                                      // },
+                                      'choice_label' => 'name',
+                                      'required'=> true
+                                  ));
+        $builder->add('country', EntityType::class, array(
+                                      // looks for choices from this entity
+                                      'class' => Country::class,
+                                      // 'query_builder' => function (EntityRepository $er) {
+                                      //         return $er->createQueryBuilder('c')
+                                      //             ->orderBy('c.name', 'ASC');
+                                      // },
                                       'choice_label' => 'name',
                                       'required'=> true
                                   ));

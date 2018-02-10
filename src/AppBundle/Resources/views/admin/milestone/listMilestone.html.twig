@@ -87,7 +87,9 @@ function editAction(id, path) {
              'description'  : $('#dialogEdit textarea[name="appbundle_milestone[description]"]').val(),
              'day'          : $('#dialogEdit select[name="appbundle_milestone[day]"]').val(),
              'month'        : $('#dialogEdit select[name="appbundle_milestone[month]"]').val(),
-             'year'         : $('#dialogEdit input[name="appbundle_milestone[year]"]').val()
+             'year'         : $('#dialogEdit input[name="appbundle_milestone[year]"]').val(),
+             'type'         : $('#dialogEdit select[name="appbundle_milestone[type]"]').val(),
+             'country'      : $('#dialogEdit select[name="appbundle_milestone[country]"]').val()
            };
 
            $.ajax({
@@ -118,9 +120,11 @@ $("#addMilestone").click(function (e) {
            'description'  : $('textarea[name="appbundle_milestone[description]"]').val(),
            'day'          : $('select[name="appbundle_milestone[day]"]').val(),
            'month'        : $('select[name="appbundle_milestone[month]"]').val(),
-           'year'         : $('input[name="appbundle_milestone[year]"]').val()
+           'year'         : $('input[name="appbundle_milestone[year]"]').val(),
+           'type'         : $('select[name="appbundle_milestone[type]"]').val(),
+           'country'      : $('select[name="appbundle_milestone[country]"]').val()
          };
-
+console.log(formData);
          $.ajax({
            type : 'POST',
            url : href,
