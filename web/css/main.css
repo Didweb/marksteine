@@ -55,3 +55,11 @@
   margin: 15px;
   text-align: center;
 }
+
+.circle {
+     width: 25px;
+     height: 25px;
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+}

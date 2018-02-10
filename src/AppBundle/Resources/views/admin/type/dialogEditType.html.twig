@@ -1,10 +1,10 @@
 {% extends '@App/dialog.html.twig' %}
 {% block dialog_class %}
-EditEra
+EditType
 {% endblock %}
 
 {% block dialog_title %}
-Edit Era
+Edit Type
 {% endblock %}
 
 {% block dialog_body %}
@@ -20,4 +20,9 @@ NO defined
 {% endif %}
   </div>
 </div>
+<script>
+$('#appbundle_type_color.form-control').colorpicker({
+      format: "hex"
+  });
+</script>
 {% endblock %}

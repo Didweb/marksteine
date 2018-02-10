@@ -34,10 +34,12 @@ List Type
   <tbody>
     {% for type in types %}
      <tr>
-       <td class="col-2">{{ type.name }} </td>
-       <td class="text-left">
-         <span class="text-secondary">{{ type.color }}</span>
+       <td>
+         <div class="circle" style="background-color:{{ type.color }}"></div>
        </td>
+       <td class="col-2" >
+       </div>{{ type.name }}
+     </td>
 
        <td class="text-right col-2">
          <a class="nav-link text-danger"
