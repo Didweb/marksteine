@@ -1,0 +1,19 @@
+{% extends '@App/dialog.html.twig' %}
+{% block dialog_class %}
+addType
+{% endblock %}
+
+{% block dialog_title %}
+Add Type
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+      <a  id="addNewType" data-href='{{ path('type_add') }}' class="btn btn-success mx-auto" value="Add" >Add</a>
+    {{ form_end(form) }}
+  </div>
+</div>
+{% endblock %}

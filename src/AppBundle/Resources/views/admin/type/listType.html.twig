@@ -1,15 +1,15 @@
 {% extends '@App/base.html.twig' %}
 
 {% block title %}
-List Era
+List Type
 {% endblock %}
 
 {% block body %}
-{% set tabActive = "eras" %}
+{% set tabActive = "types" %}
 {% include '@App/admin/menuAdmin.html.twig' %}
 
 <div id="dialogAdd" class="dialog-base">
-{% include('@App/admin/era/dialogAddEra.html.twig') %}
+{% include('@App/admin/type/dialogAddType.html.twig') %}
 </div>
 
 <div id="dialogEdit" class="dialog-base">
@@ -25,33 +25,31 @@ List Era
 <ul class="nav justify-content-end">
   <li class="nav-item">
     <a class="nav-link text-primary"
-        data-href='{{ path('era_add') }}'
-        id="addEra" title="Add Era"><i class="material-icons">add_circle</i></a>
+        data-href='{{ path('type_add') }}'
+        id="addType" title="Add Type"><i class="material-icons">add_circle</i></a>
   </li>
 
 </ul>
 <table class="table listTable">
   <tbody>
-    {% for era in eras %}
+    {% for type in types %}
      <tr>
-       <td class="col-2">{{ era.name }} </td>
+       <td class="col-2">{{ type.name }} </td>
        <td class="text-left">
-         <span class="text-secondary">{{ era.start }}</span>
+         <span class="text-secondary">{{ type.color }}</span>
        </td>
-       <td>
-         <span class="text-secondary">{{ era.end }}</span>
-       </td>
+
        <td class="text-right col-2">
          <a class="nav-link text-danger"
-            onclick='deleteAction({{ era.id }}, "{{ era.name }}", "{{ path('era_delete')}}"  )'
-            id="deleteEra{{ era.id }}" title="Delete: {{ era.name }}"><i class="material-icons">cancel</i></a>
+            onclick='deleteAction({{ type.id }}, "{{ type.name }}", "{{ path('type_delete')}}"  )'
+            id="deleteType{{ type.id }}" title="Delete: {{ type.name }}"><i class="material-icons">cancel</i></a>
        </td>
        <td class="text-right col-2">
-          <a data-href='{{ path('era_edit') }}'
-          onclick='editAction({{ era.id}}, "{{ path('era_edit') }}")'
+          <a data-href='{{ path('type_edit') }}'
+          onclick='editAction({{ type.id}}, "{{ path('type_edit') }}")'
           class="nav-link text-success"
-          title="Edit {{ era.name }}"
-          id="editDialogEra"><i class="material-icons">mode_edit</i></a>
+          title="Edit {{ type.name }}"
+          id="editDialogType"><i class="material-icons">mode_edit</i></a>
        </td>
      </tr>
     {% endfor %}
@@ -63,7 +61,7 @@ List Era
 {{ parent() }}
 {% endblock %}
 
-{% set routeName = 'era_list' %}
+{% set routeName = 'type_list' %}
 {% include '@App/pagination.html.twig' %}
 
 
@@ -78,14 +76,13 @@ function editAction(id, path) {
 
      dialogPreparation('dialogEdit', 'success', data);
 
-     var href = '{{ path('era_edit_action')}}';
-     $('#editEra').click(function(event) {
+     var href = '{{ path('type_edit_action')}}';
+     $('#editType').click(function(event) {
 
            var formData = {
              'id' : id,
-             'name' : $("#dialogEdit input[name='appbundle_era[name]']").val(),
-             'start' : $('#dialogEdit input[name="appbundle_era[start]"]').val(),
-             'end' : $('#dialogEdit input[name="appbundle_era[end]"]').val()
+             'name' : $("#dialogEdit input[name='appbundle_type[name]']").val(),
+             'color' : $('#dialogEdit input[name="appbundle_type[color]"]').val()
            };
 
            $.ajax({
@@ -104,17 +101,16 @@ function editAction(id, path) {
 };
 
 
-$("#addEra").click(function (e) {
+$("#addType").click(function (e) {
 
    addActionShow();
 
-   var href = $('#addEra').data('href');
+   var href = $('#addType').data('href');
 
-   $('#addNewEra').click(function(event) {
+   $('#addNewType').click(function(event) {
          var formData = {
-           'name' : $('input[name="appbundle_era[name]"]').val(),
-           'start' : $('input[name="appbundle_era[start]"]').val(),
-           'end' : $('input[name="appbundle_era[end]"]').val()
+           'name' : $('input[name="appbundle_type[name]"]').val(),
+           'color' : $('input[name="appbundle_type[color]"]').val()
          };
 
          $.ajax({

@@ -1,0 +1,23 @@
+{% extends '@App/dialog.html.twig' %}
+{% block dialog_class %}
+EditEra
+{% endblock %}
+
+{% block dialog_title %}
+Edit Era
+{% endblock %}
+
+{% block dialog_body %}
+<div class="modal-body">
+  <div class="row">
+{% if form_edit is defined %}
+    {{ form_start(form_edit) }}
+        {{ form_widget(form_edit) }}
+      <a  id="editType" data-href='{{ path('type_edit') }}' class="btn btn-success mx-auto"  >Edit</a>
+    {{ form_end(form_edit) }}
+{% else %}
+NO defined
+{% endif %}
+  </div>
+</div>
+{% endblock %}
