@@ -16,19 +16,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 */
 class UserManagerController extends Controller
 {
-    const LIMIT_PAGINATION = 10;
+    const LIMIT_PAGINATION = 20;
 
    /**
      * Index UserManager
      *
-     * @Route("/list", name="user_manager_index")
+     * @Route("/list/{filter}/{page}", name="user_manager_index")
      * @Method({"GET", "POST"})
      */
-    public function indexAction($page = 1)
+    public function indexAction($page = 1, $filter = 'ALL')
     {
 
         $em = $this->getDoctrine()->getManager();
-        $allUsers = $em->getRepository('AppBundle:User')->getAllUsers($page, self::LIMIT_PAGINATION);
+
+        $allUsers = $em->getRepository('AppBundle:User')->getAllUsers($filter, $page, self::LIMIT_PAGINATION);
 
         $totalUsers = $allUsers->count();
         $iterator = $allUsers->getIterator();
@@ -40,8 +41,10 @@ class UserManagerController extends Controller
                                             'allUsers'     => $iterator,
                                             'maxPages'  => $maxPages,
                                             'thisPage'  => $thisPage,
-                                            'totalUsers'=> $totalUsers,));
+                                            'totalUsers'=> $totalUsers,
+                                            'filter' => $filter));
     }
+
 
 
 }

@@ -8,6 +8,11 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    color_role_user: "#838383"
+    color_role_collaborator: "#CFBE25"
+    color_role_manager: "#348314"
+    color_role_admin: "#8B083F"
+    color_role_super_admin: "#090004"
 
 framework:
     #esi: ~

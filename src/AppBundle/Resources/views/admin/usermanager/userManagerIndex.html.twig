@@ -6,6 +6,7 @@ List All User
 
 {% block body %}
 {% set tabActive = "users" %}
+{% set tabActiveFilter =  filter  %}
 {% include '@App/admin/menuAdmin.html.twig' %}
 
 
@@ -14,15 +15,47 @@ List All User
 
 <ul class="nav justify-content-end">
   <li class="nav-item">
-xx
+    <a href="{{ path('user_manager_index', {'filter': 'ALL'} )}}" id="ALL" class="nav-link " title="Filter width: All">All</a>
   </li>
-
+  <li class="nav-item">
+    <a href="{{ path('user_manager_index', {'filter': 'ROLE_USER'})}}" id="ROLE_USER"  class="nav-link " title="Filter width: Role User">Users</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ path('user_manager_index', {'filter': 'ROLE_COLLABORATOR'})}}" id="ROLE_COLLABORATOR"  class="nav-link " title="Filter width: Role Collaborators">Collaborators</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ path('user_manager_index', {'filter': 'ROLE_MANAGER'})}}" id="ROLE_MANAGER"  class="nav-link " title="Filter width: Role Managers">Managers</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ path('user_manager_index', {'filter': 'ROLE_ADMIN'})}}" id="ROLE_ADMIN"  class="nav-link " title="Filter width: Role Admins">Admins</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ path('user_manager_index', {'filter': 'ROLE_SUPER_ADMIN'})}}" id="ROLE_SUPER_ADMIN"  class="nav-link " title="Filter width: Role Super Admin">Super Admin</a>
+  </li>
 </ul>
+<script>
+  $('#{{ tabActiveFilter }}').attr('class', 'nav-link active');
+</script>
+
+
 <table class="table listTable">
   <tbody>
     {% for user in allUsers %}
+    {% set datasRole = UserRole(user.roles.0) %}
      <tr>
        <td>
+         {% if user.avatar == null %}
+           <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ datasRole.name }}" class="avatar-user-list" style="border:5px solid {{ datasRole.color }}" />
+         {% else %}
+         <img src="{{ asset('avatars/') }}{{ user.avatar }}" title="{{ datasRole.name }}" class="avatar-user-list"  style="border:5px solid {{ datasRole.color }}" />
+         {% endif %}
+
+       </td>
+       <td>
+       </td>
+
+       <td>
+
        {{ user.username }}
       </td>
       <td >
@@ -34,7 +67,7 @@ xx
 </table>
 
 
-{% set routeName = 'user_manager_list' %}
+{% set routeName = 'user_manager_index' %}
 {% include '@App/pagination.html.twig' %}
 
 
