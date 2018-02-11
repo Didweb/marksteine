@@ -94,6 +94,35 @@ class Milestone
      */
     private $type;
 
+    /**
+     * @var User $createdBy
+     *
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $createdBy;
+
+
+    /**
+     * @var User $updatedBy
+     *
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $updatedBy;
+
+
+    /**
+     * @var User $contentChangedBy
+     *
+     * @Gedmo\Blameable(on="change", field={"title", "type", "day", "month", "year", "description", "country"})
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $contentChangedBy;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Country", inversedBy="milestones")
@@ -102,28 +131,67 @@ class Milestone
      */
     private $country;
 
+
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
+
+    public function getContentChangedBy()
+    {
+        return $this->contentChangedBy;
+    }
+
+
+    /**
+     * Get country
+     *
+     * @return Country
+     */
     public function getCountry()
     {
         return $this->country;
     }
 
-
+    /**
+     * Set country
+     *
+     * @param Country $country
+     *
+     * @return Milestone
+     */
     public function setCountry(Country $country)
     {
         $this->country = $country;
     }
 
-
+    /**
+     * Get type
+     *
+     * @return Type
+     */
     public function getType()
     {
         return $this->type;
     }
 
-
+    /**
+     * Set type
+     *
+     * @param Type $type
+     *
+     * @return Milestone
+     */
     public function setType(Type $type)
     {
         $this->type = $type;
     }
+
 
 
     /**

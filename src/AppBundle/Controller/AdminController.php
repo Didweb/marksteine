@@ -121,22 +121,16 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $id           = $request->get('id');
-        $title        = $request->get('title');
-        $description  = $request->get('description');
-        $day          = $request->get('day');
-        $month        = $request->get('month');
-        $year         = $request->get('year');
-
         $country = $em->getRepository('AppBundle:Country')->findOneById($request->get('country'));
         $type    = $em->getRepository('AppBundle:Type')->findOneById($request->get('type'));
 
-        $em = $this->getDoctrine()->getManager();
         $milestone = $em->getRepository('AppBundle:Milestone')->findOneById($id);
-        $milestone->setTitle($title);
-        $milestone->setDescription($description);
-        $milestone->setDay($day);
-        $milestone->setMonth($month);
-        $milestone->setYear($year);
+
+        $milestone->setTitle($request->get('title'));
+        $milestone->setDescription($request->get('description'));
+        $milestone->setDay($request->get('day'));
+        $milestone->setMonth($request->get('month'));
+        $milestone->setYear($request->get('year'));
         $milestone->setType($type);
         $milestone->setCountry($country);
 
@@ -156,21 +150,15 @@ class AdminController extends Controller
     public function addMilestone(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $title        = $request->get('title');
-        $description  = $request->get('description');
-        $day          = $request->get('day');
-        $month        = $request->get('month');
-        $year         = $request->get('year');
-
         $country = $em->getRepository('AppBundle:Country')->findOneById($request->get('country'));
         $type    = $em->getRepository('AppBundle:Type')->findOneById($request->get('type'));
 
         $milestone = new Milestone();
-        $milestone->setTitle($title);
-        $milestone->setDescription($description);
-        $milestone->setDay($day);
-        $milestone->setMonth($month);
-        $milestone->setYear($year);
+        $milestone->setTitle($request->get('title'));
+        $milestone->setDescription($request->get('description'));
+        $milestone->setDay($request->get('day'));
+        $milestone->setMonth($request->get('month'));
+        $milestone->setYear($request->get('year'));
         $milestone->setType($type);
         $milestone->setCountry($country);
 

@@ -31,6 +31,10 @@ class User extends BaseUser
     protected $id;
 
 
+
+    /*
+     * Construct
+     */
     public function __construct()
     {
         parent::__construct();

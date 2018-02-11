@@ -46,13 +46,6 @@ class Country
     private $milestones;
 
 
-    /**
-     * @return Collection|Milestone[]
-     */
-    public function getMilestones()
-    {
-         return $this->milestones;
-    }
 
     /**
      * Created At.
@@ -86,6 +79,13 @@ class Country
           $this->milestones = new ArrayCollection();
     }
 
+    /**
+     * @return Collection|Milestone[]
+     */
+    public function getMilestones()
+    {
+         return $this->milestones;
+    }
 
     /**
      * Get id

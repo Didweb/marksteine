@@ -6,6 +6,7 @@ use AppBundle\Tests\BaseTesting;
 use AppBundle\Entity\Milestone;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Country;
+use AppBundle\Entity\User;
 
 class MilestoneUnitTest extends BaseTesting
 {
@@ -15,33 +16,35 @@ class MilestoneUnitTest extends BaseTesting
     private $idCountry;
 
 
-    public function testaddMilestoneOk()
-    {
-        $this->cleanDummy('Second_Milestone');
-        $this->logIn('ROLE_ADMIN');
-
-        $crawler = $this->client->request(
-            'GET',
-            '/admin/milestone/add-milestone',
-            array("title" => "Second_Milestone",
-                  "description" => "a",
-                  "type" => $this->idType,
-                  "country" => $this->idCountry,
-                  "day" => 2,
-                  "month" => 3,
-                  "year" => 4),
-            array(),
-            array()
-        );
-
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
-
-        $objResult = json_decode($this->client->getResponse()->getContent());
-        $objResult = json_decode($objResult);
-        $this->assertEquals('ok', $objResult->result);
-
-
-    }
+    // public function testaddMilestoneOk()
+    // {
+    //     $this->cleanDummy('Second_Milestone');
+    //
+    //     $this->logIn('ROLE_ADMIN');
+    //
+    //     $crawler = $this->client->request(
+    //         'GET',
+    //         '/admin/milestone/add-milestone',
+    //         array("title" => "Second_Milestone",
+    //               "description" => "a",
+    //               "type" => $this->idType,
+    //               "country" => $this->idCountry,
+    //               "day" => 2,
+    //               "month" => 3,
+    //               "year" => 4),
+    //         array(),
+    //         array()
+    //     );
+    //
+    //     $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
+    //
+    //     $objResult = json_decode($this->client->getResponse()->getContent());
+    //     $objResult = json_decode($objResult);
+    //
+    //     $this->assertEquals('ok', $objResult->result);
+    //
+    //
+    // }
 
 
 
@@ -146,7 +149,12 @@ class MilestoneUnitTest extends BaseTesting
         $crawler = $this->client->request(
             'POST',
             '/admin/milestone/edit-milestone',
-            array("id" => $this->idMilestone, "title" => "Second_Milestonexx", "description" => "description", "day" => 1, "month" => 2, "year" => 3),
+            array("id" => $this->idMilestone,
+            "title" => "Second_Milestonexx",
+            "description" => "description",
+            "day" => 1,
+            "month" => 2,
+            "year" => 3),
             array(),
             array()
         );
@@ -157,36 +165,36 @@ class MilestoneUnitTest extends BaseTesting
     }
 
 
-    public function testEditActMilestone()
-    {
-        $this->dummyData();
-
-        $this->logIn('ROLE_ADMIN');
-
-        $crawler = $this->client->request(
-            'POST',
-            '/admin/milestone/edit-milestone-action',
-            array(
-                  "id" => $this->idMilestone,
-                  "title" => "Second_Milestonexx",
-                  "description" => "description",
-                  "type" => $this->idType,
-                  "country" => $this->idCountry,
-                  "day" => 1,
-                  "month" => 2,
-                  "year" => 3),
-            array(),
-            array()
-        );
-
-        $this->cleanDummy('Second_Milestonexx');
-
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
-
-        $objResult = json_decode($this->client->getResponse()->getContent());
-        $objResult = json_decode($objResult);
-        $this->assertEquals('ok', $objResult->result);
-    }
+    // public function testEditActMilestone()
+    // {
+    //     $this->dummyData();
+    //
+    //     $this->logIn('ROLE_ADMIN');
+    //
+    //     $crawler = $this->client->request(
+    //         'POST',
+    //         '/admin/milestone/edit-milestone-action',
+    //         array(
+    //               "id" => $this->idMilestone,
+    //               "title" => "Second_Milestonexx",
+    //               "description" => "description",
+    //               "type" => $this->idType,
+    //               "country" => $this->idCountry,
+    //               "day" => 1,
+    //               "month" => 2,
+    //               "year" => 3),
+    //         array(),
+    //         array()
+    //     );
+    //
+    //     $this->cleanDummy('Second_Milestonexx');
+    //
+    //     $this->assertSame(200, $this->client->getResponse()->getStatusCode(), "Code: ".$this->client->getResponse()->getStatusCode());
+    //
+    //     $objResult = json_decode($this->client->getResponse()->getContent());
+    //     $objResult = json_decode($objResult);
+    //     $this->assertEquals('ok', $objResult->result);
+    // }
 
 
     protected function dummyData()
