@@ -2,16 +2,26 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseTesting;
+use Symfony\Component\HttpFoundation\Response;
 
-class EraControllerTest extends WebTestCase
+class EraControllerTest extends BaseTesting
 {
+
     public function testIndex()
     {
-        $client = static::createClient();
+        $this->logIn('ROLE_ADMIN');
 
-        $crawler = $client->request('GET', '/era/list/1');
+        $crawler = $this->client->request('GET', '/admin/era/list/1');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
+
+    public function testIndexError()
+    {
+        $crawler = $this->client->request('GET', '/admin/era/list/1');
+
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+    }
+
 }

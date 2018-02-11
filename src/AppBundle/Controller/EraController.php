@@ -16,7 +16,7 @@ use AppBundle\Entity\Era;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
-* @Route("era")
+* @Route("admin/era")
 */
 class EraController extends Controller
 {

@@ -2,16 +2,27 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\BaseTesting;
+use Symfony\Component\HttpFoundation\Response;
 
-class CountryControllerTest extends WebTestCase
+class CountryControllerTest extends BaseTesting
 {
+
     public function testIndex()
     {
-        $client = static::createClient();
+        $this->logIn('ROLE_SUPER_ADMIN');
 
-        $crawler = $client->request('GET', '/country/list/1');
+        $crawler = $this->client->request('GET', '/admin/country/list/1');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
+
+
+    public function testIndexError()
+    {
+        $crawler = $this->client->request('GET', '/admin/country/list/1');
+
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+    }
+
 }

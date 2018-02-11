@@ -2,39 +2,24 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use AppBundle\Entity\Polity;
 use AppBundle\Entity\Country;
 use AppBundle\Controller\PolityController;
+use AppBundle\Tests\BaseTesting;
 
-class PolityUnitTest extends WebTestCase
+class PolityUnitTest extends BaseTesting
 {
-
-    private $client = null;
-    private $em;
-    private $container;
     private $idPolity;
     private $countryDummy;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $this->container = static::$kernel->getContainer();
-        $this->em = static::$kernel->getContainer()
-                              ->get('doctrine')
-                              ->getManager();
-        $this->dummyData();
-    }
-
 
 
     public function testaddPolityOk()
     {
         $this->cleanDummy('Second_Polity');
-
+        $this->logIn('ROLE_ADMIN');
         $crawler = $this->client->request(
             'GET',
-            '/polity/add-polity',
+            '/admin/polity/add-polity',
             array("name"        => "Second_Polity",
                   "description" => "Description Second_Polity",
                   "dayStart"    => 1,
@@ -64,10 +49,11 @@ class PolityUnitTest extends WebTestCase
     public function testaddPolityErrorStart()
     {
         $this->cleanDummy('Second_Polity');
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/polity/add-polity',
+            '/admin/polity/add-polity',
             array("name"        => "Second_Polity",
                   "description" => "Description Second_Polity",
                   "dayStart"    => 5,
@@ -95,10 +81,11 @@ class PolityUnitTest extends WebTestCase
 
     public function testaddPolityErrorRepeat()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/polity/add-polity',
+            '/admin/polity/add-polity',
             array("name"        => "First_Polity",
                   "description" => "Description First_Polity",
                   "dayStart"    => 1,
@@ -126,10 +113,11 @@ class PolityUnitTest extends WebTestCase
 
     public function testRemovePolity()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/polity/delete-polity',
+            '/admin/polity/delete-polity',
             array("id" => $this->idPolity),
             array(),
             array()
@@ -149,9 +137,11 @@ class PolityUnitTest extends WebTestCase
 
     public function testRemovePolityError()
     {
+        $this->logIn('ROLE_ADMIN');
+
         $crawler = $this->client->request(
             'GET',
-            '/polity/delete-polity',
+            '/admin/polity/delete-polity',
             array("id" => 99999),
             array(),
             array()
@@ -171,10 +161,11 @@ class PolityUnitTest extends WebTestCase
 
     public function testEditPolity()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/polity/edit-polity',
+            '/admin/polity/edit-polity',
             array("id" => $this->idPolity,
                   "name"        => "Second_Polity_False",
                   "description" => "Description Second_Polity_False",
@@ -202,10 +193,11 @@ class PolityUnitTest extends WebTestCase
     public function testEditActPolity()
     {
         $this->dummyData();
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/polity/edit-polity-action',
+            '/admin/polity/edit-polity-action',
             array("id" => $this->idPolity,
                   "name"        => "Second_Polity_False",
                   "description" => "Description Second_Polity_False",
@@ -237,10 +229,11 @@ class PolityUnitTest extends WebTestCase
     public function testEditActPolityError()
     {
         $this->dummyData();
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/polity/edit-polity-action',
+            '/admin/polity/edit-polity-action',
             array("id" => $this->idPolity,
                   "name"        => "Second_Polity_False",
                   "description" => "Description Second_Polity_False",
@@ -272,10 +265,11 @@ class PolityUnitTest extends WebTestCase
     public function testEditActPolityErrorIdIncorrect()
     {
         $this->dummyData();
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/polity/edit-polity-action',
+            '/admin/polity/edit-polity-action',
             array("id" => 99999,
                   "name"        => "Second_Polity_False",
                   "description" => "Description Second_Polity_False",
@@ -303,7 +297,8 @@ class PolityUnitTest extends WebTestCase
         $this->assertEquals('error', $objResult->result);
     }
 
-    private function dummyData()
+
+    protected function dummyData()
     {
         $country = $this->em->getRepository('AppBundle:Country')->findOneByName('DE');
         if (!$country) {
@@ -349,12 +344,5 @@ class PolityUnitTest extends WebTestCase
             $this->em->remove($cleanPolity);
             $this->em->flush();
         }
-    }
-
-
-    protected function tearDown()
-    {
-        $this->em->close();
-        unset($this->client);
     }
 }

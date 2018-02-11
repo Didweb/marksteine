@@ -1,0 +1,41 @@
+{% extends '@App/base.html.twig' %}
+
+{% block title %}
+List All User
+{% endblock %}
+
+{% block body %}
+{% set tabActive = "users" %}
+{% include '@App/admin/menuAdmin.html.twig' %}
+
+
+
+<div class="alert alert-danger" id="alertDialog" role="alert"></div>
+
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+xx
+  </li>
+
+</ul>
+<table class="table listTable">
+  <tbody>
+    {% for user in allUsers %}
+     <tr>
+       <td>
+       {{ user.username }}
+      </td>
+      <td >
+      {{ user.firstName }} {{ user.lastName }}
+     </td>
+     </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% set routeName = 'user_manager_list' %}
+{% include '@App/pagination.html.twig' %}
+
+
+{% endblock %}

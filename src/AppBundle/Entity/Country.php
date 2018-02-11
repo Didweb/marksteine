@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Country
@@ -39,6 +40,12 @@ class Country
      */
     private $continent;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Milestone", mappedBy="country")
+     */
+    private $milestones;
+
+
 
     /**
      * Created At.
@@ -69,8 +76,16 @@ class Country
     public function __construct()
     {
           $this->politices = new ArrayCollection();
+          $this->milestones = new ArrayCollection();
     }
 
+    /**
+     * @return Collection|Milestone[]
+     */
+    public function getMilestones()
+    {
+         return $this->milestones;
+    }
 
     /**
      * Get id

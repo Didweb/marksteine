@@ -1,0 +1,134 @@
+{% extends '@App/base.html.twig' %}
+
+{% block title %}
+List Type
+{% endblock %}
+
+{% block body %}
+{% set tabActive = "types" %}
+{% include '@App/admin/menuAdmin.html.twig' %}
+
+<div id="dialogAdd" class="dialog-base">
+{% include('@App/admin/type/dialogAddType.html.twig') %}
+</div>
+
+<div id="dialogEdit" class="dialog-base">
+  {% include('@App/dialogEmpty.html.twig') %}
+</div>
+
+<div id="dialogDelete" class="dialog-base">
+{% include('@App/dialogDelete.html.twig') %}
+</div>
+
+<div class="alert alert-danger" id="alertDialog" role="alert"></div>
+
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link text-primary"
+        data-href='{{ path('type_add') }}'
+        id="addType" title="Add Type"><i class="material-icons">add_circle</i></a>
+  </li>
+
+</ul>
+<table class="table listTable">
+  <tbody>
+    {% for type in types %}
+     <tr>
+       <td>
+         <div class="circle" style="background-color:{{ type.color }}"></div>
+       </td>
+       <td class="col-2" >
+       </div>{{ type.name }}
+     </td>
+
+       <td class="text-right col-2">
+         <a class="nav-link text-danger"
+            onclick='deleteAction({{ type.id }}, "{{ type.name }}", "{{ path('type_delete')}}"  )'
+            id="deleteType{{ type.id }}" title="Delete: {{ type.name }}"><i class="material-icons">cancel</i></a>
+       </td>
+       <td class="text-right col-2">
+          <a data-href='{{ path('type_edit') }}'
+          onclick='editAction({{ type.id}}, "{{ path('type_edit') }}")'
+          class="nav-link text-success"
+          title="Edit {{ type.name }}"
+          id="editDialogType"><i class="material-icons">mode_edit</i></a>
+       </td>
+     </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% block javascripts %}
+<script src="{{ asset('js/app/dialogs.js') }}"></script>
+{{ parent() }}
+{% endblock %}
+
+{% set routeName = 'type_list' %}
+{% include '@App/pagination.html.twig' %}
+
+
+<script>
+function editAction(id, path) {
+  $.ajax({
+    type: 'GET',
+    url: path,
+    data: {'id': id},
+    dataType: 'html'
+  }).done(function(data) {
+
+     dialogPreparation('dialogEdit', 'success', data);
+
+     var href = '{{ path('type_edit_action')}}';
+     $('#editType').click(function(event) {
+
+           var formData = {
+             'id' : id,
+             'name' : $("#dialogEdit input[name='appbundle_type[name]']").val(),
+             'color' : $('#dialogEdit input[name="appbundle_type[color]"]').val()
+           };
+
+           $.ajax({
+             type : 'POST',
+             url : href,
+             data: formData,
+             dataType: 'json',
+             encode: true
+           })
+           .done(function(data) {
+             checkErrors(data);
+           });
+           event.preventDefault();
+           });
+     });
+};
+
+
+$("#addType").click(function (e) {
+
+   addActionShow();
+
+   var href = $('#addType').data('href');
+
+   $('#addNewType').click(function(event) {
+         var formData = {
+           'name' : $('input[name="appbundle_type[name]"]').val(),
+           'color' : $('input[name="appbundle_type[color]"]').val()
+         };
+
+         $.ajax({
+           type : 'POST',
+           url : href,
+           data: formData,
+           dataType: 'json',
+           encode: true
+         })
+         .done(function(data) {
+           checkErrors(data);
+         });
+         event.preventDefault();
+   });
+});
+
+</script>
+
+{% endblock %}

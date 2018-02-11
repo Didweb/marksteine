@@ -2,37 +2,28 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use AppBundle\Entity\Era;
 use AppBundle\Controller\CountryController;
+use AppBundle\Tests\BaseTesting;
 
-class EraUnitTest extends WebTestCase
+class EraUnitTest extends BaseTesting
 {
 
-    private $client = null;
-    private $em;
-    private $container;
+
     private $idEra;
 
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $this->container = static::$kernel->getContainer();
-        $this->em = static::$kernel->getContainer()
-                              ->get('doctrine')
-                              ->getManager();
-        $this->dummyData();
-    }
+
 
 
 
     public function testaddEraOk()
     {
         $this->cleanDummy('Second_Era');
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/era/add-era',
+            '/admin/era/add-era',
             array("name" => "Second_Era", "start" => 1, "end" => 2),
             array(),
             array()
@@ -50,10 +41,11 @@ class EraUnitTest extends WebTestCase
     public function testaddEraErrorStart()
     {
         $this->cleanDummy('Second_Era');
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/era/add-era',
+            '/admin/era/add-era',
             array("name" => "Second_Era", "start" => 2, "end" => 2),
             array(),
             array()
@@ -70,9 +62,11 @@ class EraUnitTest extends WebTestCase
     public function testaddEraErrorRepeat()
     {
 
+        $this->logIn('ROLE_ADMIN');
+
         $crawler = $this->client->request(
             'GET',
-            '/era/add-era',
+            '/admin/era/add-era',
             array("name" => "First_Era", "start" => 2, "end" => 2),
             array(),
             array()
@@ -88,10 +82,11 @@ class EraUnitTest extends WebTestCase
 
     public function testRemoveEra()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'GET',
-            '/era/delete-era',
+            '/admin/era/delete-era',
             array("id" => $this->idEra),
             array(),
             array()
@@ -107,9 +102,11 @@ class EraUnitTest extends WebTestCase
 
     public function testRemoveEraError()
     {
+        $this->logIn('ROLE_ADMIN');
+
         $crawler = $this->client->request(
             'GET',
-            '/era/delete-era',
+            '/admin/era/delete-era',
             array("id" => 99999),
             array(),
             array()
@@ -125,10 +122,11 @@ class EraUnitTest extends WebTestCase
 
     public function testEditEra()
     {
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/era/edit-era',
+            '/admin/era/edit-era',
             array("id" => $this->idEra, "name" => "Second_Eraxx", "start" => 1, "end" => 2),
             array(),
             array()
@@ -143,10 +141,11 @@ class EraUnitTest extends WebTestCase
     public function testEditActEra()
     {
         $this->dummyData();
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/era/edit-era-action',
+            '/admin/era/edit-era-action',
             array("id" => $this->idEra, "name" => "Second_Eraxx", "start" => 1, "end" => 2),
             array(),
             array()
@@ -165,10 +164,11 @@ class EraUnitTest extends WebTestCase
     public function testEditActEraError()
     {
         $this->dummyData();
+        $this->logIn('ROLE_ADMIN');
 
         $crawler = $this->client->request(
             'POST',
-            '/era/edit-era-action',
+            '/admin/era/edit-era-action',
             array("id" => $this->idEra, "name" => "Second_Eraxx", "start" => 3, "end" => 2),
             array(),
             array()
@@ -184,7 +184,7 @@ class EraUnitTest extends WebTestCase
     }
 
 
-    private function dummyData()
+    protected function dummyData()
     {
         $era = $this->em->getRepository('AppBundle:Era')->findOneByName('First_Era');
         if (!$era) {
@@ -212,9 +212,4 @@ class EraUnitTest extends WebTestCase
     }
 
 
-    protected function tearDown()
-    {
-        $this->em->close();
-        unset($this->client);
-    }
 }

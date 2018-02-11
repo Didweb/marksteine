@@ -16,7 +16,7 @@ use AppBundle\Entity\Country;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
-* @Route("country")
+* @Route("admin/country")
 */
 class CountryController extends Controller
 {

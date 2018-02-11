@@ -3,5 +3,40 @@
 {% block body %}
 {% set tabActive = "home" %}
 {% include '@App/admin/menuAdmin.html.twig' %}
-<h1>Admin</h1>
+<canvas id="barChart" class="col-8"></canvas>
+<script>
+var ctxB = document.getElementById("barChart").getContext('2d');
+var myBarChart = new Chart(ctxB, {
+    type: 'bar',
+    data: {
+        labels: ["Countries", "Eras", "Polities", "type Milestone"],
+        datasets: [{
+            label: '# elements',
+            data: [{{ countries }}, {{ eras }}, {{ polities }}, {{ types }}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    optionss: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
 {% endblock %}

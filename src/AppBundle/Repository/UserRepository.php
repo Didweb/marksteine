@@ -10,4 +10,20 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends BaseRepository
 {
+  /**
+  * Get all Users with paginator and Order.
+  *
+  * @param integer $currentPage The current page (passed from controller)
+  * @return \Doctrine\ORM\Tool\Pagination\Paginator
+  */
+  public function getAllUsers($currentPage = 1, $limit = 5)
+  {
+      $query = $this->createQueryBuilder('u')
+              ->orderBy('u.username', 'ASC')
+              ->getQuery();
+
+      $paginator = $this->paginate($query, $currentPage, $limit);
+
+      return $paginator;
+  }
 }

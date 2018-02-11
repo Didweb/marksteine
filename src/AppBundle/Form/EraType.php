@@ -1,6 +1,6 @@
 <?php
 /**
- * Class CountryType | AppBundle/Form/CountryType.php
+ * Class EraType | AppBundle/Form/EraType.php
  *
  * @package     AppBundle
  * @author      Eduard Pinuaga <info@did-web.com>
@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use AppBundle\Entity\Country;
 
 /**
- * Formular for Country
+ * Formular for Era
  */
 class EraType extends AbstractType
 {

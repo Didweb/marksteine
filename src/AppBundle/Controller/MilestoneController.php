@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 */
 class MilestoneController extends Controller
 {
+    
    /**
      * Index Aplication
      *
@@ -30,4 +31,6 @@ class MilestoneController extends Controller
 
         return $this->render('AppBundle::milestone/index.html.twig', array('country'=>$country, 'continent'=>$continent));
     }
+
+
 }
