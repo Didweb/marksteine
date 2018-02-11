@@ -40,7 +40,7 @@ class AdminControllerTest extends BaseTesting
         $this->logIn('ROLE_COLLABORATOR');
         $crawler = $this->client->request('GET', '/admin/');
 
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**

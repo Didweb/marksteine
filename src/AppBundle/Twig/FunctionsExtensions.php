@@ -22,7 +22,7 @@ class FunctionsExtensions extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array( 'UserRole' => new \Twig_Function_Method($this, 'UserRole'),);
+        return array( 'UserRole' => new \Twig_SimpleFunction('UserRole', array($this, 'UserRole')));
     }
 
     public function UserRole($role)

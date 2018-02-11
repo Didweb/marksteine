@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 */
 class UserManagerController extends Controller
 {
-    const LIMIT_PAGINATION = 20;
+    const LIMIT_PAGINATION = 2;
 
    /**
      * Index UserManager

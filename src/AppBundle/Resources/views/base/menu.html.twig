@@ -14,7 +14,7 @@
 <ul class="nav  justify-content-end">
   {% if is_granted('ROLE_USER') %}
 
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_COLLABORATOR') %}
       <li class="nav-item">
         <a class="nav-link text-secondary" href="{{ path('admin_index')}}" title="Edit Marksteine">
           <i class="material-icons md-18">mode_edit</i>
@@ -24,7 +24,13 @@
 
     <li class="nav-item">
       <a class="nav-link text-secondary" href="{{ path('profile_index')}}" title="Profile">
-        <i class="material-icons md-18">person</i>
+
+        {% set datasRoleMenu = UserRole(app.user.roles.0) %}
+        {% if app.user.avatar == null %}
+          <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ datasRoleMenu.name }}" class="avatar-user-icon" style="border:3px solid {{ datasRoleMenu.color }}" />
+        {% else %}
+        <img src="{{ asset('avatars/') }}{{ app.user.avatar }}" title="{{ datasRoleMenu.name }}" class="avatar-user-icon"  style="border:3px solid {{ datasRoleMenu.color }}" />
+        {% endif %}
       </a>
     </li>
 

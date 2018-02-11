@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 class TypeControllerTest extends BaseTesting
 {
 
-    public function testIndex()
+
+
+    public function testIndex2()
     {
         $this->logIn('ROLE_SUPER_ADMIN');
 

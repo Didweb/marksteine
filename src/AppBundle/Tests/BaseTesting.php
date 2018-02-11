@@ -36,7 +36,7 @@ class Basetesting extends WebTestCase
         // the firewall context defaults to the firewall name
         $firewallContext = 'main';
 
-        $token = new UsernamePasswordToken($user->getUserName(), $user->getPassword(), $firewallContext, array($role));
+        $token = new UsernamePasswordToken($user, $user->getPassword(), $firewallContext, array($role));
         $session->set('_security_'.$firewallContext, serialize($token));
         $session->save();
 
@@ -58,6 +58,7 @@ class Basetesting extends WebTestCase
              $user->setEmail('Dummy@Dummy.com');
              $user->setEnabled(true);
              $user->setFirstName('Dummy');
+             $user->addRole('ROLE_ADMIN');
              $this->em->persist($user);
              $this->em->flush();
         }

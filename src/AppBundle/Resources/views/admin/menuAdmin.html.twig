@@ -1,28 +1,39 @@
 <ul class="nav nav-tabs" role="tablist">
 
-  {% if is_granted('ROLE_MANAGER') %}
+  {% if is_granted('ROLE_COLLABORATOR') %}
   <li class="nav-item">
       <a class="nav-link" id="home" href="{{ path('admin_index')}}">Home</a>
   </li>
-  <li class="nav-item">
-      <a class="nav-link" id="countries" href="{{ path('country_list')}}">Countries {% if totalCountries is defined %}<b class="text-primary">{{ totalCountries}}{% endif %}</b></a>
-  </li>
-  <li class="nav-item">
-      <a class="nav-link" id="eras" href="{{ path('era_list')}}">Eras {% if totalEras is defined %}<b class="text-primary">{{ totalEras}}{% endif %}</b></a>
-  </li>
-  <li class="nav-item">
-      <a class="nav-link" id="polities" href="{{ path('polity_list')}}">Polities {% if totalPolities is defined %}<b class="text-primary">{{ totalPolities }}{% endif %}</b></a>
-  </li>
-  <li class="nav-item">
-      <a class="nav-link" id="types" href="{{ path('type_list')}}">Type Milestone {% if totalTypes is defined %}<b class="text-primary">{{ totalTypes }}{% endif %}</b></a>
-  </li>
+
   <li class="nav-item">
       <a class="nav-link" id="milestones" href="{{ path('milestone_list')}}">Milestones {% if totalMilestones is defined %}<b class="text-primary">{{ totalMilestones }}{% endif %}</b></a>
   </li>
+
+  <li class="nav-item">
+      <a class="nav-link" id="countries" href="{{ path('country_list')}}">Countries {% if totalCountries is defined %}<b class="text-primary">{{ totalCountries}}{% endif %}</b></a>
+  </li>
+
+  <li class="nav-item">
+      <a class="nav-link" id="polities" href="{{ path('polity_list')}}">Polities {% if totalPolities is defined %}<b class="text-primary">{{ totalPolities }}{% endif %}</b></a>
+  </li>
+  {% endif %}
+
+  {% if is_granted('ROLE_MANAGER') %}
   <li class="nav-item">
       <a class="nav-link" id="users" href="{{ path('user_manager_index', {'filter': 'ALL'})}}">Users {% if totalUsers is defined %}<b class="text-primary">{{ totalUsers }}{% endif %}</b></a>
   </li>
   {% endif %}
+
+  {% if is_granted('ROLE_ADMIN') %}
+  <li class="nav-item">
+      <a class="nav-link" id="eras" href="{{ path('era_list')}}">Eras {% if totalEras is defined %}<b class="text-primary">{{ totalEras}}{% endif %}</b></a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" id="types" href="{{ path('type_list')}}">Type Milestone {% if totalTypes is defined %}<b class="text-primary">{{ totalTypes }}{% endif %}</b></a>
+  </li>
+
+  {% endif %}
+
 </ul>
 <script>
   $('#{{ tabActive }}').attr('class', 'nav-link active');

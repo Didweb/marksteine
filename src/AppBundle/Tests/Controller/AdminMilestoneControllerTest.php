@@ -36,7 +36,7 @@ class AdminMilestoneControllerTest extends BaseTesting
         $this->logIn('ROLE_COLLABORATOR');
         $crawler = $this->client->request('GET', '/admin/milestone/list/1');
 
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
