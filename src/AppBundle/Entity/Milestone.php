@@ -98,8 +98,8 @@ class Milestone
      * @var User $createdBy
      *
      * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="milestones")
+     * @ORM\JoinColumn(name="created_by_id", referencedColumnName="id")
      */
     private $createdBy;
 

@@ -91,6 +91,24 @@
     border-radius: 50%;
 }
 
+.symbol_roles {
+  width: 15px;
+  height: 15px;
+  margin:4px;
+  float: left;
+  background-color: #cccccc;
+  cursor: pointer;
+}
+
+
+.count-milestones {
+  border-radius: 20px;
+  width: 40%;
+  background-color: #E85B27;
+  text-align: center;
+  font-weight: bold;
+  color: #ffffff;
+}
 
 a#ALL.active {
   border-bottom: 3px solid #ffffff;

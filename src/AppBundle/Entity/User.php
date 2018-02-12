@@ -12,6 +12,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * User
@@ -32,13 +34,6 @@ class User extends BaseUser
 
 
 
-    /*
-     * Construct
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
 
     /**
@@ -107,6 +102,31 @@ class User extends BaseUser
      * @ORM\Column(type="datetime")
      */
     private $updateAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Milestone", mappedBy="createdBy")
+     */
+    private $milestones;
+
+
+    /*
+     * Construct
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->milestones = new ArrayCollection();
+    }
+
+
+    /**
+     * @return Collection|Milestone[]
+     */
+    public function getMilestones()
+    {
+         return $this->milestones;
+    }
+
 
     /**
      * Get id

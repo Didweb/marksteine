@@ -52,10 +52,31 @@ List All User
 
        </td>
        <td>
-       </td>
+         <div class="symbol_roles level_1 user_{{ user.id }}" data-level="1" onmouseenter="infoAction(1, {{ datasRole.level }});"></div>
+         <div class="symbol_roles level_2 user_{{ user.id }}" data-level="2" onmouseenter="infoAction(2, {{ datasRole.level }});"></div>
+         <div class="symbol_roles level_3 user_{{ user.id }}" data-level="3" onmouseenter="infoAction(3, {{ datasRole.level }});"></div>
+         <div class="symbol_roles level_4 user_{{ user.id }}" data-level="4" onmouseenter="infoAction(4, {{ datasRole.level }});"></div>
+         <div class="symbol_roles level_5 user_{{ user.id }}" data-level="5" onmouseenter="infoAction(5, {{ datasRole.level }});"></div>
+         <script>
+           $('.level_{{ datasRole.level }}.user_{{ user.id }}').attr('style', 'background-color: {{ datasRole.color }}');
 
+           function infoAction(level, level_user) {
+
+             if(level > level_user ) {
+                  $('.user_'+level).attr('title', 'Promote');
+             } else {
+                 $('.user_'+level).attr('title', 'Demote');
+             }
+           }
+         </script>
+       </td>
        <td>
 
+       <div class="count-milestones">
+          {{ user.milestones|length }}
+       </div>
+      </td>
+       <td>
        {{ user.username }}
       </td>
       <td >
@@ -65,6 +86,7 @@ List All User
     {% endfor %}
   </tbody>
 </table>
+
 
 
 {% set routeName = 'user_manager_index' %}
