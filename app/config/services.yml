@@ -54,9 +54,3 @@ services:
     app.check_date:
         class: AppBundle\Services\CheckDate
         arguments: ["null"]
-
-    app.twig.my_functions:
-        class: AppBundle\Twig\FunctionsExtensions
-        tags:
-            - { name: twig.extension }
-        arguments: ['@service_container']

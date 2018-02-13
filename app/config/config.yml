@@ -44,6 +44,23 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes: ['bootstrap_4_layout.html.twig']
+    globals:
+        colors_roles:
+            ROLE_USER:
+                color: '%color_role_user%'
+                level: 0
+            ROLE_COLLABORATOR:
+                color: '%color_role_collaborator%'
+                level: 1
+            ROLE_MANAGER:
+                color: '%color_role_manager%'
+                level: 2
+            ROLE_ADMIN:
+                color: '%color_role_admin%'
+                level: 3
+            ROLE_SUPER_ADMIN:
+                color: '%color_role_super_admin%'
+                level: 4
 # Doctrine Configuration
 doctrine:
     dbal:

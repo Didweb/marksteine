@@ -41,26 +41,34 @@ List All User
 <table class="table listTable">
   <tbody>
     {% for user in allUsers %}
-    {% set datasRole = UserRole(user.roles.0) %}
+
+
      <tr>
        <td>
          {% if user.avatar == null %}
-           <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ datasRole.name }}" class="avatar-user-list" style="border:5px solid {{ datasRole.color }}" />
+           <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ user.roles.0 }}" class="avatar-user-list" style="border:5px solid {{ colors_roles[user.roles.0].color }}" />
          {% else %}
-         <img src="{{ asset('avatars/') }}{{ user.avatar }}" title="{{ datasRole.name }}" class="avatar-user-list"  style="border:5px solid {{ datasRole.color }}" />
+         <img src="{{ asset('avatars/') }}{{ user.avatar }}" title="{{ user.roles.0 }}" class="avatar-user-list"  style="border:5px solid {{ colors_roles[user.roles.0].color }}" />
          {% endif %}
 
        </td>
        <td>
-         <div class="symbol_roles level_1 user_{{ user.id }}" data-level="1" onmouseenter="infoAction(1, {{ datasRole.level }});"></div>
-         <div class="symbol_roles level_2 user_{{ user.id }}" data-level="2" onmouseenter="infoAction(2, {{ datasRole.level }});"></div>
-         <div class="symbol_roles level_3 user_{{ user.id }}" data-level="3" onmouseenter="infoAction(3, {{ datasRole.level }});"></div>
-         <div class="symbol_roles level_4 user_{{ user.id }}" data-level="4" onmouseenter="infoAction(4, {{ datasRole.level }});"></div>
-         <div class="symbol_roles level_5 user_{{ user.id }}" data-level="5" onmouseenter="infoAction(5, {{ datasRole.level }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_0" data-level="0" onmouseenter="infoAction(1, {{ colors_roles[user.roles.0].level }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_1" data-level="1" onmouseenter="infoAction(2, {{ colors_roles[user.roles.0].level }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_2" data-level="2" onmouseenter="infoAction(3, {{ colors_roles[user.roles.0].level }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_3" data-level="3" onmouseenter="infoAction(4, {{ colors_roles[user.roles.0].level }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_4" data-level="4" onmouseenter="infoAction(5, {{ colors_roles[user.roles.0].level }});"></div>
          <script>
-           $('.level_{{ datasRole.level }}.user_{{ user.id }}').attr('style', 'background-color: {{ datasRole.color }}');
+
+
+           $('#{{ user.id }}.level_{{ colors_roles[user.roles.0].level }}').attr('style', 'background-color: {{ colors_roles[user.roles.0].color }}');
+
+
+
 
            function infoAction(level, level_user) {
+
+
 
              if(level > level_user ) {
                   $('.user_'+level).attr('title', 'Promote');
@@ -77,7 +85,7 @@ List All User
        </div>
       </td>
        <td>
-       {{ user.username }}
+       {{ user.username }} {{ colors_roles[user.roles.0].color }} {{ colors_roles[user.roles.0].level }}
       </td>
       <td >
       {{ user.firstName }} {{ user.lastName }}
