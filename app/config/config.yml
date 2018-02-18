@@ -13,6 +13,11 @@ parameters:
     color_role_manager: "#348314"
     color_role_admin: "#8B083F"
     color_role_super_admin: "#090004"
+    role0: ROLE_USER
+    role1: ROLE_COLLABORATOR
+    role2: ROLE_MANAGER
+    role3: ROLE_ADMIN
+    role4: ROLE_SUPER_ADMIN
 
 framework:
     #esi: ~
@@ -45,7 +50,7 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
-        colors_roles:
+        items_roles:
             ROLE_USER:
                 color: '%color_role_user%'
                 level: 0

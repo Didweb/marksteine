@@ -54,3 +54,7 @@ services:
     app.check_date:
         class: AppBundle\Services\CheckDate
         arguments: ["null"]
+
+    app.manager_users:
+        class: AppBundle\Services\ManagerUsers
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]

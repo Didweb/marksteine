@@ -27,9 +27,9 @@
 
 
         {% if app.user.avatar == null %}
-          <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ app.user.roles.0 }}" class="avatar-user-icon" style="border:3px solid {{ colors_roles[app.user.roles.0].color }}" />
+          <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ app.user.roles.0 }}" class="avatar-user-icon" style="border:3px solid {{ items_roles[app.user.roles.0].color }}" />
         {% else %}
-        <img src="{{ asset('avatars/') }}{{ app.user.avatar }}" title="{{ app.user.roles.0 }}" class="avatar-user-icon"  style="border:3px solid {{ colors_roles[app.user.roles.0].color }}" />
+        <img src="{{ asset('avatars/') }}{{ app.user.avatar }}" title="{{ app.user.roles.0 }}" class="avatar-user-icon"  style="border:3px solid {{ items_roles[app.user.roles.0].color }}" />
         {% endif %}
       </a>
     </li>

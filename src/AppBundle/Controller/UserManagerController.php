@@ -10,6 +10,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
 * @Route("admin/user-manager")
@@ -38,13 +40,37 @@ class UserManagerController extends Controller
         $thisPage = $page;
 
         return $this->render('AppBundle::admin/usermanager/userManagerIndex.html.twig', array(
-                                            'allUsers'     => $iterator,
+                                            'allUsers'  => $iterator,
                                             'maxPages'  => $maxPages,
                                             'thisPage'  => $thisPage,
                                             'totalUsers'=> $totalUsers,
-                                            'filter' => $filter));
+                                            'filter'    => $filter));
     }
 
+    /**
+      * Change User role
+      *
+      * @Route("/change-role", name="user_manager_change_role")
+      * @Method({"GET", "POST"})
+      */
+    public function changeRoleAction(Request $request)
+    {
+        $manager_user = $this->container->get('app.manager_users');
+        $result = $manager_user
+                        ->changeRole(
+                            $request->get('destineRole'),
+                            $request->get('currentRole'),
+                            $request->get('userIdObjective'),
+                            $this->getUser()
+                        );
 
 
+        $result  = json_decode($result);
+        $typeAlert = 'success';
+        if ($result->result == 'error') {
+            $typeAlert = 'error';
+        }
+        $request->getSession()->getFlashBag()->add($typeAlert, $result->message);
+        return new JsonResponse($result);
+    }
 }

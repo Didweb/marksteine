@@ -37,7 +37,6 @@ List All User
   $('#{{ tabActiveFilter }}').attr('class', 'nav-link active');
 </script>
 
-
 <table class="table listTable">
   <tbody>
     {% for user in allUsers %}
@@ -46,36 +45,42 @@ List All User
      <tr>
        <td>
          {% if user.avatar == null %}
-           <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ user.roles.0 }}" class="avatar-user-list" style="border:5px solid {{ colors_roles[user.roles.0].color }}" />
+           <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ user.roles.0 }}" class="avatar-user-list" style="border:5px solid {{ items_roles[user.roles.0].color }}" />
          {% else %}
-         <img src="{{ asset('avatars/') }}{{ user.avatar }}" title="{{ user.roles.0 }}" class="avatar-user-list"  style="border:5px solid {{ colors_roles[user.roles.0].color }}" />
+         <img src="{{ asset('avatars/') }}{{ user.avatar }}" title="{{ user.roles.0 }}" class="avatar-user-list"  style="border:5px solid {{ items_roles[user.roles.0].color }}" />
          {% endif %}
 
        </td>
        <td>
-         <div id="{{ user.id }}" class="symbol_roles level_0" data-level="0" onmouseenter="infoAction(1, {{ colors_roles[user.roles.0].level }});"></div>
-         <div id="{{ user.id }}" class="symbol_roles level_1" data-level="1" onmouseenter="infoAction(2, {{ colors_roles[user.roles.0].level }});"></div>
-         <div id="{{ user.id }}" class="symbol_roles level_2" data-level="2" onmouseenter="infoAction(3, {{ colors_roles[user.roles.0].level }});"></div>
-         <div id="{{ user.id }}" class="symbol_roles level_3" data-level="3" onmouseenter="infoAction(4, {{ colors_roles[user.roles.0].level }});"></div>
-         <div id="{{ user.id }}" class="symbol_roles level_4" data-level="4" onmouseenter="infoAction(5, {{ colors_roles[user.roles.0].level }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_0" data-level="0" onClick="infoAction(0, {{ items_roles[user.roles.0].level }}, {{ user.id }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_1" data-level="1" onClick="infoAction(1, {{ items_roles[user.roles.0].level }}, {{ user.id }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_2" data-level="2" onClick="infoAction(2, {{ items_roles[user.roles.0].level }}, {{ user.id }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_3" data-level="3" onClick="infoAction(3, {{ items_roles[user.roles.0].level }}, {{ user.id }});"></div>
+         <div id="{{ user.id }}" class="symbol_roles level_4" data-level="4" onClick="infoAction(4, {{ items_roles[user.roles.0].level }}, {{ user.id }});"></div>
          <script>
 
 
-           $('#{{ user.id }}.level_{{ colors_roles[user.roles.0].level }}').attr('style', 'background-color: {{ colors_roles[user.roles.0].color }}');
+           $('#{{ user.id }}.level_{{ items_roles[user.roles.0].level }}').attr('style', 'background-color: {{ items_roles[user.roles.0].color }}');
 
 
 
 
-           function infoAction(level, level_user) {
+           function infoAction(destinity_level, current_level_user, user_id) {
+             $.ajax({
+               type: 'GET',
+               url: '{{ path('user_manager_change_role') }}',
+               data: {'destineRole': destinity_level , 'currentRole': current_level_user, 'userIdObjective': user_id},
+               dataType: 'html'
+             }).done(function(data) {
+
+              console.log("destineRole: " +  destinity_level + "currentRole: " +  current_level_user + "userIdObjective: " +  user_id );
+
+             checkErrors(data);
+                      });
+                };
 
 
 
-             if(level > level_user ) {
-                  $('.user_'+level).attr('title', 'Promote');
-             } else {
-                 $('.user_'+level).attr('title', 'Demote');
-             }
-           }
          </script>
        </td>
        <td>
@@ -85,7 +90,7 @@ List All User
        </div>
       </td>
        <td>
-       {{ user.username }} {{ colors_roles[user.roles.0].color }} {{ colors_roles[user.roles.0].level }}
+       {{ user.username }} {{ items_roles[user.roles.0].color }} {{ items_roles[user.roles.0].level }}
       </td>
       <td >
       {{ user.firstName }} {{ user.lastName }}
@@ -95,7 +100,10 @@ List All User
   </tbody>
 </table>
 
-
+{% block javascripts %}
+<script src="{{ asset('js/app/dialogs.js') }}"></script>
+{{ parent() }}
+{% endblock %}
 
 {% set routeName = 'user_manager_index' %}
 {% include '@App/pagination.html.twig' %}
