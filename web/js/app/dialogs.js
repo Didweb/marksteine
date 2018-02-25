@@ -34,7 +34,7 @@ function dialogPreparationCollabortaor(data, currentRole, user_id){
     }
 
   }
-  $("div.modal-body div.row").html('<div class="row"> <input type="button" onClick="" class="btn btn-success" value="Myself" /> </div>' +  listManagers);
+  $("div.modal-body div.row").html('<div class="row"> <input type="button" onClick="changeRole(1, ' + currentRole +  ',' + user_id + ',' + datas[0].myId + ')" class="btn btn-success" value="Myself" /> </div>' +  listManagers);
   $('.loaderBody').fadeIn(0);
   $('#editcontent').fadeOut(0);
 };

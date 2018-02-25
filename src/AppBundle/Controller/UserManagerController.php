@@ -67,7 +67,8 @@ class UserManagerController extends Controller
                                 'name'   => $manager->getUsername(),
                                 'avatar' => $manager->getAvatar(),
                                 'roles'  => $manager->getRoles(),
-                                'colorRole' => $color
+                                'colorRole' => $color,
+                                'myId' => $this->getUser()->getId()
                                 );
             }
         }
