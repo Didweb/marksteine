@@ -47,6 +47,34 @@ class UserManagerController extends Controller
                                             'filter'    => $filter));
     }
 
+
+    /**
+      * List Managers
+      *
+      * @Route("/list-managers", name="user_manager_list_managers")
+      * @Method({"GET", "POST"})
+      */
+    public function listManagersAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $managers = $em->getRepository('AppBundle:User')->getAllManagers();
+        $list = array();
+        foreach ($managers as $manager) {
+            if ($manager->getId() != $this->getUser()->getId()
+                && $manager->getRoles()[0] != 'ROLE_USER' && $manager->getRoles()[0] != 'ROLE_COLLABORATOR' ) {
+                $color = $this->getParameter('color_'.strtolower($manager->getRoles()[0]));
+                $list[] = array('idUser' => $manager->getId(),
+                                'name'   => $manager->getUsername(),
+                                'avatar' => $manager->getAvatar(),
+                                'roles'  => $manager->getRoles(),
+                                'colorRole' => $color
+                                );
+            }
+        }
+        return new JsonResponse($list);
+    }
+
+
     /**
       * Change User role
       *
@@ -56,13 +84,24 @@ class UserManagerController extends Controller
     public function changeRoleAction(Request $request)
     {
         $manager_user = $this->container->get('app.manager_users');
-        $result = $manager_user
-                        ->changeRole(
-                            $request->get('destineRole'),
-                            $request->get('currentRole'),
-                            $request->get('userIdObjective'),
-                            $this->getUser()
-                        );
+
+        if ($request->get('user_manager') != null) {
+            $result = $manager_user
+                            ->changeCollaboratorRole(
+                                $request->get('destineRole'),
+                                $request->get('currentRole'),
+                                $request->get('userObjective'),
+                                $request->get('user_manager')
+                            );
+        } else {
+            $result = $manager_user
+                            ->changeRole(
+                                $request->get('destineRole'),
+                                $request->get('currentRole'),
+                                $request->get('userObjective'),
+                                $this->getUser()
+                            );
+        }
 
 
         $result  = json_decode($result);

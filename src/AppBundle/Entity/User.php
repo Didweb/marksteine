@@ -109,6 +109,19 @@ class User extends BaseUser
     private $milestones;
 
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="collaborators", cascade={"remove"})
+     * @ORM\JoinColumn(name="manager", referencedColumnName="id")
+     */
+    private $manager;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="manager", cascade={"remove"})
+     */
+    private $collaborators;
+
+
     /*
      * Construct
      */
@@ -116,8 +129,72 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->milestones = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
     }
 
+
+    /**
+     * Set manager
+     *
+     * @param User $manager
+     *
+     * @return User
+     */
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return User
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+
+    /**
+     * @param User $collaborators
+     */
+    public function addCollaborator(User $collaborator)
+    {
+        if (!$this->collaborators->contains($collaborator)) {
+            $this->collaborators->add($collaborator);
+        }
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getCollaborators()
+    {
+        return $this->collaborators->toArray();
+    }
+
+    /**
+     * @param User $collaborators
+     */
+    public function removeCollaborator(User $collaborator)
+    {
+        if (!$this->collaborators->contains($collaborator)) {
+            return;
+        }
+        $this->collaborators->removeElement($collaborator);
+    }
+
+    /**
+     * Remove all Collaborators for this tag
+     */
+    public function removeAllCollaborators()
+    {
+        $this->collaborators->clear();
+    }
 
     /**
      * @return Collection|Milestone[]

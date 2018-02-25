@@ -10,42 +10,64 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends BaseRepository
 {
-  /**
-  * Get all Users with paginator and Order.
-  *
-  * @param integer $currentPage The current page (passed from controller)
-  * @return \Doctrine\ORM\Tool\Pagination\Paginator
-  */
-  public function getAllUsers($filter, $currentPage = 1, $limit = 5)
-  {
-      if ($filter == "ALL" ) {
-        $query = $this->createQueryBuilder('u')
-                ->orderBy('u.username', 'ASC')
-                ->getQuery();
-      } elseif ($filter == "ROLE_USER") {
-        $query = $this->createQueryBuilder('u')
-                ->orderBy('u.username', 'ASC')
-                ->where('u.roles NOT LIKE :rolesColaborator')
-                ->andwhere('u.roles NOT LIKE :rolesManager')
-                ->andwhere('u.roles NOT LIKE :rolesAdmin')
-                ->andwhere('u.roles NOT LIKE :rolesSuperAdmin')
-                ->setParameter('rolesColaborator', '%"'.'ROLE_COLLABORATOR'.'"%')
-                ->setParameter('rolesManager', '%"'.'ROLE_MANAGER'.'"%')
-                ->setParameter('rolesAdmin', '%"'.'ROLE_ADMIN'.'"%')
-                ->setParameter('rolesSuperAdmin', '%"'.'ROLE_SUPER_ADMIN'.'"%')
-                ->getQuery();
+    /**
+    * Get all Users with paginator and Order.
+    *
+    * @param integer $currentPage The current page (passed from controller)
+    * @return \Doctrine\ORM\Tool\Pagination\Paginator
+    */
+    public function getAllUsers($filter, $currentPage = 1, $limit = 5)
+    {
+        if ($filter == "ALL") {
+            $query = $this->createQueryBuilder('u')
+                    ->orderBy('u.username', 'ASC')
+                    ->getQuery();
+        } elseif ($filter == "ROLE_USER") {
+            $query = $this->createQueryBuilder('u')
+                    ->orderBy('u.username', 'ASC')
+                    ->where('u.roles NOT LIKE :rolesColaborator')
+                    ->andwhere('u.roles NOT LIKE :rolesManager')
+                    ->andwhere('u.roles NOT LIKE :rolesAdmin')
+                    ->andwhere('u.roles NOT LIKE :rolesSuperAdmin')
+                    ->setParameter('rolesColaborator', '%"'.'ROLE_COLLABORATOR'.'"%')
+                    ->setParameter('rolesManager', '%"'.'ROLE_MANAGER'.'"%')
+                    ->setParameter('rolesAdmin', '%"'.'ROLE_ADMIN'.'"%')
+                    ->setParameter('rolesSuperAdmin', '%"'.'ROLE_SUPER_ADMIN'.'"%')
+                    ->getQuery();
 
-      } else {
-        $query = $this->createQueryBuilder('u')
-                ->orderBy('u.username', 'ASC')
-                ->where('u.roles LIKE :roles')
-                ->setParameter('roles', '%"'.$filter.'"%')
-                ->getQuery();
-      }
+        } else {
+            $query = $this->createQueryBuilder('u')
+                    ->orderBy('u.username', 'ASC')
+                    ->where('u.roles LIKE :roles')
+                    ->setParameter('roles', '%"'.$filter.'"%')
+                    ->getQuery();
+        }
 
 
-      $paginator = $this->paginate($query, $currentPage, $limit);
+        $paginator = $this->paginate($query, $currentPage, $limit);
 
-      return $paginator;
-  }
+        return $paginator;
+    }
+
+
+    /**
+    * Get all Managers
+    *
+    * @param integer $currentPage The current page (passed from controller)
+    * @return \Doctrine\ORM\Tool\Pagination\Paginator
+    */
+    public function getAllManagers()
+    {
+          $query = $this->createQueryBuilder('u')
+                  ->orderBy('u.username', 'ASC')
+                  ->where('u.roles NOT LIKE :rolesUser')
+                  ->andwhere('u.roles NOT LIKE :rolesCollaborator')
+                  ->setParameter('rolesCollaborator', '%"'.'ROLE_COLLABORATOR'.'"%')
+                  ->setParameter('rolesUser', '%"'.'ROLE_USER'.'"%')
+                  ->getQuery();
+
+        return $query->getResult();
+    }
+
+
 }

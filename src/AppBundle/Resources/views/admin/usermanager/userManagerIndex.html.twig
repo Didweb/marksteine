@@ -9,7 +9,9 @@ List All User
 {% set tabActiveFilter =  filter  %}
 {% include '@App/admin/menuAdmin.html.twig' %}
 
-
+<div id="dialogEdit" class="dialog-base">
+{% include('@App/dialogEmpty.html.twig') %}
+</div>
 
 <div class="alert alert-danger" id="alertDialog" role="alert"></div>
 
@@ -65,27 +67,56 @@ List All User
 
 
 
-           function infoAction(destinity_level, current_level_user, user_id) {
-             $.ajax({
-               type: 'GET',
-               url: '{{ path('user_manager_change_role') }}',
-               data: {'destineRole': destinity_level , 'currentRole': current_level_user, 'userIdObjective': user_id},
-               dataType: 'html'
-             }).done(function(data) {
+           function infoAction(destinity_level, current_level_user, user) {
+             if (destinity_level == 1) {
+               $.ajax({
+                 type: 'GET',
+                 url: '{{ path('user_manager_list_managers') }}',
+                 dataType: 'html'
+               }).done(function(data) {
+                        dialogPreparationCollabortaor(data, current_level_user, user);
+                        });
+             } else {
+                  changeRole (destinity_level, current_level_user, user, null)
+                  };
+                }
 
-              console.log("destineRole: " +  destinity_level + "currentRole: " +  current_level_user + "userIdObjective: " +  user_id );
 
-             checkErrors(data);
-                      });
-                };
 
+          function changeRole (destinity_level, current_level_user, user, user_manager) {
+            $.ajax({
+              type: 'GET',
+              url: '{{ path('user_manager_change_role') }}',
+              data: {'destineRole': destinity_level , 'currentRole': current_level_user, 'userObjective': user, 'user_manager': user_manager},
+              dataType: 'html'
+            }).done(function(data) {
+                     checkErrors(data);
+                     });
+          }
 
 
          </script>
        </td>
        <td>
+         {% if user.manager != null %}
+         {% if user.manager.avatar == null %}
+           <img src="{{ asset('images/defaultAvatar.png') }}" title="{{ user.manager.username }}" class="avatar-user-manager-list" style="border:2px solid {{ items_roles[user.manager.roles.0].color }}" />
+         {% else %}
+         <img src="{{ asset('avatars/') }}{{ user.manager.avatar }}" title="{{ user.manager.username }}" class="avatar-user-manager-list"  style="border:2px solid {{ items_roles[user.manager.roles.0].color }}" />
+         {% endif %}
 
-       <div class="count-milestones">
+         {% endif %}
+       </td>
+       <td>
+         {% if user.collaborators != null %}
+         <div class="count-collabortaors" title="{{ user.collaborators|length }} Collaborators at your expense.">
+           {{ user.collaborators|length }}
+         </div>
+
+         {% endif %}
+       </td>
+       <td>
+       <div class="count-milestones"  title=" {{ user.milestones|length }} Milestones">
           {{ user.milestones|length }}
        </div>
       </td>

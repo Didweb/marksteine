@@ -77,6 +77,13 @@
 }
 
 
+.avatar-user-manager-list {
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
 .avatar-user-list {
     vertical-align: middle;
     width: 50px;
@@ -100,6 +107,14 @@
   cursor: pointer;
 }
 
+.count-collabortaors {
+  border-radius: 20px;
+  width: 40%;
+  background-color: #646665;
+  text-align: center;
+  font-weight: bold;
+  color: #ffffff;
+}
 
 .count-milestones {
   border-radius: 20px;

@@ -67,6 +67,20 @@ class ManagerUsersUnitTest extends WebTestCase
     }
 
 
+    public function testUserManagerCollaboratorOK()
+    {
+        $this->userManager = $this->createUserDummy("ROLE_MANAGER", "UserManager");
+        $userObject = $this->createUserDummy("ROLE_USER", "UserObject");
+
+        $managerUsers = new ManagerUsers($this->em, $this->container);
+
+        // 2 =  "ROLE_SUPER_ADMIN"
+        $result = $managerUsers->changeCollaboratorRole(2, 3, $userObject->getId(), $this->userManager->getId());
+        $objResult = json_decode($result);
+        $this->assertEquals('ok', $objResult->result);
+    }
+
+
     public function testUserManagerOkresultKO()
     {
         $this->userManager = $this->createUserDummy("ROLE_USER", "UserManager");
